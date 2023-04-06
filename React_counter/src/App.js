@@ -4,7 +4,7 @@
 // import ButtonHandler from './newComponent';
 
 // import Status from "./Status";
-import IncrememntPro from "./react_practis/IncrememntPro";
+import ProductPurchesing from "./react_practis/ProductPurchesing";
 
 // import SateMangeMent from "./SateMangeMent";
 
@@ -36,7 +36,7 @@ function App() {
       {/* <SendMSG/> */}
       {/* <SateMangeMent/> */}
       {/* <Status/> */}
-      <IncrememntPro/>
+      <ProductPurchesing/>
       </div>
   );
 }

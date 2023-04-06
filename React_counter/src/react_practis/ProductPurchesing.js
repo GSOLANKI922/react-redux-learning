@@ -24,7 +24,7 @@ const initialProducts = [
   },
 ];
 
-const IncrememntPro = () => {
+const ProductPurchesing = () => {
   const [products, setProducts] = useState(initialProducts);
 
   // Increment producs purchesh Pis start//
@@ -102,4 +102,4 @@ const IncrememntPro = () => {
   );
 };
 
-export default IncrememntPro;
+export default ProductPurchesing;
