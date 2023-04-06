@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // function greet({ name = "Rauno" } = {}) {
+      //   console.log(`Hi ${name}!`);
+      // }
+      // greet({name: "gautam"})
+
+      // function printCoordinates({ left: x, top: y }) {
+      //   console.log(`x: ${x}, y: ${y}`);
+      // }
+      // printCoordinates({left: 10, top: 30})
+
+      //   function greet(name = "Jerry") {
+      //     return `Hello ${name}`;
+      //   }
+      //  console.log(greet())
+
+      // function fn(x, z, ...y) {
+      //   console.log(y)
+      //   return x * y.length;
+      // }
+      // console.log(fn(...[1, 2, 3, 4, 5, 6]))
+
+      // const App = {
+      //   start() {
+      //     console.log("running");
+      //   },
+      // };
+
+      // const fatherJS = { age: 57, name: "Brendan Eich" };
+
+      // const x = Object.values(fatherJS);
+      // console.log(x);
+      // // [57, "Brendan Eich"]
+      // const y = Object.entries(fatherJS);
+      // console.log(y);
+      // // [["age", 57], ["name", "Brendan Eich"]]
+
+      // console.log(Math.random());
+
+      // function* idMaker() {
+      //   let id = 0;
+      //   while (true) {
+      //     yield id++;
+      //   }
+      // }
+
+      // // console.log(idMaker());
+      // let newId = idMaker()
+      // console.log(newId.next().value)
+      // console.log(newId.next().value)
+      // console.log(newId.next().value)
+      // console.log(newId.next().value)
+
+      // const date = new Date().toDateString();
+      // console.log(date);
+
+      let i, j, k;
+      let a, b, c;
+      for(i = 1; i < 10; i++){
+        for(j = 1; j < 10 - i; j++){
+          document.write("*");
+        }
+        document.write("<br/>")
+      }
+      for(a = 10; a > 1; a--){
+        for(b = 1; b < 10 - a; b++){
+          document.write("*");
+        }
+        document.write("<br/>")
+      }
+
+
+      
+      
+    </script>
+  </body>
+</html>
