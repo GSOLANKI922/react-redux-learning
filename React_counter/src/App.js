@@ -2,23 +2,16 @@
 // import ListData from './ListData';
 // import Link from './Link';
 // import ButtonHandler from './newComponent';
-
+import Page from "./contextWithComponent/Page";
 // import Status from "./Status";
-import ProductPurchesing from "./react_practis/ProductPurchesing";
-
+// import ProductPurchesing from "./react_practis/ProductPurchesing";
 // import SateMangeMent from "./SateMangeMent";
-
 // import SendMSG from "./SendMSG";
 // import Posts from "./culther/Posts";
-
 // import Parents from "./passData/Parents";
-
 // import Game from "./Game";
-
 // import Counter from "./Counter";
-
 // import ListS from "./ListS";
-
 
 function App() {
   return (
@@ -36,8 +29,9 @@ function App() {
       {/* <SendMSG/> */}
       {/* <SateMangeMent/> */}
       {/* <Status/> */}
-      <ProductPurchesing/>
-      </div>
+      {/* <ProductPurchesing/> */}
+      <Page />
+    </div>
   );
 }
 
