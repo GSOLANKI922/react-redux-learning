@@ -2,7 +2,8 @@
 // import ListData from './ListData';
 // import Link from './Link';
 // import ButtonHandler from './newComponent';
-import Page from "./contextWithComponent/Page";
+import DataList from "./Hooks/ProductListing/DataList";
+// import Page from "./contextWithComponent/Page";
 // import Status from "./Status";
 // import ProductPurchesing from "./react_practis/ProductPurchesing";
 // import SateMangeMent from "./SateMangeMent";
@@ -30,7 +31,8 @@ function App() {
       {/* <SateMangeMent/> */}
       {/* <Status/> */}
       {/* <ProductPurchesing/> */}
-      <Page />
+      {/* <Page /> */}
+      <DataList/>
     </div>
   );
 }
