@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "./config.js";
-import { quotes, users } from "./fakedb.js";
 
 const User = mongoose.model("User");
 const Quote = mongoose.model("Quote");
