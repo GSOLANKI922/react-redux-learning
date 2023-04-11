@@ -1,49 +1,50 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import { quotes, users } from "./fakedb.js";
+import typeDefs from "./schemaGql.js";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import { MONGO_URI, JWT_SECRET } from "./config.js";
 
-const typeDefs = `
-  type Query {
-    users: [User]
-    user(id:ID!):User
-    quotes: [Quote]
-    iquote(by:ID!):[Quote]
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected..."))
+  .catch((err) => console.log(err));
+
+mongoose.connection.on("connected", () => {
+  console.log("connected to mongodb");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.log("error connecting", err);
+});
+
+//import models here
+import "./models/Quotes.js";
+import "./models/User.js";
+
+import resolvers from "./resolvers.js";
+
+const context = ({ req }) => {
+  const { authorization } = req.headers;
+  if (authorization) {
+    const { userId } = jwt.verify(authorization, JWT_SECRET);
+    return { userId };
   }
-
-  type User{
-    id:ID!
-    firstName: String
-    lastname: String
-    email: String
-    password: String
-    quotes: [Quote]
-  }
-
-  type Quote{
-    name: String
-    by: ID!
-  }
-  `;
-
-const resolvers = {
-  Query: {
-    users: () => users,
-    user: (_, { id }) => users.find((user) => user.id == id),
-    quotes: () => quotes,
-    iquote: (_, { by }) => quotes.filter((quo) => quo.by == by),
-  },
-  User: {
-    quotes: (ur) => quotes.filter((quo) => quo.by == ur.id),
-  },
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context,
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 
-await startStandaloneServer(server, {
+const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
+
+console.log(`🚀  Server ready at: ${url}`);

@@ -1,7 +1,8 @@
+Pk2oIKki0w3yei90
 --------------
 query getAllUsers{
   users{
-    id
+    _id
     firstName
     lastname
     password
@@ -10,6 +11,7 @@ query getAllUsers{
 }
 
 -------------
+
 
 query getAllQuotes {
   quotes{
@@ -22,8 +24,19 @@ query getAllQuotes {
 -----------
 
 query getUserById {
-  user(id: "1313") {
-    id
+  user(_id: "1313") {
+    _id
+    firstName
+    lastname
+    email
+  }
+}
+
+-------using variable pass
+
+query getUserById($userId:ID!) {
+  user(_id:$userId) {
+    _id
     firstName
     lastname
     email
@@ -38,3 +51,25 @@ query getQuotesByUser{
     by
   }
 }
+
+-------using variable pass
+
+query getQuotesByUser($iquote:ID!){
+  iquote(by:$iquote){
+    name
+    by
+  }
+}
+
+
+-------
+
+mutation createUser($userNew:userInput!){
+  user: singupUserDummy(userNew:$userNew){
+    _id
+    email
+    firstName
+    lastname
+  }
+}
+ 
