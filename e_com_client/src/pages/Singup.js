@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState, useEffect } from "react";
-import { USER_LOGIN, USER_SINGUP } from "../gqloperation/mutation";
+import { USER_SINGUP } from "../gqloperation/mutation";
 import { useNavigate } from "react-router-dom";
 
 const Singup = () => {
@@ -15,15 +15,12 @@ const Singup = () => {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/");
-    } else {
-      navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   const [loginUser, { loading, error, data }] = useMutation(USER_SINGUP);
   if (loading) return <h1>Loading...</h1>;
   if (data) {
-    console.log(data, "singup");
     localStorage.setItem("token", data.register.jwt);
     navigate("/");
   }

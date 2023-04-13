@@ -10,6 +10,7 @@
 .p_card {
   width: 300px;
   margin: 10px;
+  text-decoration: none;
 }
 
 .cImage {
@@ -30,3 +31,39 @@
   z-index: 99;
   top: 0;
 }
+
+.cart_button{
+  border: 1px solid;
+  margin: 0 10px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.cart_button_1{
+  background-color: rgb(199, 48, 48);
+  color: white;
+}
+
+.cart_button_1:hover{
+  background-color: white;
+  color: rgb(172, 61, 61);
+}
+.cart_button_2{
+  background-color: rgb(199, 48, 48);
+  color: white;
+}
+
+.cart_button_2:hover{
+  background-color: white;
+  color: rgb(172, 61, 61);
+}
+.cart_button_3{
+  background-color: rgb(91, 187, 91);
+  color: white;
+}
+
+.cart_button_3:hover{
+  background-color: white;
+  color: rgb(91, 187, 91);
+}
+

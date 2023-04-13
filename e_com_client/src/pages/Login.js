@@ -17,7 +17,7 @@ const Login = () => {
     }else{
       navigate("/login")
     }
-  }, []);
+  }, [navigate]);
 
   const [loginUser, { loading, error, data }] = useMutation(USER_LOGIN);
   if (loading) return <h1>Loading...</h1>;
