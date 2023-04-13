@@ -1,0 +1,32 @@
+.homeroot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  top: 0;
+  bottom: 0;
+  margin-top: 5rem;
+}
+
+.p_card {
+  width: 300px;
+  margin: 10px;
+}
+
+.cImage {
+  height: 300px;
+  object-fit: cover;
+}
+
+.product_image {
+  height: 35rem;
+}
+
+.p_card:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.nav_container {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+}
