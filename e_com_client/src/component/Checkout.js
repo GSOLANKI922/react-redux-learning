@@ -14,7 +14,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutForm = ({ setCheckOut }) => {
-  const [paymentProcess, setpaymentProcess] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
   const [errorHandler, seterrorHandler] = useState("");
   const { cartTotal, items, emptyCart } = useCart();
   const stripe = useStripe();
@@ -37,18 +37,17 @@ const CheckoutForm = ({ setCheckOut }) => {
   };
 
   const makePaymentRequest = async (allformData) => {
-    console.log(allformData);
     try {
-      const res = await fetch(BACKEND_URL + "/api/orders", {
-        method: "post",
+      const res = await fetch("http://localhost:1337/api/orders", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
+          Authorization: ` Bearer ${localStorage.getItem("token")} `,
         },
         body: JSON.stringify(allformData),
       });
-      if (res.status !== 200) throw Error("Payment failed");
-      return await res.json();
+      const data = await res.json();
+      return data;
     } catch (err) {
       console.log(err);
     }
@@ -68,12 +67,13 @@ const CheckoutForm = ({ setCheckOut }) => {
       amount: cartTotal,
       items: items,
     };
-    setpaymentProcess(true);
+    // console.log(allFormData);
+    // setpaymentProcess(true);
     await makePaymentRequest(allFormData);
-    setpaymentProcess(false);
-    emptyCart();
+    // setpaymentProcess(false);
+    // emptyCart();
   };
-  if (paymentProcess) return <h1>Payment is Process....</h1>;
+  // if (paymentProcess) return <h1>Payment is Process....</h1>;
 
   const payChangeHandler = (e) => {
     seterrorHandler(e);
@@ -169,4 +169,3 @@ const Checkout = ({ setCheckOut }) => {
   );
 };
 export default Checkout;
-

@@ -43,3 +43,16 @@ export const GET_PRODUCT = gql`
     }
   }
 `;
+
+export const GET_CATEGORIES = gql`
+  query category {
+    categories {
+      data {
+        id
+        attributes {
+          name
+        }
+      }
+    }
+  }
+`;
