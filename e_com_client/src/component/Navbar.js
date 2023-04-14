@@ -15,42 +15,57 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="nav-extended #1976d2 blue darken-2 nav_container" >
+      <nav className="nav-extended #1976d2 blue darken-2 nav_container">
         {token ? (
-          <div className="nav-wrapper" style={{margin:"0 30px"}} >
-            <Link to="/" className="brand-logo">
+          <div className="nav-wrapper" style={{ margin: "0 30px" }}>
+            <Link
+              to="/"
+              className="brand-logo"
+              style={{ textDecoration: "none" }}
+            >
               FlipCart
             </Link>
             <ul id="nav-mobile" className="right">
               <li>
-                <Link to="/login">
+                <Link to="/login" style={{ textDecoration: "none" }}>
                   <i className="material-icons">home</i>
                 </Link>
               </li>
               <li>
-                <Link to="/cart">
+                <Link to="/cart" style={{ textDecoration: "none" }}>
                   <i className="material-icons">add_shopping_cart</i>
                 </Link>
               </li>
 
               <li>
-                <Link onClick={logoutHandler}>
+                <Link
+                  onClick={logoutHandler}
+                  style={{ textDecoration: "none" }}
+                >
                   <i className="material-icons">logout</i>
                 </Link>
               </li>
             </ul>
           </div>
         ) : (
-          <div className="nav-wrapper" style={{margin:"0 30px"}}>
-            <Link to="/" className="brand-logo">
+          <div className="nav-wrapper" style={{ margin: "0 30px" }}>
+            <Link
+              to="/"
+              className="brand-logo"
+              style={{ textDecoration: "none" }}
+            >
               FlipCart
             </Link>
             <ul id="nav-mobile" className="right">
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>
               </li>
               <li>
-                <Link to="/singup">Singup</Link>
+                <Link to="/singup" style={{ textDecoration: "none" }}>
+                  Singup
+                </Link>
               </li>
             </ul>
           </div>

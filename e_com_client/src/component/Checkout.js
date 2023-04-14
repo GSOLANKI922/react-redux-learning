@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -8,11 +7,16 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { useCart } from "react-use-cart";
+import { BACKEND_URL } from "../helpers";
 
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+const stripePromise = loadStripe(
+  "pk_test_51MwNDWSE4ciHZPDpCnnMbArURpvl4ShElcanL4fCzLyh2SdfQ6dVMd8BrEoEZAXdgCh2zXWAdZpU0SOX4QXfzFjL00xMv6cDJx"
+);
 
-const CheckoutForm = () => {
-  const { cartTotal, items } = useCart();
+const CheckoutForm = ({ setCheckOut }) => {
+  const [paymentProcess, setpaymentProcess] = useState(false);
+  const [errorHandler, seterrorHandler] = useState("");
+  const { cartTotal, items, emptyCart } = useCart();
   const stripe = useStripe();
   const elements = useElements();
   const [formData, setFormData] = useState({
@@ -22,6 +26,8 @@ const CheckoutForm = () => {
     pin: "",
   });
 
+  const { error, complete } = errorHandler;
+
   const changeHandler = ({ target }) => {
     const { name, value } = target;
     setFormData({
@@ -30,15 +36,31 @@ const CheckoutForm = () => {
     });
   };
 
+  const makePaymentRequest = async (allformData) => {
+    console.log(allformData);
+    try {
+      const res = await fetch(BACKEND_URL + "/api/orders", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(allformData),
+      });
+      if (res.status !== 200) throw Error("Payment failed");
+      return await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (elements == null) {
       return;
     }
-
     const cardElement = elements.getElement(CardElement);
-    const payload = await stripe.createToken(CardElement);
+    const payload = await stripe.createToken(cardElement);
 
     const allFormData = {
       ...formData,
@@ -46,15 +68,23 @@ const CheckoutForm = () => {
       amount: cartTotal,
       items: items,
     };
-    console.log(allFormData);
+    setpaymentProcess(true);
+    await makePaymentRequest(allFormData);
+    setpaymentProcess(false);
+    emptyCart();
+  };
+  if (paymentProcess) return <h1>Payment is Process....</h1>;
+
+  const payChangeHandler = (e) => {
+    seterrorHandler(e);
   };
 
-  console.log(formData, "formData");
   return (
-    <div style={{ marginTop: "100rem" }} className="container">
+    <div className="container">
+      {error ? <div className="card-panel red">{error.message}</div> : ""}
       <form onSubmit={handleSubmit}>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Address
           </label>
           <input
@@ -62,13 +92,13 @@ const CheckoutForm = () => {
             value={formData.shippingAddress}
             name="shippingAddress"
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPin1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputPin1" className="form-label">
             Pin
           </label>
           <input
@@ -76,12 +106,12 @@ const CheckoutForm = () => {
             value={formData.pin}
             name="pin"
             type="number"
-            class="form-control"
+            className="form-control"
             id="exampleInputPin1"
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleInputState1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputState1" className="form-label">
             State
           </label>
           <input
@@ -89,13 +119,13 @@ const CheckoutForm = () => {
             value={formData.state}
             name="state"
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleInputState1"
             aria-describedby="emailHelp"
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleInputCity1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputCity1" className="form-label">
             City
           </label>
           <input
@@ -103,26 +133,40 @@ const CheckoutForm = () => {
             value={formData.city}
             name="city"
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleInputCity1"
           />
         </div>
-        <CardElement />
-        <button
-          type="submit"
-          class="btn btn-primary"
-          disabled={!stripe || !elements}
-        >
-          Submit
-        </button>
+        <CardElement onChange={payChangeHandler} />
+        <div style={{ display: "flex", alignItems: "baseline", gap: "2rem" }}>
+          <button
+            style={{ marginTop: "1rem" }}
+            type="submit"
+            className="btn btn-primary"
+            disabled={!stripe || !elements || (!error && !complete)}
+          >
+            Pay
+          </button>
+          <button
+            type="primary"
+            className="btn btn-primary"
+            onClick={() => setCheckOut(false)}
+            style={{ display: "inline-block" }}
+          >
+            Cancle
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-const Checkout = () => {
-  <Elements stripe={stripePromise}>
-    <CheckoutForm />
-  </Elements>;
+const Checkout = ({ setCheckOut }) => {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm setCheckOut={setCheckOut} />
+    </Elements>
+  );
 };
 export default Checkout;
+

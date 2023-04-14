@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { GET_ALL_PRODUCTS } from "../gqloperation/queries";
 import Card from "../component/Card";
 import { useNavigate } from "react-router-dom";

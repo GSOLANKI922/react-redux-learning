@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCart } from "react-use-cart";
 import { BACKEND_URL } from "../helpers";
 import { Button } from "antd";
+import Checkout from "../component/Checkout";
 
 const Cart = () => {
   const { isEmpty, items, removeItem, updateItemQuantity, cartTotal } =
@@ -10,12 +11,9 @@ const Cart = () => {
   console.log(items);
   if (checkOut) {
     return (
-      <div className="container">
+      <div className="container" style={{ marginTop: "5rem" }}>
         <h3>Payment Page</h3>
-
-        <Button type="primary" onClick={() => setCheckOut(false)}>
-          Cancle
-        </Button>
+        <Checkout setCheckOut={setCheckOut}/>
       </div>
     );
   }
@@ -94,7 +92,11 @@ const Cart = () => {
           <tr>
             <th className="text-center" colSpan="2"></th>
             <th className="text-center">
-              <Button type="primary" onClick={() => setCheckOut(true)}>
+              <Button
+                disabled={!isEmpty ? false : true}
+                type="primary"
+                onClick={() => setCheckOut(true)}
+              >
                 CheckOut
               </Button>
             </th>
