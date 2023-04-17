@@ -3,6 +3,7 @@ import Singup from "./pages/Singup";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
+import ProductByCategory from "./pages/ProductByCategory";
 
 export const routes = [
   { path: "/", element: <Home /> },
@@ -10,4 +11,5 @@ export const routes = [
   { path: "/singup", element: <Singup /> },
   { path: "/product/:pid", element: <Product /> },
   { path: "/cart", element: <Cart /> },
+  { path: "/category/:cid", element: <ProductByCategory /> },
 ];

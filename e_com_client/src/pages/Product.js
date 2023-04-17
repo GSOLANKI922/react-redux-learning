@@ -41,7 +41,14 @@ const Product = () => {
   };
   return (
     <div className="container" style={{ marginTop: "5rem" }}>
+     
       <div className="card-image product_image_container">
+      <button
+          className="waves-effect waves-light btn-large"
+          onClick={() => navigate("/")}
+        >
+          Back
+        </button>
         <Carousel plugins={["arrows"]}>
           {images.data.map(({ attributes }) => {
             return (

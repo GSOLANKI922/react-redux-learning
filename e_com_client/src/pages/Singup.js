@@ -44,10 +44,10 @@ const Singup = () => {
 
   return (
     <div>
-      <div className="container">
+      <div className="container" style={{ marginTop: "10rem" }}>
         {error && <div className="card-panel red">{error.message}</div>}
-        <h3 style={{ marginTop: "10rem" }}>User Singup</h3>
-        <form className="col s9" onSubmit={loginFormHandler}>
+        <h3 style={{ marginTop: "2rem" }}>User Singup</h3>
+        <form className="col s9" onSubmit={loginFormHandler} style={{ marginTop: "2rem" }}> 
           <div className="row">
             <div className="input-field col s8">
               <input

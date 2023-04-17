@@ -16,7 +16,7 @@ const Routes = () => {
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <BrowserRouter>
         <Routes />
       </BrowserRouter>
