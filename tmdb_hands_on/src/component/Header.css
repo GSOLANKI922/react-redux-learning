@@ -1,0 +1,47 @@
+.movie_detais_container,
+.movie_list_container {
+  height: 83.3vh;
+  overflow-y: scroll;
+}
+
+.movie_list_container::-webkit-scrollbar {
+  display: none;
+}
+
+.movie_list_wraper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.loginForm_container {
+  display: flex;
+  justify-content: center;
+  height: 86vh;
+}
+
+.loginForm_wrapper {
+  box-sizing: border-box;
+  width: 35%;
+  margin-top: 5%;
+  border: 2px solid black;
+  height: 40rem;
+  border-radius: 5px;
+  background-color: aliceblue;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login_title {
+  padding: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  color: white;
+  background-color: #4e3e3e;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login_form {
+  margin: 4rem 5rem;
+}
