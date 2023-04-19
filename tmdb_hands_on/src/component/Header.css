@@ -1,10 +1,14 @@
 .movie_detais_container,
-.movie_list_container {
+.movie_list_container,
+.table_container {
   height: 83.3vh;
   overflow-y: scroll;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
 }
 
-.movie_list_container::-webkit-scrollbar {
+.movie_list_container::-webkit-scrollbar,
+.table_container::-webkit-scrollbar {
   display: none;
 }
 
@@ -20,6 +24,7 @@
   display: flex;
   justify-content: center;
   height: 86vh;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .loginForm_wrapper {
@@ -44,4 +49,10 @@
 
 .login_form {
   margin: 4rem 5rem;
+}
+
+.top_5_movie {
+  background-color: #dadfdf;
+  padding: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const MoviesList = () => {
   const [pageNumber, setPageNumber] = useState(1);
+  const [loadings, setloadings] = useState(true)
 
   const { loading, error, data, refetch } = useQuery(MOVIE_LIST, {
     variables: {
@@ -24,6 +25,9 @@ const MoviesList = () => {
     if (pageNumber !== 1) {
       refetch();
     }
+    setTimeout(() => {
+      setloadings(false)
+    }, 500)
   }, [pageNumber]);
 
   if (loading) return <h1>Loading...</h1>;
@@ -36,22 +40,27 @@ const MoviesList = () => {
   return (
     <div className="movie_list_container">
       <div className="movie_list_wraper">
-        {data.listMovies.data.map(
-          ({ budget, releaseDate, revenue, status, title, id }) => {
-            return (
-              <Link to={`/moviedetails/${id}`}>
-                <Card_C
-                  budget={budget}
-                  releaseDate={releaseDate}
-                  revenue={revenue}
-                  status={status}
-                  title={title}
-                  id={id}
-                  key={id}
-                />
-              </Link>
-            );
-          }
+        {data ? (
+          data.listMovies.data.map(
+            ({ budget, releaseDate, revenue, status, title, id }) => {
+              return (
+                <Link to={`/moviedetails/${id}`} key={id}>
+                  <Card_C
+                    loading={loadings}
+                    budget={budget}
+                    releaseDate={releaseDate}
+                    revenue={revenue}
+                    status={status}
+                    title={title}
+                    id={id}
+                    
+                  />
+                </Link>
+              );
+            }
+          )
+        ) : (
+          <Card_C loading={true} />
         )}
       </div>
       <div className="movie_list_pagination">

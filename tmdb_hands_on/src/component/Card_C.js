@@ -1,8 +1,15 @@
 import { Card } from "antd";
 const { Meta } = Card;
 
-const Card_C = ({ budget, releaseDate, revenue, status, title, id }) => (
+const Card_C = ({
+  budget,
+  releaseDate,
+  revenue,
+  loading,
+  title,
+}) => (
   <Card
+    loading={loading}
     hoverable
     style={{
       width: 240,

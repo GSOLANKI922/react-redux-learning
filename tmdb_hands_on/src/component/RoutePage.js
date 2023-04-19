@@ -13,7 +13,7 @@ const RoutePage = () => {
       <Route path="/movieslist" element={<MoviesList />} />
       <Route path="/personlist" element={<PersonList />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/moviedetails/:id" element={<MovieDetails />} />
+      <Route path="/moviedetails/:idm" element={<MovieDetails />} />
     </Routes>
   );
 };

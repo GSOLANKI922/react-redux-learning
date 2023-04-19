@@ -22,8 +22,9 @@ const Login = () => {
           data: values,
         },
       });
-      console.log(res, "res");
-    } catch (error) {}
+    } catch (error) {
+      return <h1>err..{error.message}</h1>
+    }
   };
   
   return (

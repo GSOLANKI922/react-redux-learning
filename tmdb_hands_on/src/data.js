@@ -20,6 +20,15 @@ export const BREADCRUMB_HOME_ITEM = [
     title: "Application",
   },
   {
-    title: <Link style={{ fontWeight: "bold" }}>Home</Link>,
+    title: <Link to="/" style={{ fontWeight: "bold" }}>Home</Link>,
+  },
+];
+
+export const BREADCRUMB_MOVIE_LIST = [
+  {
+    title: "Application",
+  },
+  {
+    title: <Link style={{ fontWeight: "bold" }}>MovieList</Link>,
   },
 ];

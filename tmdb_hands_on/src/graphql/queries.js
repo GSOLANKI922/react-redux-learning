@@ -16,6 +16,36 @@ export const MOVIE_LIST = gql`
   }
 `;
 
+export const GET_MOVIE_BY_ID = gql`
+  query Movie($movieId: ID!) {
+    movie(id: $movieId) {
+      data {
+        budget
+        id
+        title
+        releaseDate
+        revenue
+        status
+      }
+    }
+  }
+`;
+
+export const GET_TOP_MOVIE = gql`
+  query ListMovies($filter: ListMoviesFilter, $sort: ListMoviesSort) {
+    listMovies(filter: $filter, sort: $sort) {
+      data {
+        budget
+        id
+        title
+        releaseDate
+        revenue
+        status
+      }
+    }
+  }
+`;
+
 export const PERSION_LIST = gql`
   query ListPersons($sort: ListPersonsSort!, $filter: ListPersonsFilter!) {
     listPersons(sort: $sort, filter: $filter) {
@@ -24,9 +54,8 @@ export const PERSION_LIST = gql`
         gender
         id
         knownForDepartment
-        popularity
-        profilePath
       }
+      count
     }
   }
 `;
