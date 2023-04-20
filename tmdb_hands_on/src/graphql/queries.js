@@ -59,3 +59,16 @@ export const PERSION_LIST = gql`
     }
   }
 `;
+
+export const PERSION_DETAILS = gql`
+  query Person($personId: ID!) {
+    person(id: $personId) {
+      data {
+        id
+        knownForDepartment
+        gender
+        name
+      }
+    }
+  }
+`;

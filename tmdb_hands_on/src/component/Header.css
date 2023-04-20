@@ -1,6 +1,8 @@
 .movie_detais_container,
 .movie_list_container,
-.table_container {
+.table_container,
+.persion_detais_card,
+.error_container {
   height: 83.3vh;
   overflow-y: scroll;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -55,4 +57,16 @@
   background-color: #dadfdf;
   padding: 5px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.persion_detais_card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

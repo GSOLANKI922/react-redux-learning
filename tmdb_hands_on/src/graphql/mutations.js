@@ -48,3 +48,42 @@ export const CREATE_PERSION = gql`
     }
   }
 `;
+
+export const DELETE_MOVIE = gql`
+  mutation Mutation($deleteMovieId: ID!) {
+    deleteMovie(id: $deleteMovieId) {
+      message
+    }
+  }
+`;
+
+export const EDIT_MOVIE = gql`
+  mutation Mutation($updateMovieId: ID!, $data: UpdateMovieInput) {
+    updateMovie(id: $updateMovieId, data: $data) {
+      data {
+        movie {
+          adult
+          id
+          budget
+          originalLanguage
+          originalTitle
+          title
+          overview
+          releaseDate
+          revenue
+          runtime
+          status
+          tagline
+          countries {
+            countryCode
+          }
+          languages {
+            id
+            languageCode
+          }
+        }
+      }
+      message
+    }
+  }
+`;

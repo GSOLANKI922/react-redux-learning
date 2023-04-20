@@ -6,13 +6,12 @@ import { CREATE_PERSION, Edit_PERSION_DETAILS } from "../graphql/mutations";
 
 const FormModel = ({ refetch, persionData, setEdit, edit }) => {
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputData, setInputData] = useState({
     name: "",
     knownForDepartment: "",
     gender: "",
   });
-
+  console.log(inputData, "inputData Edit");
   useEffect(() => {
     if (edit) {
       setInputData({
@@ -22,13 +21,12 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
       });
       showModal();
     }
+    // eslint-disable-next-line
   }, [persionData]);
 
   const [createNewPersion, { loading, error }] = useMutation(CREATE_PERSION);
-  const [
-    updatePersion,
-    { loading: persionLoading, error: persionError, data },
-  ] = useMutation(Edit_PERSION_DETAILS);
+  const [updatePersion, { loading: persionLoading, data }] =
+    useMutation(Edit_PERSION_DETAILS);
 
   if (loading) return <h1>Loadding..</h1>;
   if (error) return <h1>Errr...{error.message}</h1>;
@@ -44,41 +42,40 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
     setOpen(false);
   };
 
-  console.log(persionData.id, "persionData in  model");
-  console.log(edit, "what");
-
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (edit) {
-      updatePersion({
-        variables: {
-          updatePersonId: persionData.id,
-          data: inputData,
-        },
-      });
-      setInputData("");
-      setOpen(false)
+      try {
+        await updatePersion({
+          variables: {
+            updatePersonId: persionData.id,
+            data: values,
+          },
+        });
+        setInputData("");
+        refetch();
+        setOpen(false);
+        setEdit(false);
+      } catch (error) {
+        console.log(error.message);
+      }
     } else {
       setInputData(values);
-      console.log(values, "in");
-      setConfirmLoading(true);
-      setTimeout(() => {
-        setOpen(false);
-        setConfirmLoading(false);
-      }, 1000);
-      createNewPersion({
-        variables: {
-          data: {
-            name: values.name,
-            knownForDepartment: values.knownForDepartment,
-            gender: values.gender.value,
+      try {
+        await createNewPersion({
+          variables: {
+            data: {
+              name: values.name,
+              knownForDepartment: values.knownForDepartment,
+              gender: values.gender.value,
+            },
           },
-        },
-      });
+        });
+        setOpen(false);
+        refetch();
+      } catch (error) {
+        console.log(error.message);
+      }
     }
-    setEdit(false);
-    setTimeout(() => {
-      refetch();
-    }, 20);
   };
 
   return (
@@ -86,15 +83,11 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
       <Button type="primary" onClick={showModal} style={{ margin: "20px" }}>
         Add Person
       </Button>
-
       <Modal
         title="Person Form"
         open={open}
-        confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        okButtonProps={{
-          disabled: true,
-        }}
+        footer={null}
       >
         <Form
           name="basic"

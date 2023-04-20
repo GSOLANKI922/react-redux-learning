@@ -1,36 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PERSION_LIST } from "../graphql/queries";
-import { useMutation, useQuery } from "@apollo/client";
-import { Space, Table } from "antd";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { Button, Space, Table } from "antd";
 import FormModel from "../component/FormModel";
 import { DELETE_PERSION } from "../graphql/mutations";
-import { Link } from "react-router-dom";
-import NotificationC from "../component/NotificationC";
+import PagiNation from "../component/PagiNation";
+import PersionDetailModel from "./PersionDetailModel";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 const { Column } = Table;
 
 const PersonList = () => {
-  const [persionData, setPersionData] = useState("");
+  const [persionData, setPersionData] = useState();
   const [edit, setEdit] = useState(false);
-  const { data, loading, error, refetch } = useQuery(PERSION_LIST, {
-    variables: {
-      sort: {
-        field: "updatedAt",
+  const [defaultCurrent, setDefaultCurrent] = useState();
+  const [userList, { data, loading, error, refetch }] = useLazyQuery(
+    PERSION_LIST,
+    {
+      variables: {
+        sort: {
+          field: "updatedAt",
+        },
+        filter: {
+          skip: 0,
+          limit: 11,
+        },
       },
-      filter: {
-        limit: 10,
-      },
-    },
-  });
+    }
+  );
 
-  const [deletePersion, { loading: deletePersionLoading, data: deletePersionData}] = useMutation(DELETE_PERSION);
+  useEffect(() => {
+    userList();
+  }, []);
+
+  const [
+    deletePersion,
+    { loading: deletePersionLoading, data: deletePersionData },
+  ] = useMutation(DELETE_PERSION);
 
   if (deletePersionLoading) return <h1>Loadding...</h1>;
-  if(deletePersionData){
-    console.log(deletePersionData);
+
+  if (deletePersionData) {
+    console.log(deletePersionData, "deletePersionData");
   }
 
   if (error) return <h1>Err..{error.message}</h1>;
   if (loading) return <h1>Loading..</h1>;
+
   if (data) {
     var nData = data.listPersons.data.map(
       ({ id, name, knownForDepartment, gender }) => {
@@ -45,27 +60,46 @@ const PersonList = () => {
     );
   }
 
-  const deleteHandle = (deleteID) => {
-    deletePersion({
-      variables: {
-        deletePersonId: deleteID,
-      },
-    });
-    setTimeout(() => {
+  const deleteHandle = async (deleteID) => {
+    try {
+      await deletePersion({
+        variables: {
+          deletePersonId: deleteID,
+        },
+      });
       refetch();
-    }, 10);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const editHandler = (editeble) => {
+  const editHandler = async (editeble) => {
     setPersionData(editeble);
     setEdit(true);
   };
 
+  const changePageNumber = (page) => {
+    console.log();
+    setDefaultCurrent(page);
+    userList({
+      variables: {
+        filter: {
+          skip: page * 10,
+          limit: 11,
+        },
+      },
+    });
+  };
+
   return (
     <div className="table_container">
-    <NotificationC message={deletePersionData.deletePerson.message}/>
-      <FormModel persionData={persionData} refetch={refetch} edit={edit} setEdit={setEdit}/>
-      <Table dataSource={nData}>
+      <FormModel
+        persionData={persionData}
+        refetch={refetch}
+        edit={edit}
+        setEdit={setEdit}
+      />
+      <Table dataSource={nData} pagination={false}>
         <Column title="Name" dataIndex="name" key="name" />
         <Column title="Gender" dataIndex="gender" key="gender" />
         <Column
@@ -78,14 +112,30 @@ const PersonList = () => {
           key="action"
           render={(_, record) => (
             <Space size="middle">
-              <Link onClick={() => editHandler(record)}>
-                Edit {record.lastName}
-              </Link>
-              <Link onClick={() => deleteHandle(record.id)}>Delete</Link>
+              <Button onClick={() => editHandler(record)}>
+                <EditOutlined />
+              </Button>
+              <Button
+                className="deleteButton"
+                onClick={() => deleteHandle(record.id)}
+                danger
+              >
+                <DeleteOutlined />
+              </Button>
+              <PersionDetailModel
+                record={record}
+                editHandler={editHandler}
+                deleteHandle={deleteHandle}
+              />
             </Space>
           )}
         />
       </Table>
+      <PagiNation
+        totalData={data ? data.listPersons.count : 100}
+        changePageNumber={changePageNumber}
+        defaultCurrent={defaultCurrent}
+      />
     </div>
   );
 };
