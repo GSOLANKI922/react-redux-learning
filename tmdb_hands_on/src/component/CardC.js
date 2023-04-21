@@ -1,4 +1,4 @@
-import { Button, Card, Space } from "antd";
+import { Button, Card, Popconfirm, Space } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,9 @@ const CardC = ({
   loading,
   title,
   id,
+  allData,
   deleteHandler,
+  editMovieHandler,
 }) => {
   return (
     <Card
@@ -42,12 +44,14 @@ const CardC = ({
         />
       </Link>
       <Space wrap style={{ marginTop: "5px" }}>
-        <Button>
+        <Button onClick={() => editMovieHandler(allData)}>
           <EditOutlined />
         </Button>
-        <Button onClick={() => deleteHandler(id)} danger>
-          <DeleteOutlined />
-        </Button>
+        <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(id)}>
+          <Button danger>
+            <DeleteOutlined />
+          </Button>
+        </Popconfirm>
       </Space>
     </Card>
   );

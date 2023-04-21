@@ -62,4 +62,6 @@ const PersionDetailModel = ({ record, editHandler, deleteHandle }) => {
   );
 };
 
+
+
 export default PersionDetailModel;

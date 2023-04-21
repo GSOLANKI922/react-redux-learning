@@ -7,7 +7,7 @@ const PagiNation = ({ changePageNumber, totalData, defaultCurrent }) => (
       simple
       defaultCurrent={defaultCurrent}
       total={totalData}
-      style={{ position: "absolute", top: "62rem" }}
+      className="pagination"
       onChange={changePageNumber}
     />
   </>

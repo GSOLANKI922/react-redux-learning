@@ -1,9 +1,13 @@
+#root{
+  height: 100vh;
+}
+
 .movie_detais_container,
 .movie_list_container,
 .table_container,
 .persion_detais_card,
 .error_container {
-  height: 83.3vh;
+  height: 85vh;
   overflow-y: scroll;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
@@ -19,7 +23,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 2rem;
-  margin-top: 1rem;
+  margin: 2rem;
 }
 
 .loginForm_container {
@@ -69,4 +73,39 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pagination{
+  position: absolute;
+  top: 62rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .movie_detais_container,
+  .movie_list_container,
+  .table_container,
+  .persion_detais_card,
+  .error_container {
+    height: 80vh;
+  
+  }
+
+  .pagination{
+    top: 50rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .movie_detais_container,
+  .movie_list_container,
+  .table_container,
+  .persion_detais_card,
+  .error_container {
+    height: 72.7vh;
+  
+  }
+
+  .pagination{
+    top: 36rem;
+  }
 }

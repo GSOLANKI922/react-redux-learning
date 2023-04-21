@@ -10,6 +10,22 @@ export const MOVIE_LIST = gql`
         releaseDate
         revenue
         status
+        adult
+        originalLanguage
+        originalTitle
+        overview
+        runtime
+        tagline
+        languages {
+          englishName
+          languageCode
+          id
+        }
+        countries {
+          englishName
+          countryCode
+          id
+        }
       }
       count
     }
@@ -68,6 +84,30 @@ export const PERSION_DETAILS = gql`
         knownForDepartment
         gender
         name
+      }
+    }
+  }
+`;
+
+export const MOVILIST_LANGUAGES = gql`
+  query Languages {
+    languages {
+      data {
+        englishName
+        languageCode
+        id
+      }
+    }
+  }
+`;
+
+export const MOVILIST_COUNTRIES = gql`
+  query Countries {
+    countries {
+      data {
+        id
+        countryCode
+        englishName
       }
     }
   }

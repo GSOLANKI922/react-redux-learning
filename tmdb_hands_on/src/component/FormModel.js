@@ -12,6 +12,7 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
     gender: "",
   });
   console.log(inputData, "inputData Edit");
+  
   useEffect(() => {
     if (edit) {
       setInputData({

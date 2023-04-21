@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PERSION_LIST } from "../graphql/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Space, Table } from "antd";
+import { Button, Popconfirm, Space, Table } from "antd";
 import FormModel from "../component/FormModel";
 import { DELETE_PERSION } from "../graphql/mutations";
 import PagiNation from "../component/PagiNation";
@@ -38,10 +38,6 @@ const PersonList = () => {
   ] = useMutation(DELETE_PERSION);
 
   if (deletePersionLoading) return <h1>Loadding...</h1>;
-
-  if (deletePersionData) {
-    console.log(deletePersionData, "deletePersionData");
-  }
 
   if (error) return <h1>Err..{error.message}</h1>;
   if (loading) return <h1>Loading..</h1>;
@@ -115,13 +111,16 @@ const PersonList = () => {
               <Button onClick={() => editHandler(record)}>
                 <EditOutlined />
               </Button>
-              <Button
-                className="deleteButton"
-                onClick={() => deleteHandle(record.id)}
-                danger
+              <Popconfirm
+                okText="Yes"
+                cancelText="No"
+                title="Sure to delete?"
+                onConfirm={() => deleteHandle(record.id)}
               >
-                <DeleteOutlined />
-              </Button>
+                <Button danger>
+                  <DeleteOutlined />
+                </Button>
+              </Popconfirm>
               <PersionDetailModel
                 record={record}
                 editHandler={editHandler}
