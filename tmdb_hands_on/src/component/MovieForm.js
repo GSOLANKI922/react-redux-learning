@@ -1,25 +1,8 @@
 import { useEffect, useState } from "react";
-import { Button, DatePicker, Modal, Form, Input, Select } from "antd";
+import { Button, DatePicker, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useQuery } from "@apollo/client";
-import { MOVILIST_COUNTRIES, MOVILIST_LANGUAGES } from "../graphql/queries";
+import { MOVIE_LIST_COUNTRIES, MOVIE_LIST_LANGUAGES } from "../graphql/queries";
 const { Option } = Select;
-
-// const initialValues = {
-//   adult: "",
-//   budget: "",
-//   countries: "",
-//   id: "",
-//   languages: "",
-//   originalLanguage: "",
-//   originalTitle: "",
-//   overview: "",
-//   releaseDate: "",
-//   revenue: "",
-//   runtime: "",
-//   status: "",
-//   tagline: "",
-//   title: "",
-// };
 
 const MovieForm = ({
   addMovies,
@@ -30,18 +13,16 @@ const MovieForm = ({
   setIsEdit,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [curentEditData, setCurentEditData] = useState();
-
+  const [currentEditData, setCurrentEditData] = useState();
   const [form] = Form.useForm();
 
-  const { data, loading } = useQuery(MOVILIST_COUNTRIES);
+  const { data, loading } = useQuery(MOVIE_LIST_COUNTRIES);
 
   const { data: languagesData, loading: languagesLoading } =
-    useQuery(MOVILIST_LANGUAGES);
-console.log(editableData, "editableDataeditableData");
+    useQuery(MOVIE_LIST_LANGUAGES);
   useEffect(() => {
     if (isEdit) {
-        setCurentEditData({
+      setCurrentEditData({
         adult: editableData.adult,
         budget: editableData.budget,
         countries: editableData.countries,
@@ -59,6 +40,7 @@ console.log(editableData, "editableDataeditableData");
       });
       showModal();
     }
+    // eslint-disable-next-line
   }, [editableData]);
 
   const showModal = () => {
@@ -66,8 +48,10 @@ console.log(editableData, "editableDataeditableData");
   };
 
   const handleCancel = () => {
-    form.resetFields();
     setIsModalOpen(false);
+    if (isEdit) {
+      window.location.reload();
+    }
     setIsEdit(false);
   };
 
@@ -96,6 +80,8 @@ console.log(editableData, "editableDataeditableData");
             data: nValues,
           },
         });
+        form.resetFields();
+        setIsEdit(false);
         refetch();
       } catch (error) {
         console.log(error, "addMovies");
@@ -105,9 +91,11 @@ console.log(editableData, "editableDataeditableData");
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Add Movie
-      </Button>
+      <Tooltip title="ADD MOVIE">
+        <Button type="primary" onClick={showModal}>
+          Add Movie
+        </Button>
+      </Tooltip>
       <Modal
         width={900}
         title="Movie Form"
@@ -126,7 +114,7 @@ console.log(editableData, "editableDataeditableData");
           style={{
             maxWidth: 600,
           }}
-          initialValues={curentEditData}
+          initialValues={currentEditData}
           onFinish={onFinish}
           autoComplete="off"
         >

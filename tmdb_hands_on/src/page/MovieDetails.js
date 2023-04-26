@@ -6,23 +6,35 @@ import { Carousel, Image } from "antd";
 
 const MovieDetails = () => {
   const { idm } = useParams();
-  const { loading, data, error } = useQuery(GET_MOVIE_BY_ID, {
+  const { loading, data } = useQuery(GET_MOVIE_BY_ID, {
     variables: {
       movieId: idm,
     },
   });
 
-  if (loading) return <h1>Loadfing...</h1>;
+  if (loading) return <h1>Loading...</h1>;
+  let nData;
+  if (data) {
+    const { budget, releaseDate, revenue, status, title, id } =
+      data?.movie?.data;
+    nData = {
+      budget,
+      releaseDate,
+      revenue,
+      status,
+      title,
+      id,
+    };
+  }
 
-  const { budget, releaseDate, revenue, status, title, id } = data.movie.data;
   return (
-    <div className="movie_detais_container">
+    <div className="movie_details_container">
       <Carousel autoplay>
         <div>
           <h3>
             <Image
               //
-              className="crousel_img"
+              className="carousel_img"
               width={400}
               src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             />
@@ -31,27 +43,28 @@ const MovieDetails = () => {
         <div>
           <h3>
             <Image
-              // style={contentStyle}
-              className="crousel_img"
+              className="carousel_img"
               width={400}
               src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             />
           </h3>
         </div>
       </Carousel>
-      <h1>Title : {title}</h1>
+      <h1>Title : {data ? nData.title : "-"}</h1>
       <p>
         <b>ReleaseDate</b>
-        {` : ${new Date(releaseDate).toISOString().slice(0, 10)}`}
+        {data
+          ? ` : ${new Date(nData.releaseDate).toISOString().slice(0, 10)}`
+          : "-"}
       </p>
       <p>
-        <b>budget</b> : {budget}.cr
+        <b>budget</b> : {data ? nData.budget : "-"}.cr
       </p>
       <p>
-        <b>Revenue </b> : {revenue}.cr
+        <b>Revenue </b> : {data ? nData.revenue : "-"}.cr
       </p>
       <p>
-        <b>Status </b> : {status}.cr
+        <b>Status </b> : {data ? nData.status : "-"}.cr
       </p>
     </div>
   );

@@ -57,12 +57,28 @@ export const GET_TOP_MOVIE = gql`
         releaseDate
         revenue
         status
+        adult
+        originalLanguage
+        originalTitle
+        overview
+        runtime
+        tagline
+        languages {
+          englishName
+          languageCode
+          id
+        }
+        countries {
+          englishName
+          countryCode
+          id
+        }
       }
     }
   }
 `;
 
-export const PERSION_LIST = gql`
+export const PERSON_LIST = gql`
   query ListPersons($sort: ListPersonsSort!, $filter: ListPersonsFilter!) {
     listPersons(sort: $sort, filter: $filter) {
       data {
@@ -89,7 +105,7 @@ export const PERSION_DETAILS = gql`
   }
 `;
 
-export const MOVILIST_LANGUAGES = gql`
+export const MOVIE_LIST_LANGUAGES = gql`
   query Languages {
     languages {
       data {
@@ -101,13 +117,23 @@ export const MOVILIST_LANGUAGES = gql`
   }
 `;
 
-export const MOVILIST_COUNTRIES = gql`
+export const MOVIE_LIST_COUNTRIES = gql`
   query Countries {
     countries {
       data {
         id
         countryCode
         englishName
+      }
+    }
+  }
+`;
+
+export const GET_TITLE_BY_ID = gql`
+  query Movie($movieId: ID!) {
+    movie(id: $movieId) {
+      data {
+        title
       }
     }
   }

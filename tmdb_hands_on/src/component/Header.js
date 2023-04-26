@@ -1,13 +1,10 @@
 import React from "react";
 import "./Header.css";
 import { Layout, Menu, theme } from "antd";
-import {
-  BREADCRUMB_HOME_ITEM,
-  HEADER_ITEM_LOGIN,
-  HEADER_ITEM_LOGOUT,
-} from "../data";
+import { HEADER_ITEM_LOGIN } from "../data";
 import BreadCrumb from "./BreadCrumb";
 import RoutePage from "./RoutePage";
+import { Link } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 
 const HeaderC = () => {
@@ -21,19 +18,25 @@ const HeaderC = () => {
     <>
       <Layout className="layout">
         <Header>
-          <div className="logo" />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            items={auth ? HEADER_ITEM_LOGIN : HEADER_ITEM_LOGOUT}
-          />
+          <div className="Header_container">
+            <Link to="/">
+              <div className="logo">TMDB</div>
+            </Link>
+            <Menu
+              style={{ width: "16%" }}
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={["2"]}
+              items={auth ? HEADER_ITEM_LOGIN : ""}
+            />
+          </div>
         </Header>
         <Content
           style={{
             padding: "0 50px",
           }}
         >
-          <BreadCrumb items={BREADCRUMB_HOME_ITEM} />
+          <BreadCrumb />
 
           <div
             className="site-layout-content"
@@ -49,7 +52,7 @@ const HeaderC = () => {
             textAlign: "center",
           }}
         >
-          Design ©2023 Created by <b>Gautam Solanki</b>
+          Design ©2023 Created by <b>@Gautam Solanki</b>
         </Footer>
       </Layout>
     </>

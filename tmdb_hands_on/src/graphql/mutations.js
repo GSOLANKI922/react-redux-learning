@@ -13,7 +13,7 @@ export const USER_LOGIN = gql`
   }
 `;
 
-export const DELETE_PERSION = gql`
+export const DELETE_PERSON = gql`
   mutation DeletePerson($deletePersonId: ID!) {
     deletePerson(id: $deletePersonId) {
       message
@@ -21,7 +21,7 @@ export const DELETE_PERSION = gql`
   }
 `;
 
-export const Edit_PERSION_DETAILS = gql`
+export const Edit_PERSON_DETAILS = gql`
   mutation UpdatePerson($updatePersonId: ID!, $data: UpdatePersonInput!) {
     updatePerson(id: $updatePersonId, data: $data) {
       data {
@@ -35,7 +35,7 @@ export const Edit_PERSION_DETAILS = gql`
   }
 `;
 
-export const CREATE_PERSION = gql`
+export const CREATE_PERSON = gql`
   mutation Mutation($data: PersonInput!) {
     createPerson(data: $data) {
       message
@@ -118,6 +118,14 @@ export const CREATE_MOVIE = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation EmailPasswordSignUp($data: EmailPasswordSignUpData!) {
+    emailPasswordSignUp(data: $data) {
+      message
     }
   }
 `;

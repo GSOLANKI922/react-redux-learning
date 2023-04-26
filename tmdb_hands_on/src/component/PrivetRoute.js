@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const PriverRoute = () => {
+const PrivetRoute = () => {
   const auth = localStorage.getItem("token");
   if (auth) {
     return <Outlet />;
@@ -10,4 +10,4 @@ const PriverRoute = () => {
   }
 };
 
-export default PriverRoute;
+export default PrivetRoute;

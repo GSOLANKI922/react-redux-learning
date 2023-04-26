@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
-import { USER_LOGIN } from "../graphql/mutations";
+import { CREATE_USER } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const RegisterUser = () => {
   const navigate = useNavigate();
-  const [userLogin, { data, loading, error }] = useMutation(USER_LOGIN);
+  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
 
   useEffect(() => {
     setTimeout(() => {
@@ -17,23 +17,19 @@ const Login = () => {
       }
     }, 1);
     // eslint-disable-next-line
-  }, [data]);
+  }, [navigate]);
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>error... {error.message}</h1>;
   if (data) {
-    console.log(data);
-    localStorage.setItem("token", data.emailPasswordLogIn.data.token);
-    navigate("/");
-    if (data.emailPasswordLogIn.data.token || false) {
-      window.location.reload();
-    }
+    console.log(data, "createUser");
+    navigate("/login");
   }
 
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
     try {
-      await userLogin({
+      await createUser({
         variables: {
           data: values,
         },
@@ -45,16 +41,54 @@ const Login = () => {
 
   return (
     <div className="loginForm_container">
-      <div className="loginForm_wrapper">
-        <h1 className="login_title">Login</h1>
+      <div className="loginForm_wrapper" style={{ height: "85%" }}>
+        <h1
+          className="login_title"
+          style={{ marginTop: "1rem", marginBottom: "1rem" }}
+        >
+          Singup
+        </h1>
         <Form
           name="normal_login"
           className="login-form login_form"
+          style={{ marginTop: "2rem" }}
           initialValues={{
             remember: true,
           }}
           onFinish={onFinish}
         >
+          <Form.Item
+            name="firstName"
+            rules={[
+              {
+                required: true,
+                message: "Please input your FirstName!",
+                type: "text",
+              },
+            ]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="firstName"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="lastName"
+            rules={[
+              {
+                required: true,
+                message: "Please input your LastName!",
+                type: "name",
+              },
+            ]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="LastName"
+            />
+          </Form.Item>
+
           <Form.Item
             name="email"
             rules={[
@@ -96,11 +130,12 @@ const Login = () => {
             >
               Log in
             </Button>
-            Or <Link to="/SingUp">register now!</Link>
+            Or <Link to="/login">Login now!</Link>
           </Form.Item>
         </Form>
       </div>
     </div>
   );
 };
-export default Login;
+
+export default RegisterUser;

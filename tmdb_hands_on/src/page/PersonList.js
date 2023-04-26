@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { PERSION_LIST } from "../graphql/queries";
+import { PERSON_LIST } from "../graphql/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Popconfirm, Space, Table } from "antd";
+import { Button, Form, Popconfirm, Space, Table, Tooltip } from "antd";
 import FormModel from "../component/FormModel";
-import { DELETE_PERSION } from "../graphql/mutations";
+import { DELETE_PERSON } from "../graphql/mutations";
 import PagiNation from "../component/PagiNation";
-import PersionDetailModel from "./PersionDetailModel";
+import PersonDetailModel from "./PersonDetailModel";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 const { Column } = Table;
 
 const PersonList = () => {
-  const [persionData, setPersionData] = useState();
+  const [personData, setPersonData] = useState();
   const [edit, setEdit] = useState(false);
   const [defaultCurrent, setDefaultCurrent] = useState();
+  const [search, setSeatch] = useState("");
   const [userList, { data, loading, error, refetch }] = useLazyQuery(
-    PERSION_LIST,
+    PERSON_LIST,
     {
       variables: {
         sort: {
@@ -23,6 +25,7 @@ const PersonList = () => {
         filter: {
           skip: 0,
           limit: 11,
+          searchTerm: search.length >= 1 ? search : null,
         },
       },
     }
@@ -30,14 +33,13 @@ const PersonList = () => {
 
   useEffect(() => {
     userList();
+    // eslint-disable-next-line
   }, []);
 
-  const [
-    deletePersion,
-    { loading: deletePersionLoading, data: deletePersionData },
-  ] = useMutation(DELETE_PERSION);
+  const [deletePerson, { loading: deletePersonLoading }] =
+    useMutation(DELETE_PERSON);
 
-  if (deletePersionLoading) return <h1>Loadding...</h1>;
+  if (deletePersonLoading) return <h1>Loading...</h1>;
 
   if (error) return <h1>Err..{error.message}</h1>;
   if (loading) return <h1>Loading..</h1>;
@@ -48,9 +50,9 @@ const PersonList = () => {
         return {
           id: id,
           key: id,
-          name: name,
-          knownForDepartment: knownForDepartment,
-          gender: gender,
+          name: name ? name : "-",
+          knownForDepartment: knownForDepartment ? knownForDepartment : "-",
+          gender: gender ? gender : "-",
         };
       }
     );
@@ -58,7 +60,7 @@ const PersonList = () => {
 
   const deleteHandle = async (deleteID) => {
     try {
-      await deletePersion({
+      await deletePerson({
         variables: {
           deletePersonId: deleteID,
         },
@@ -69,8 +71,8 @@ const PersonList = () => {
     }
   };
 
-  const editHandler = async (editeble) => {
-    setPersionData(editeble);
+  const editHandler = async (curEditData) => {
+    setPersonData(curEditData);
     setEdit(true);
   };
 
@@ -87,41 +89,68 @@ const PersonList = () => {
     });
   };
 
+  const onSearch = (value) => {
+    setSeatch(value);
+    refetch();
+  };
   return (
     <div className="table_container">
-      <FormModel
-        persionData={persionData}
-        refetch={refetch}
-        edit={edit}
-        setEdit={setEdit}
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Form style={{ width: "30%" }}>
+          <Search
+            width={500}
+            placeholder="input search text"
+            onSearch={onSearch}
+            enterButton
+            defaultValue={search}
+          />
+        </Form>
+        <FormModel
+          personData={personData}
+          refetch={refetch}
+          edit={edit}
+          setEdit={setEdit}
+        />
+      </div>
       <Table dataSource={nData} pagination={false}>
-        <Column title="Name" dataIndex="name" key="name" />
-        <Column title="Gender" dataIndex="gender" key="gender" />
+        <Column title="Name" dataIndex="name" key="name" align="center" />
+        <Column title="Gender" dataIndex="gender" key="gender" align="center" />
         <Column
           title="Department"
           dataIndex="knownForDepartment"
           key="knownForDepartment"
+          align="center"
         />
         <Column
+          align="center"
           title="Action"
           key="action"
           render={(_, record) => (
             <Space size="middle">
-              <Button onClick={() => editHandler(record)}>
-                <EditOutlined />
-              </Button>
+              <Tooltip title="Edit">
+                <Button onClick={() => editHandler(record)}>
+                  <EditOutlined />
+                </Button>
+              </Tooltip>
               <Popconfirm
                 okText="Yes"
                 cancelText="No"
                 title="Sure to delete?"
                 onConfirm={() => deleteHandle(record.id)}
               >
-                <Button danger>
-                  <DeleteOutlined />
-                </Button>
+                <Tooltip title="Delete">
+                  <Button danger>
+                    <DeleteOutlined />
+                  </Button>
+                </Tooltip>
               </Popconfirm>
-              <PersionDetailModel
+              <PersonDetailModel
                 record={record}
                 editHandler={editHandler}
                 deleteHandle={deleteHandle}

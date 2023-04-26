@@ -1,8 +1,8 @@
-import { Button, Modal, Space } from "antd";
+import { Button, Modal, Popconfirm, Space, Tooltip } from "antd";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 
-const PersionDetailModel = ({ record, editHandler, deleteHandle }) => {
+const PersonDetailModel = ({ record, editHandler, deleteHandle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -21,9 +21,11 @@ const PersionDetailModel = ({ record, editHandler, deleteHandle }) => {
 
   return (
     <>
-      <Button onClick={showModal}>
-        <EyeOutlined />
-      </Button>
+      <Tooltip title="View">
+        <Button onClick={showModal}>
+          <EyeOutlined />
+        </Button>
+      </Tooltip>
       <Modal
         footer={null}
         title="Basic Modal"
@@ -47,21 +49,21 @@ const PersionDetailModel = ({ record, editHandler, deleteHandle }) => {
           >
             <EditOutlined />
           </Button>
-          <Button
-            danger
-            onClick={() => {
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => {
               deleteHandle(record.id);
               setIsModalOpen(false);
             }}
           >
-            <DeleteOutlined />
-          </Button>
+            <Button danger>
+              <DeleteOutlined />
+            </Button>
+          </Popconfirm>
         </Space>
       </Modal>
     </>
   );
 };
 
-
-
-export default PersionDetailModel;
+export default PersonDetailModel;

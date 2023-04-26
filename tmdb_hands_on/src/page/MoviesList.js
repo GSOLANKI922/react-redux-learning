@@ -6,10 +6,11 @@ import PagiNation from "../component/PagiNation";
 import { Link } from "react-router-dom";
 import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import MovieForm from "../component/MovieForm";
+import NotificationC from "../component/NotificationC";
 
 const MoviesList = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [loadings, setloadings] = useState(true);
+  const [loadings, setLoadings] = useState(true);
   const [defaultCurrent, setDefaultCurrent] = useState();
   const [editableData, setEditableData] = useState();
   const [isEdit, setIsEdit] = useState(false);
@@ -22,19 +23,10 @@ const MoviesList = () => {
       filter: {
         skip: pageNumber,
         limit: 10,
+        category: "PLAYING_IN_THEATERS",
       },
     },
   });
-
-  useEffect(() => {
-    if (pageNumber !== 1) {
-      refetch();
-    }
-    setTimeout(() => {
-      setloadings(false);
-    }, 500);
-    // eslint-disable-next-line
-  }, [pageNumber]);
 
   // Add Movie Mutation
   const [
@@ -43,7 +35,7 @@ const MoviesList = () => {
   ] = useMutation(CREATE_MOVIE);
 
   // Delete Movie Mutation
-  const [deleteMovie, { loading: deleteLoading, error: deleteError }] =
+  const [deleteMovie, { loading: deleteLoading, data: deleteData }] =
     useMutation(DELETE_MOVIE);
 
   // Edit Movie Mutation
@@ -56,6 +48,16 @@ const MoviesList = () => {
     }
   );
 
+  useEffect(() => {
+    if (pageNumber !== 1) {
+      refetch();
+    }
+    setTimeout(() => {
+      setLoadings(false);
+    }, 500);
+    // eslint-disable-next-line
+  }, [pageNumber]);
+
   const deleteHandler = async (idd) => {
     try {
       await deleteMovie({
@@ -63,20 +65,20 @@ const MoviesList = () => {
           deleteMovieId: idd,
         },
       });
-      refetch();
+
+      setTimeout(() => {
+        refetch();
+      }, 5000);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   if (deleteLoading) return <h1>Loading...</h1>;
-
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>error...{error.message}</h1>;
-
   if (addMoviesLoading) return <h1>addMoviesLoading....</h1>;
   if (addMoviesError) return <h1>addMoviesError: {addMoviesError.message}</h1>;
-
   if (editLoading) return <h1>Loading...</h1>;
 
   const changePageNumber = (pNumber) => {
@@ -99,7 +101,31 @@ const MoviesList = () => {
         setIsEdit={setIsEdit}
         isEdit={isEdit}
       />
-      <div className="movie_list_wraper">
+      <div className="movie_list_wrapper">
+        {deleteData ? (
+          <NotificationC
+            message={deleteData.deleteMovie.message}
+            text="success"
+          />
+        ) : (
+          ""
+        )}
+        {editData ? (
+          <NotificationC
+            message={editData.updateMovie.message}
+            text="success"
+          />
+        ) : (
+          ""
+        )}
+        {createMovieData ? (
+          <NotificationC
+            message={createMovieData.createMovie.message}
+            text="success"
+          />
+        ) : (
+          ""
+        )}
         {data ? (
           data.listMovies.data.map((movies) => {
             return (

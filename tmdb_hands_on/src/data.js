@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 export const HEADER_ITEM_LOGIN = [
   {
     key: 1,
@@ -25,34 +26,5 @@ export const HEADER_ITEM_LOGIN = [
         Logout
       </Link>
     ),
-  },
-];
-
-export const HEADER_ITEM_LOGOUT = [
-  {
-    key: 1,
-    label: <Link to="/login">Login</Link>,
-  },
-];
-
-export const BREADCRUMB_HOME_ITEM = [
-  {
-    title: "Application",
-  },
-  {
-    title: (
-      <Link to="/" style={{ fontWeight: "bold" }}>
-        Home
-      </Link>
-    ),
-  },
-];
-
-export const BREADCRUMB_MOVIE_LIST = [
-  {
-    title: "Application",
-  },
-  {
-    title: <Link style={{ fontWeight: "bold" }}>MovieList</Link>,
   },
 ];

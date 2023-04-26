@@ -1,4 +1,4 @@
-import { Button, Card, Popconfirm, Space } from "antd";
+import { Button, Card, Popconfirm, Space, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -24,17 +24,17 @@ const CardC = ({
       }}
       className="card_container"
       cover={
-        <Link to={`/moviedetails/${id}`}>
+        <Link to={`/movieDetails/${id}`}>
           <img
             style={{ maxWidth: "240px" }}
-            alt="rendom Img"
+            alt="random Img"
             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
           />
         </Link>
       }
     >
-      <Link to={`/moviedetails/${id}`}>
-        <Meta title={`Title : ${title}`} description="www.instagram.com" />
+      <Link to={`/movieDetails/${id}`} style={{ lineHeight: "30px" }}>
+        <Meta title={`Title : ${title}`} />
         <Meta description={`Budget : ${budget}`} />
         <Meta description={`Revenue : ${revenue}`} />
         <Meta
@@ -44,13 +44,17 @@ const CardC = ({
         />
       </Link>
       <Space wrap style={{ marginTop: "5px" }}>
-        <Button onClick={() => editMovieHandler(allData)}>
-          <EditOutlined />
-        </Button>
-        <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(id)}>
-          <Button danger>
-            <DeleteOutlined />
+        <Tooltip title="Edit">
+          <Button onClick={() => editMovieHandler(allData)}>
+            <EditOutlined />
           </Button>
+        </Tooltip>
+        <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(id)}>
+          <Tooltip title="Delete">
+            <Button danger>
+              <DeleteOutlined />
+            </Button>
+          </Tooltip>
         </Popconfirm>
       </Space>
     </Card>

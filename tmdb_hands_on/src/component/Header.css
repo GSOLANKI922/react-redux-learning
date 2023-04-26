@@ -1,8 +1,8 @@
-#root{
+#root {
   height: 100vh;
 }
 
-.movie_detais_container,
+.movie_details_container,
 .movie_list_container,
 .table_container,
 .persion_detais_card,
@@ -18,10 +18,9 @@
   display: none;
 }
 
-.movie_list_wraper {
+.movie_list_wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
   gap: 2rem;
   margin: 2rem;
 }
@@ -35,10 +34,10 @@
 
 .loginForm_wrapper {
   box-sizing: border-box;
-  width: 35%;
+  width: 44%;
   margin-top: 5%;
   border: 2px solid black;
-  height: 40rem;
+  height: 85%;
   border-radius: 5px;
   background-color: aliceblue;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -75,11 +74,21 @@
   align-items: center;
 }
 
-.pagination{
+.pagination {
   position: absolute;
-  top: 62rem;
+  top: 80%;
 }
 
+.Header_container {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+}
 @media only screen and (max-width: 600px) {
   .movie_detais_container,
   .movie_list_container,
@@ -87,10 +96,9 @@
   .persion_detais_card,
   .error_container {
     height: 80vh;
-  
   }
 
-  .pagination{
+  .pagination {
     top: 50rem;
   }
 }
@@ -102,10 +110,9 @@
   .persion_detais_card,
   .error_container {
     height: 72.7vh;
-  
   }
 
-  .pagination{
+  .pagination {
     top: 36rem;
   }
 }

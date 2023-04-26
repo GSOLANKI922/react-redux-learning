@@ -1,54 +1,52 @@
 import React from "react";
-import { Button, Modal, Form, Input, Select } from "antd";
+import { Button, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_PERSION, Edit_PERSION_DETAILS } from "../graphql/mutations";
+import { CREATE_PERSON, Edit_PERSON_DETAILS } from "../graphql/mutations";
 
-const FormModel = ({ refetch, persionData, setEdit, edit }) => {
+const FormModel = ({ refetch, personData, setEdit, edit }) => {
   const [open, setOpen] = useState(false);
   const [inputData, setInputData] = useState({
     name: "",
     knownForDepartment: "",
     gender: "",
   });
-  console.log(inputData, "inputData Edit");
-  
+
   useEffect(() => {
     if (edit) {
       setInputData({
-        name: persionData.name,
-        knownForDepartment: persionData.knownForDepartment,
-        gender: persionData.gender,
+        name: personData.name,
+        knownForDepartment: personData.knownForDepartment,
+        gender: personData.gender,
       });
       showModal();
     }
     // eslint-disable-next-line
-  }, [persionData]);
+  }, [personData]);
 
-  const [createNewPersion, { loading, error }] = useMutation(CREATE_PERSION);
-  const [updatePersion, { loading: persionLoading, data }] =
-    useMutation(Edit_PERSION_DETAILS);
+  const [createNewPerson, { loading, error }] = useMutation(CREATE_PERSON);
+  const [updatePerson, { loading: personLoading }] =
+    useMutation(Edit_PERSON_DETAILS);
 
-  if (loading) return <h1>Loadding..</h1>;
-  if (error) return <h1>Errr...{error.message}</h1>;
-  if (persionLoading) return <h1>persionLoading..</h1>;
-  if (data) {
-    console.log(data, "persionLoading");
-  }
+  if (loading) return <h1>Loading..</h1>;
+  if (error) return <h1>Err...{error.message}</h1>;
+  if (personLoading) return <h1>personLoading..</h1>;
+
   const showModal = () => {
     setOpen(true);
   };
 
   const handleCancel = () => {
+    window.location.reload();
     setOpen(false);
   };
 
   const onFinish = async (values) => {
     if (edit) {
       try {
-        await updatePersion({
+        await updatePerson({
           variables: {
-            updatePersonId: persionData.id,
+            updatePersonId: personData.id,
             data: values,
           },
         });
@@ -62,7 +60,7 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
     } else {
       setInputData(values);
       try {
-        await createNewPersion({
+        await createNewPerson({
           variables: {
             data: {
               name: values.name,
@@ -81,9 +79,11 @@ const FormModel = ({ refetch, persionData, setEdit, edit }) => {
 
   return (
     <div className="model_container">
-      <Button type="primary" onClick={showModal} style={{ margin: "20px" }}>
-        Add Person
-      </Button>
+      <Tooltip title="ADD PERSON">
+        <Button type="primary" onClick={showModal} style={{ margin: "20px" }}>
+          Add Person
+        </Button>
+      </Tooltip>
       <Modal
         title="Person Form"
         open={open}
