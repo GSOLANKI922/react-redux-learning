@@ -4,6 +4,8 @@ import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
+import { CONSTATNTS } from "../Constants";
 
 const RegisterUser = () => {
   const navigate = useNavigate();
@@ -19,15 +21,11 @@ const RegisterUser = () => {
     // eslint-disable-next-line
   }, [navigate]);
 
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>error... {error.message}</h1>;
   if (data) {
-    console.log(data, "createUser");
     navigate("/login");
   }
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
     try {
       await createUser({
         variables: {
@@ -35,18 +33,20 @@ const RegisterUser = () => {
         },
       });
     } catch (error) {
-      return <h1>err..{error.message}</h1>;
+      return <h1>{error.message}</h1>;
     }
   };
 
   return (
     <div className="loginForm_container">
       <div className="loginForm_wrapper" style={{ height: "85%" }}>
+        {error ? <h1>{error.message}</h1> : ""}
+        {loading ? <LoadingOutlined /> : ""}
         <h1
           className="login_title"
           style={{ marginTop: "1rem", marginBottom: "1rem" }}
         >
-          Singup
+          {CONSTATNTS.SINGUP}
         </h1>
         <Form
           name="normal_login"
@@ -128,9 +128,9 @@ const RegisterUser = () => {
               className="login-form-button"
               style={{ width: "100%" }}
             >
-              Log in
+              {CONSTATNTS.SINGUP}
             </Button>
-            Or <Link to="/login">Login now!</Link>
+            {CONSTATNTS.OR} <Link to="/login">{CONSTATNTS.LOGIN_NOW}</Link>
           </Form.Item>
         </Form>
       </div>

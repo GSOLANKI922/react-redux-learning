@@ -5,6 +5,7 @@ import { HEADER_ITEM_LOGIN } from "../data";
 import BreadCrumb from "./BreadCrumb";
 import RoutePage from "./RoutePage";
 import { Link } from "react-router-dom";
+import { CONSTATNTS } from "../Constants";
 const { Header, Content, Footer } = Layout;
 
 const HeaderC = () => {
@@ -20,7 +21,7 @@ const HeaderC = () => {
         <Header>
           <div className="Header_container">
             <Link to="/">
-              <div className="logo">TMDB</div>
+              <div className="logo">{CONSTATNTS.TMDB}</div>
             </Link>
             <Menu
               style={{ width: "16%" }}
@@ -52,7 +53,7 @@ const HeaderC = () => {
             textAlign: "center",
           }}
         >
-          Design ©2023 Created by <b>@Gautam Solanki</b>
+          {CONSTATNTS.DESIGN_CREATED_BY} <b>{CONSTATNTS.GAUTAM_SOLANKI}</b>
         </Footer>
       </Layout>
     </>

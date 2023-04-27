@@ -7,7 +7,7 @@
 .table_container,
 .persion_detais_card,
 .error_container {
-  height: 85vh;
+  height: 80.8vh;
   overflow-y: scroll;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
@@ -22,7 +22,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  margin: 2rem;
+  margin: 2rem 4rem;
 }
 
 .loginForm_container {
@@ -76,7 +76,8 @@
 
 .pagination {
   position: absolute;
-  top: 80%;
+  top: 90%;
+  margin-left: 4rem;
 }
 
 .Header_container {

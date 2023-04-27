@@ -10,7 +10,6 @@ notification.config({
 
 const NotificationC = ({ message, text }) => {
   const [api, contextHolder] = notification.useNotification();
-  console.log(message, "message");
   const openNotificationWithIcon = (type) => {
     api[type]({
       message: message,

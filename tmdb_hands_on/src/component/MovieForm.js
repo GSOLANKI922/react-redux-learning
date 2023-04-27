@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, DatePicker, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useQuery } from "@apollo/client";
 import { MOVIE_LIST_COUNTRIES, MOVIE_LIST_LANGUAGES } from "../graphql/queries";
+import { CONSTATNTS } from "../Constants";
 const { Option } = Select;
 
 const MovieForm = ({
@@ -92,8 +93,12 @@ const MovieForm = ({
   return (
     <>
       <Tooltip title="ADD MOVIE">
-        <Button type="primary" onClick={showModal}>
-          Add Movie
+        <Button
+          type="primary"
+          onClick={showModal}
+          style={{ marginTop: "1rem" }}
+        >
+          {CONSTATNTS.ADD_MOVIE}
         </Button>
       </Tooltip>
       <Modal
@@ -119,96 +124,96 @@ const MovieForm = ({
           autoComplete="off"
         >
           <Form.Item
-            label="Title"
+            label={CONSTATNTS.TITLE}
             name="title"
             rules={[
               {
                 required: true,
-                message: "Please input your movie Title!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.TITLE}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="OriginalTitle"
+            label={CONSTATNTS.ORIGINALTITLE}
             name="originalTitle"
             rules={[
               {
                 required: true,
-                message: "Please input your movie OriginalTitle!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.ORIGINALTITLE}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="OriginalLanguage"
+            label={CONSTATNTS.ORIGINALLANGUAGE}
             name="originalLanguage"
             rules={[
               {
                 required: true,
-                message: "Please input your movie originalLanguage!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.ORIGINALLANGUAGE}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Overview"
+            label={CONSTATNTS.OVERVIEW}
             name="overview"
             rules={[
               {
                 required: true,
-                message: "Please input your movie overview!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.OVERVIEW}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Status"
+            label={CONSTATNTS.STATUS}
             name="status"
             rules={[
               {
                 required: true,
-                message: "Please input your movie Status!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.STATUS}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Tagline"
+            label={CONSTATNTS.TAGLINE}
             name="tagline"
             rules={[
               {
                 required: true,
-                message: "Please input your movie Tagline!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.TAGLINE}`,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
+            label={CONSTATNTS.RELEASEDATE}
             name="releaseDate"
-            label="ReleaseDate"
             rules={[
               {
                 required: true,
-                message: "Please input your movie ReleaseDate!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.RELEASEDATE}`,
               },
             ]}
           >
             <DatePicker />
           </Form.Item>
           <Form.Item
-            label="Revenue"
+            label={CONSTATNTS.REVENUE}
             name="revenue"
             rules={[
               {
                 required: true,
-                message: "Please input your movie Revenue!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.REVENUE}`,
               },
             ]}
             normalize={(val) => +val}
@@ -216,13 +221,13 @@ const MovieForm = ({
             <Input type="number" />
           </Form.Item>
           <Form.Item
-            label="Runtime"
+            label={CONSTATNTS.RUNTIME}
             name="runtime"
             normalize={(val) => +val}
             rules={[
               {
                 required: true,
-                message: "Please input your movie Runtime!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.RUNTIME}`,
               },
             ]}
           >
@@ -230,12 +235,12 @@ const MovieForm = ({
           </Form.Item>
 
           <Form.Item
-            label="Budget"
+            label={CONSTATNTS.BUDGET}
             name="budget"
             rules={[
               {
                 required: true,
-                message: "Please input your movie budget!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.BUDGET}`,
               },
             ]}
             normalize={(val) => +val}
@@ -243,38 +248,38 @@ const MovieForm = ({
             <Input type="number" />
           </Form.Item>
           <Form.Item
-            label="Adult"
+            label={CONSTATNTS.ADULT}
             name="adult"
             rules={[
               {
                 required: true,
-                message: "Please input your movie adult!",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.ADULT}`,
               },
             ]}
           >
             <Select
-              placeholder="Select Adult"
+              placeholder={`${CONSTATNTS.SELECT} ${CONSTATNTS.ADULT}`}
               style={{
                 width: 100,
                 margin: "0 8px",
               }}
             >
-              <Option value="1">TRUE</Option>
-              <Option value="0">FALSE</Option>
+              <Option value="1">{CONSTATNTS.TRUE}</Option>
+              <Option value="0">{CONSTATNTS.FALSE}</Option>
             </Select>
           </Form.Item>
           <Form.Item
-            label="CountryIDS"
+            label={CONSTATNTS.COUNTRY_IDS}
             name="countryIds"
             rules={[
               {
                 required: true,
-                message: "Please select your CountryIDS",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.COUNTRY_IDS}`,
               },
             ]}
           >
             <Select
-              placeholder="Select CountryIDS"
+              placeholder={`${CONSTATNTS.SELECT} ${CONSTATNTS.COUNTRY_IDS}`}
               loading={loading ? true : false}
               style={{
                 width: 200,
@@ -291,24 +296,24 @@ const MovieForm = ({
                 })
               ) : (
                 <Option value="">
-                  <b>No Data</b>
+                  <b>{CONSTATNTS.NO_DATA}</b>
                 </Option>
               )}
             </Select>
           </Form.Item>
 
           <Form.Item
-            label="LanguageIDS"
+            label={CONSTATNTS.LANGUAGE_IDS}
             name="languageIds"
             rules={[
               {
                 required: true,
-                message: "Please select your LanguageIDS",
+                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.LANGUAGE_IDS}`,
               },
             ]}
           >
             <Select
-              placeholder="Select LanguageIDS"
+              placeholder={`${CONSTATNTS.SELECT} ${CONSTATNTS.LANGUAGE_IDS}`}
               loading={languagesLoading ? true : false}
               style={{
                 width: 200,
@@ -325,7 +330,7 @@ const MovieForm = ({
                 })
               ) : (
                 <Option value="">
-                  <b>No Data</b>
+                  <b>{CONSTATNTS.NO_DATA}</b>
                 </Option>
               )}
             </Select>

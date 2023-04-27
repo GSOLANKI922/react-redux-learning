@@ -9,6 +9,7 @@ export const USER_LOGIN = gql`
           email
         }
       }
+      message
     }
   }
 `;

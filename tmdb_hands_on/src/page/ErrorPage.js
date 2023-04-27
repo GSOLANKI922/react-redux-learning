@@ -1,6 +1,7 @@
 import { Button, Result } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+import { CONSTATNTS } from "../Constants";
 
 const ErrorPage = () => {
   return (
@@ -11,7 +12,7 @@ const ErrorPage = () => {
         subTitle="Sorry, something went wrong."
         extra={
           <Link to="/">
-            <Button type="primary">Back Home</Button>
+            <Button type="primary">{CONSTATNTS.BACK_TO_HOME}</Button>
           </Link>
         }
       />

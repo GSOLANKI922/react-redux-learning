@@ -7,32 +7,30 @@ import { Link } from "react-router-dom";
 import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import MovieForm from "../component/MovieForm";
 import NotificationC from "../component/NotificationC";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const MoviesList = () => {
-  const [pageNumber, setPageNumber] = useState(1);
+  // const [skipData, setSkipData] = useState(0);
   const [loadings, setLoadings] = useState(true);
-  const [defaultCurrent, setDefaultCurrent] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
   const [editableData, setEditableData] = useState();
   const [isEdit, setIsEdit] = useState(false);
 
-  const { loading, error, data, refetch } = useQuery(MOVIE_LIST, {
+  const { loading, data, refetch } = useQuery(MOVIE_LIST, {
     variables: {
       sort: {
         field: "createdAt",
       },
       filter: {
-        skip: pageNumber,
+        skip: (pageNumber - 1) * 10,
         limit: 10,
-        category: "PLAYING_IN_THEATERS",
       },
     },
   });
 
   // Add Movie Mutation
-  const [
-    addMovies,
-    { loading: addMoviesLoading, error: addMoviesError, data: createMovieData },
-  ] = useMutation(CREATE_MOVIE);
+  const [addMovies, { loading: addMoviesLoading, data: createMovieData }] =
+    useMutation(CREATE_MOVIE);
 
   // Delete Movie Mutation
   const [deleteMovie, { loading: deleteLoading, data: deleteData }] =
@@ -49,9 +47,6 @@ const MoviesList = () => {
   );
 
   useEffect(() => {
-    if (pageNumber !== 1) {
-      refetch();
-    }
     setTimeout(() => {
       setLoadings(false);
     }, 500);
@@ -74,16 +69,13 @@ const MoviesList = () => {
     }
   };
 
-  if (deleteLoading) return <h1>Loading...</h1>;
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>error...{error.message}</h1>;
-  if (addMoviesLoading) return <h1>addMoviesLoading....</h1>;
-  if (addMoviesError) return <h1>addMoviesError: {addMoviesError.message}</h1>;
-  if (editLoading) return <h1>Loading...</h1>;
+  if (deleteLoading || loading || editLoading || addMoviesLoading) {
+    return <LoadingOutlined />;
+  }
 
-  const changePageNumber = (pNumber) => {
-    setPageNumber(pNumber * 10);
-    setDefaultCurrent(pNumber);
+  const changePageNumber = async (pNumber) => {
+    await setPageNumber(pNumber);
+    await refetch();
   };
 
   const editMovieHandler = (curEditData) => {
@@ -126,8 +118,9 @@ const MoviesList = () => {
         ) : (
           ""
         )}
+
         {data ? (
-          data.listMovies.data.map((movies) => {
+          data.listMovies?.data?.map((movies) => {
             return (
               <Link key={movies.id}>
                 <CardC
@@ -152,9 +145,9 @@ const MoviesList = () => {
       </div>
       <div className="movie_list_pagination">
         <PagiNation
-          totalData={data.listMovies.count}
+          totalData={data ? data.listMovies.count : ""}
           changePageNumber={changePageNumber}
-          defaultCurrent={defaultCurrent}
+          defaultCurrent={pageNumber}
         />
       </div>
     </div>

@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import MovieForm from "../component/MovieForm";
 import { CREATE_MOVIE, DELETE_MOVIE } from "../graphql/mutations";
 import NotificationC from "../component/NotificationC";
+import { CONSTATNTS } from "../Constants";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loadings, setLoadings] = useState(true);
   const [editableData, setEditableData] = useState();
   const [isEdit, setIsEdit] = useState(false);
-  const { data, loading, error, refetch } = useQuery(GET_TOP_MOVIE, {
+  const { data, loading, refetch } = useQuery(GET_TOP_MOVIE, {
     variables: {
       filter: {
         limit: 5,
@@ -25,13 +26,15 @@ const Home = () => {
 
   const [deleteMovie, { data: deleteData }] = useMutation(DELETE_MOVIE);
 
-  const [addMovies, { loading: addMoviesLoading, data: createMovieData }] =
+  const [addMovies, { loading: createMoviesLoading, data: createMovieData }] =
     useMutation(CREATE_MOVIE);
-
+  let auth;
   useEffect(() => {
-    const auth = localStorage.getItem("token");
+    auth = localStorage.getItem("token");
     if (!auth) {
       navigate("/login");
+    } else {
+      <NotificationC message="Login success fully" text="success" />;
     }
     setTimeout(() => {
       setLoadings(false);
@@ -52,16 +55,6 @@ const Home = () => {
     }
   };
 
-  if (loading) return <h2>Loading..</h2>;
-  if (error) return <h1> Err...Home {error.message}</h1>;
-  if (data) {
-    console.log(data, "home");
-  }
-
-  if (addMoviesLoading) return <h1>addMoviesLoading...Home</h1>;
-  if (createMovieData) {
-    console.log(createMovieData, "createMovieData");
-  }
   const editMovieHandler = (curEditData) => {
     setIsEdit(true);
     setEditableData(curEditData);
@@ -77,15 +70,15 @@ const Home = () => {
       ) : (
         ""
       )}
-      {/* {editData ? (
-          <NotificationC
-            message={editData.updateMovie.message}
-            text="success"
-          />
-        ) : (
-          ""
-        )} */}
-      <h2 className="top_5_movie"> Top 5 Movies</h2>
+      {createMovieData ? (
+        <NotificationC
+          message={createMovieData.createMovie.message}
+          text="success"
+        />
+      ) : (
+        ""
+      )}
+      <h2 className="top_5_movie"> {CONSTATNTS.TOP_5_MOVIES}</h2>
       <MovieForm
         addMovies={addMovies}
         refetch={refetch}
@@ -98,7 +91,7 @@ const Home = () => {
           data.listMovies.data.map((movies) => {
             return (
               <CardC
-                loading={loadings}
+                loading={loadings || createMoviesLoading || loading}
                 allData={movies}
                 budget={movies.budget}
                 releaseDate={movies.releaseDate}

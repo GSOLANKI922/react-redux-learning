@@ -12,9 +12,9 @@ const BreadCrumb = () => {
     },
   });
   if (loading) return <h1>Loading..</h1>;
-  let title;
+  let movieTitle;
   if (data) {
-    title = data.movie.data.title;
+    movieTitle = data?.movie?.data?.title;
   }
 
   const BREADCRUMB_HOME_ITEM = [
@@ -23,12 +23,28 @@ const BreadCrumb = () => {
     },
     {
       title: (
-        <Link to={pathname.slice(0, 13)} style={{ fontWeight: "bold" }}>
+        <Link
+          to={
+            pathname.slice(0, 13) === "/movieDetails"
+              ? "/movieslist"
+              : pathname
+                  .replace("/", "")
+                  .slice(0, 13)
+                  .replace(
+                    `"/", " " + "/" + " " + ${movieTitle ? movieTitle : ""}`
+                  )
+          }
+          style={{ fontWeight: "bold" }}
+        >
           <strong>
-            {pathname
-              .replace("/", "")
-              .slice(0, 13)
-              .replace(`"/", " " + "/" + " " + ${title}`)}
+            {pathname.slice(0, 13) === "/movieDetails"
+              ? "movieslist" + ` / ${movieTitle ? movieTitle : ""}`
+              : pathname
+                  .replace("/", "")
+                  .slice(0, 13)
+                  .replace(
+                    `"/", " " + "/" + " " + ${movieTitle ? movieTitle : ""}`
+                  )}
           </strong>
         </Link>
       ),

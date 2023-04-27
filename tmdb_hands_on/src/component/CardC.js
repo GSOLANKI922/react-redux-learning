@@ -37,11 +37,11 @@ const CardC = ({
         <Meta title={`Title : ${title}`} />
         <Meta description={`Budget : ${budget}`} />
         <Meta description={`Revenue : ${revenue}`} />
-        <Meta
+        {/* <Meta
           description={`ReleaseDate : ${new Date(releaseDate)
             .toISOString()
             .slice(0, 10)}`}
-        />
+        /> */}
       </Link>
       <Space wrap style={{ marginTop: "5px" }}>
         <Tooltip title="Edit">

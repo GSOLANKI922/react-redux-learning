@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_PERSON, Edit_PERSON_DETAILS } from "../graphql/mutations";
+import NotificationC from "./NotificationC";
 
 const FormModel = ({ refetch, personData, setEdit, edit }) => {
   const [open, setOpen] = useState(false);
@@ -25,12 +26,15 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
   }, [personData]);
 
   const [createNewPerson, { loading, error }] = useMutation(CREATE_PERSON);
-  const [updatePerson, { loading: personLoading }] =
+  const [updatePerson, { loading: personLoading, data: personUpdateData }] =
     useMutation(Edit_PERSON_DETAILS);
 
   if (loading) return <h1>Loading..</h1>;
   if (error) return <h1>Err...{error.message}</h1>;
   if (personLoading) return <h1>personLoading..</h1>;
+  if (personUpdateData) {
+    console.log();
+  }
 
   const showModal = () => {
     setOpen(true);
@@ -42,12 +46,16 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
   };
 
   const onFinish = async (values) => {
+    const nData = {
+      ...values,
+      gender: values.gender.value,
+    };
     if (edit) {
       try {
         await updatePerson({
           variables: {
             updatePersonId: personData.id,
-            data: values,
+            data: nData,
           },
         });
         setInputData("");
@@ -84,6 +92,14 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
           Add Person
         </Button>
       </Tooltip>
+      {personUpdateData ? (
+        <NotificationC
+          message={personUpdateData.updatePerson.message}
+          text="success"
+        />
+      ) : (
+        ""
+      )}
       <Modal
         title="Person Form"
         open={open}

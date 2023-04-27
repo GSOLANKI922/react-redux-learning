@@ -1,6 +1,7 @@
 import { Button, Modal, Popconfirm, Space, Tooltip } from "antd";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { CONSTATNTS } from "../Constants";
 
 const PersonDetailModel = ({ record, editHandler, deleteHandle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,12 +35,16 @@ const PersonDetailModel = ({ record, editHandler, deleteHandle }) => {
         onCancel={handleCancel}
         onSubmit={handleSubmit}
       >
-        <p>Name: {record.name}</p>
         <p>
-          Department:
+          {CONSTATNTS.NAME}: {record.name}
+        </p>
+        <p>
+          {CONSTATNTS.DEPARTMENT}:
           {record.knownForDepartment ? record.knownForDepartment : "No Data"}
         </p>
-        <p>Gender: {record.gender ? record.gender : "No Data"}</p>
+        <p>
+          {CONSTATNTS.GENDER}: {record.gender ? record.gender : "No Data"}
+        </p>
         <Space size="middle">
           <Button
             onClick={() => {

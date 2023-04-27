@@ -4,14 +4,17 @@ import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
 import { USER_LOGIN } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
+import NotificationC from "../component/NotificationC";
+import { CONSTATNTS } from "../Constants";
 
 const Login = () => {
   const navigate = useNavigate();
   const [userLogin, { data, loading, error }] = useMutation(USER_LOGIN);
-
+  let auth;
   useEffect(() => {
     setTimeout(() => {
-      const auth = localStorage.getItem("token");
+      auth = localStorage.getItem("token");
+
       if (auth) {
         navigate("/");
       }
@@ -22,7 +25,6 @@ const Login = () => {
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>error... {error.message}</h1>;
   if (data) {
-    console.log(data);
     localStorage.setItem("token", data.emailPasswordLogIn.data.token);
     navigate("/");
     if (data.emailPasswordLogIn.data.token || false) {
@@ -39,15 +41,17 @@ const Login = () => {
         },
       });
     } catch (error) {
-      return <h1>err..{error.message}</h1>;
+      return <h1>{error.message}</h1>;
     }
   };
 
   return (
     <div className="loginForm_container">
       <div className="loginForm_wrapper">
-        <h1 className="login_title">Login</h1>
+        {error ? <h1>{error.message}</h1> : ""}
+        <h1 className="login_title">{CONSTATNTS.LOGIN}</h1>
         <Form
+          loading={loading}
           name="normal_login"
           className="login-form login_form"
           initialValues={{
@@ -94,9 +98,9 @@ const Login = () => {
               className="login-form-button"
               style={{ width: "100%" }}
             >
-              Log in
+              {CONSTATNTS.LOGIN}
             </Button>
-            Or <Link to="/SingUp">register now!</Link>
+            {CONSTATNTS.OR} <Link to="/SingUp">{CONSTATNTS.REGISTER_NOW}</Link>
           </Form.Item>
         </Form>
       </div>

@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 
 const Card = ({ id, name, price, description, imge, cartAdded }) => {
   return (
-    <div className="card p_card section black-text" key={id}>
+    <div
+      className="card p_card section black-text"
+      style={{ height: "36rem" }}
+      key={id}
+    >
       <Link
         to={`/product/${id}`}
         style={{ textDecoration: "none", color: "black" }}

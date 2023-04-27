@@ -13,7 +13,7 @@ const { Column } = Table;
 const PersonList = () => {
   const [personData, setPersonData] = useState();
   const [edit, setEdit] = useState(false);
-  const [defaultCurrent, setDefaultCurrent] = useState();
+  const [defaultCurrent, setDefaultCurrent] = useState(1);
   const [search, setSeatch] = useState("");
   const [userList, { data, loading, error, refetch }] = useLazyQuery(
     PERSON_LIST,
@@ -25,7 +25,7 @@ const PersonList = () => {
         filter: {
           skip: 0,
           limit: 11,
-          searchTerm: search.length >= 1 ? search : null,
+          searchTerm: search || null,
         },
       },
     }
@@ -42,10 +42,9 @@ const PersonList = () => {
   if (deletePersonLoading) return <h1>Loading...</h1>;
 
   if (error) return <h1>Err..{error.message}</h1>;
-  if (loading) return <h1>Loading..</h1>;
-
+  let nData;
   if (data) {
-    var nData = data.listPersons.data.map(
+    nData = data.listPersons.data.map(
       ({ id, name, knownForDepartment, gender }) => {
         return {
           id: id,
@@ -77,7 +76,7 @@ const PersonList = () => {
   };
 
   const changePageNumber = (page) => {
-    console.log();
+    console.log(page, "mn");
     setDefaultCurrent(page);
     userList({
       variables: {
@@ -89,8 +88,8 @@ const PersonList = () => {
     });
   };
 
-  const onSearch = (value) => {
-    setSeatch(value);
+  const changeHandler = (e) => {
+    setSeatch(e.target.value.trim());
     refetch();
   };
   return (
@@ -106,9 +105,9 @@ const PersonList = () => {
           <Search
             width={500}
             placeholder="input search text"
-            onSearch={onSearch}
-            enterButton
+            enterButton={false}
             defaultValue={search}
+            onChange={changeHandler}
           />
         </Form>
         <FormModel
@@ -118,7 +117,8 @@ const PersonList = () => {
           setEdit={setEdit}
         />
       </div>
-      <Table dataSource={nData} pagination={false}>
+      {nData ? " " : "No Data Found"}
+      <Table dataSource={nData} pagination={false} loading={loading}>
         <Column title="Name" dataIndex="name" key="name" align="center" />
         <Column title="Gender" dataIndex="gender" key="gender" align="center" />
         <Column
@@ -160,7 +160,7 @@ const PersonList = () => {
         />
       </Table>
       <PagiNation
-        totalData={data ? data.listPersons.count : 100}
+        totalData={data ? data.listPersons.count : ""}
         changePageNumber={changePageNumber}
         defaultCurrent={defaultCurrent}
       />
