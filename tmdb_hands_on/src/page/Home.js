@@ -4,8 +4,9 @@ import { GET_TOP_MOVIE } from "../graphql/queries";
 import CardC from "../component/CardC";
 import { useNavigate } from "react-router-dom";
 import MovieForm from "../component/MovieForm";
-import { CREATE_MOVIE, DELETE_MOVIE } from "../graphql/mutations";
+import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import NotificationC from "../component/NotificationC";
+import { LoadingOutlined } from "@ant-design/icons";
 import { CONSTATNTS } from "../Constants";
 
 const Home = () => {
@@ -24,13 +25,23 @@ const Home = () => {
     },
   });
 
-  const [deleteMovie, { data: deleteData }] = useMutation(DELETE_MOVIE);
+  const [deleteMovie, { data: deleteData, loading: deleteLoading }] =
+    useMutation(DELETE_MOVIE);
 
   const [addMovies, { loading: createMoviesLoading, data: createMovieData }] =
     useMutation(CREATE_MOVIE);
-  let auth;
+
+  const [editMovie, { data: editData, loading: editLoading }] = useMutation(
+    EDIT_MOVIE,
+    {
+      variables: {
+        updateMovieId: editableData ? editableData.id : "",
+      },
+    }
+  );
+
   useEffect(() => {
-    auth = localStorage.getItem("token");
+    let auth = localStorage.getItem("token");
     if (!auth) {
       navigate("/login");
     } else {
@@ -58,15 +69,38 @@ const Home = () => {
   const editMovieHandler = (curEditData) => {
     setIsEdit(true);
     setEditableData(curEditData);
+    console.log(curEditData);
   };
 
+  if (deleteLoading || loading || editLoading || createMoviesLoading) {
+    return <LoadingOutlined />;
+  }
+
   return (
-    <div className="movie_list_container">
+    <>
+      <>
+        <MovieForm
+          editMovie={editMovie}
+          addMovies={addMovies}
+          refetch={refetch}
+          editableData={isEdit && editableData}
+          setIsEdit={setIsEdit}
+          isEdit={isEdit}
+        />
+      </>
+      <div className="top_5_movie_container">
+        <h2 className="top_5_movie"> {CONSTATNTS.TOP_5_MOVIES}</h2>
+      </div>
       {deleteData ? (
         <NotificationC
           message={deleteData.deleteMovie.message}
           text="success"
         />
+      ) : (
+        ""
+      )}
+      {editData ? (
+        <NotificationC message={editData.updateMovie.message} text="success" />
       ) : (
         ""
       )}
@@ -78,38 +112,32 @@ const Home = () => {
       ) : (
         ""
       )}
-      <h2 className="top_5_movie"> {CONSTATNTS.TOP_5_MOVIES}</h2>
-      <MovieForm
-        addMovies={addMovies}
-        refetch={refetch}
-        editableData={isEdit && editableData}
-        setIsEdit={setIsEdit}
-        isEdit={isEdit}
-      />
-      <div className="movie_list_wrapper">
-        {data ? (
-          data.listMovies.data.map((movies) => {
-            return (
-              <CardC
-                loading={loadings || createMoviesLoading || loading}
-                allData={movies}
-                budget={movies.budget}
-                releaseDate={movies.releaseDate}
-                revenue={movies.revenue}
-                status={movies.status}
-                title={movies.title}
-                id={movies.id}
-                key={movies.id}
-                deleteHandler={deleteHandler}
-                editMovieHandler={editMovieHandler}
-              />
-            );
-          })
-        ) : (
-          <CardC loading={true} />
-        )}
+      <div className="movie_list_container_1">
+        <div className="movie_list_wrapper">
+          {data ? (
+            data.listMovies.data.map((movies) => {
+              return (
+                <CardC
+                  loading={loadings || createMoviesLoading || loading}
+                  allData={movies}
+                  budget={movies.budget}
+                  releaseDate={movies.releaseDate}
+                  revenue={movies.revenue}
+                  status={movies.status}
+                  title={movies.title}
+                  id={movies.id}
+                  key={movies.id}
+                  deleteHandler={deleteHandler}
+                  editMovieHandler={editMovieHandler}
+                />
+              );
+            })
+          ) : (
+            <CardC loading={true} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

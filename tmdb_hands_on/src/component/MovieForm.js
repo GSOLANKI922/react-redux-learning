@@ -82,6 +82,7 @@ const MovieForm = ({
           },
         });
         form.resetFields();
+        showModal();
         setIsEdit(false);
         refetch();
       } catch (error) {
@@ -92,15 +93,17 @@ const MovieForm = ({
 
   return (
     <>
-      <Tooltip title="ADD MOVIE">
-        <Button
-          type="primary"
-          onClick={showModal}
-          style={{ marginTop: "1rem" }}
-        >
-          {CONSTATNTS.ADD_MOVIE}
-        </Button>
-      </Tooltip>
+      <div className="add_movie_button">
+        <Tooltip title="ADD MOVIE">
+          <Button
+            type="primary"
+            onClick={showModal}
+            style={{ marginBottom: "1rem" }}
+          >
+            {CONSTATNTS.ADD_MOVIE}
+          </Button>
+        </Tooltip>
+      </div>
       <Modal
         width={900}
         title="Movie Form"

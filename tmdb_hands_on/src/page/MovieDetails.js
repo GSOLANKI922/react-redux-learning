@@ -74,7 +74,7 @@ const MovieDetails = () => {
         <b>{CONSTATNTS.REVENUE} </b> : {data ? nData.revenue : "-"}.cr
       </p>
       <p>
-        <b>{CONSTATNTS.STATUS} </b> : {data ? nData.status : "-"}.cr
+        <b>{CONSTATNTS.STATUS} </b> : {data ? nData.status : "-"}
       </p>
     </div>
   );

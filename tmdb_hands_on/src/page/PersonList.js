@@ -24,7 +24,7 @@ const PersonList = () => {
         },
         filter: {
           skip: 0,
-          limit: 11,
+          limit: 10,
           searchTerm: search || null,
         },
       },
@@ -33,8 +33,11 @@ const PersonList = () => {
 
   useEffect(() => {
     userList();
+    setTimeout(() => {
+      refetch();
+    }, 2000);
     // eslint-disable-next-line
-  }, []);
+  }, [search]);
 
   const [deletePerson, { loading: deletePersonLoading }] =
     useMutation(DELETE_PERSON);
@@ -42,12 +45,13 @@ const PersonList = () => {
   if (deletePersonLoading) return <h1>Loading...</h1>;
 
   if (error) return <h1>Err..{error.message}</h1>;
+
   let nData;
   if (data) {
     nData = data.listPersons.data.map(
       ({ id, name, knownForDepartment, gender }) => {
         return {
-          id: id,
+          id,
           key: id,
           name: name ? name : "-",
           knownForDepartment: knownForDepartment ? knownForDepartment : "-",
@@ -76,13 +80,12 @@ const PersonList = () => {
   };
 
   const changePageNumber = (page) => {
-    console.log(page, "mn");
     setDefaultCurrent(page);
     userList({
       variables: {
         filter: {
-          skip: page * 10,
-          limit: 11,
+          skip: (page - 1) * 10,
+          limit: 10,
         },
       },
     });
@@ -90,24 +93,19 @@ const PersonList = () => {
 
   const changeHandler = (e) => {
     setSeatch(e.target.value.trim());
-    refetch();
   };
+
   return (
-    <div className="table_container">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+    <>
+      <div className="person_model_container">
         <Form style={{ width: "30%" }}>
           <Search
-            width={500}
+            className="person_search"
             placeholder="input search text"
             enterButton={false}
             defaultValue={search}
             onChange={changeHandler}
+            loading
           />
         </Form>
         <FormModel
@@ -117,54 +115,70 @@ const PersonList = () => {
           setEdit={setEdit}
         />
       </div>
-      {nData ? " " : "No Data Found"}
-      <Table dataSource={nData} pagination={false} loading={loading}>
-        <Column title="Name" dataIndex="name" key="name" align="center" />
-        <Column title="Gender" dataIndex="gender" key="gender" align="center" />
-        <Column
-          title="Department"
-          dataIndex="knownForDepartment"
-          key="knownForDepartment"
-          align="center"
-        />
-        <Column
-          align="center"
-          title="Action"
-          key="action"
-          render={(_, record) => (
-            <Space size="middle">
-              <Tooltip title="Edit">
-                <Button onClick={() => editHandler(record)}>
-                  <EditOutlined />
-                </Button>
-              </Tooltip>
-              <Popconfirm
-                okText="Yes"
-                cancelText="No"
-                title="Sure to delete?"
-                onConfirm={() => deleteHandle(record.id)}
-              >
-                <Tooltip title="Delete">
-                  <Button danger>
-                    <DeleteOutlined />
+      <div className="table_container">
+        <Table
+          dataSource={nData}
+          pagination={false}
+          loading={loading}
+          className="table_wrapper"
+        >
+          <Column title="Name" dataIndex="name" key="name" align="center" />
+          <Column
+            title="Gender"
+            dataIndex="gender"
+            key="gender"
+            align="center"
+          />
+          <Column
+            title="Department"
+            dataIndex="knownForDepartment"
+            key="knownForDepartment"
+            align="center"
+          />
+          <Column
+            align="center"
+            title="Action"
+            key="action"
+            render={(_, record) => (
+              <Space size="middle">
+                <Tooltip title="Edit">
+                  <Button
+                    onClick={() => editHandler(record)}
+                    className="button"
+                  >
+                    <EditOutlined />
                   </Button>
                 </Tooltip>
-              </Popconfirm>
-              <PersonDetailModel
-                record={record}
-                editHandler={editHandler}
-                deleteHandle={deleteHandle}
-              />
-            </Space>
-          )}
+                <Popconfirm
+                  okText="Yes"
+                  cancelText="No"
+                  title="Sure to delete?"
+                  onConfirm={() => deleteHandle(record.id)}
+                >
+                  <Tooltip title="Delete">
+                    <Button danger className="button">
+                      <DeleteOutlined />
+                    </Button>
+                  </Tooltip>
+                </Popconfirm>
+                <PersonDetailModel
+                  record={record}
+                  editHandler={editHandler}
+                  deleteHandle={deleteHandle}
+                />
+              </Space>
+            )}
+          />
+        </Table>
+      </div>
+      {data?.listPersons && (
+        <PagiNation
+          totalData={data?.listPersons?.count}
+          defaultCurrent={defaultCurrent}
+          changePageNumber={changePageNumber}
         />
-      </Table>
-      <PagiNation
-        totalData={data ? data.listPersons.count : ""}
-        changePageNumber={changePageNumber}
-        defaultCurrent={defaultCurrent}
-      />
-    </div>
+      )}
+    </>
   );
 };
 

@@ -21,6 +21,7 @@ const CardC = ({
       hoverable
       style={{
         width: 240,
+        height: 320,
       }}
       className="card_container"
       cover={

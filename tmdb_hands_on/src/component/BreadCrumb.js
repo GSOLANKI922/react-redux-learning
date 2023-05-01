@@ -17,28 +17,25 @@ const BreadCrumb = () => {
     movieTitle = data?.movie?.data?.title;
   }
 
+  let pathName =
+    pathname.slice(0, 13) === "/movieDetails"
+      ? "/movieslist"
+      : pathname
+          .replace("/", "")
+          .slice(0, 13)
+          .replace(`"/", " " + "/" + " " + ${movieTitle ? movieTitle : ""}`);
+
   const BREADCRUMB_HOME_ITEM = [
     {
       title: "Application",
     },
     {
       title: (
-        <Link
-          to={
-            pathname.slice(0, 13) === "/movieDetails"
-              ? "/movieslist"
-              : pathname
-                  .replace("/", "")
-                  .slice(0, 13)
-                  .replace(
-                    `"/", " " + "/" + " " + ${movieTitle ? movieTitle : ""}`
-                  )
-          }
-          style={{ fontWeight: "bold" }}
-        >
+        <Link to={pathName} style={{ fontWeight: "bold" }}>
           <strong>
             {pathname.slice(0, 13) === "/movieDetails"
-              ? "movieslist" + ` / ${movieTitle ? movieTitle : ""}`
+              ? // eslint-disable-next-line
+                "movieslist" + ` / ${movieTitle ? movieTitle : ""}`
               : pathname
                   .replace("/", "")
                   .slice(0, 13)

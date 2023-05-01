@@ -4,16 +4,14 @@ import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
 import { USER_LOGIN } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
-import NotificationC from "../component/NotificationC";
 import { CONSTATNTS } from "../Constants";
 
 const Login = () => {
   const navigate = useNavigate();
   const [userLogin, { data, loading, error }] = useMutation(USER_LOGIN);
-  let auth;
   useEffect(() => {
     setTimeout(() => {
-      auth = localStorage.getItem("token");
+      let auth = localStorage.getItem("token");
 
       if (auth) {
         navigate("/");

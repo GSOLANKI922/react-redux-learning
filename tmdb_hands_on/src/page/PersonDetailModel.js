@@ -16,14 +16,10 @@ const PersonDetailModel = ({ record, editHandler, deleteHandle }) => {
     setIsModalOpen(false);
   };
 
-  const handleSubmit = () => {
-    console.log("data");
-  };
-
   return (
     <>
       <Tooltip title="View">
-        <Button onClick={showModal}>
+        <Button onClick={showModal} className="button">
           <EyeOutlined />
         </Button>
       </Tooltip>
@@ -33,7 +29,6 @@ const PersonDetailModel = ({ record, editHandler, deleteHandle }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        onSubmit={handleSubmit}
       >
         <p>
           {CONSTATNTS.NAME}: {record.name}

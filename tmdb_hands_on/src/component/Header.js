@@ -32,11 +32,7 @@ const HeaderC = () => {
             />
           </div>
         </Header>
-        <Content
-          style={{
-            padding: "0 50px",
-          }}
-        >
+        <Content className="main_Content_container">
           <BreadCrumb />
 
           <div
@@ -49,6 +45,7 @@ const HeaderC = () => {
           </div>
         </Content>
         <Footer
+          className="footer"
           style={{
             textAlign: "center",
           }}

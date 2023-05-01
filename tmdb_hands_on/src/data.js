@@ -28,3 +28,25 @@ export const HEADER_ITEM_LOGIN = [
     ),
   },
 ];
+
+export const COLUMNS = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    width: 300,
+  },
+  {
+    title: "Gender",
+    dataIndex: "gender",
+    width: 300,
+  },
+  {
+    title: "Department",
+    dataIndex: "knownForDepartment",
+    width: 300,
+  },
+  {
+    title: "Action",
+    dataIndex: "action",
+  },
+];

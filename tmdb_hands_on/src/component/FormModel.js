@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_PERSON, Edit_PERSON_DETAILS } from "../graphql/mutations";
+import { PlusOutlined } from "@ant-design/icons";
 import NotificationC from "./NotificationC";
 
 const FormModel = ({ refetch, personData, setEdit, edit }) => {
@@ -88,9 +89,22 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
   return (
     <div className="model_container">
       <Tooltip title="ADD PERSON">
-        <Button type="primary" onClick={showModal} style={{ margin: "20px" }}>
+        <Button
+          type="primary"
+          onClick={showModal}
+          className="Add_Person_button"
+        >
           Add Person
         </Button>
+        <Tooltip title="ADD PERSON">
+          <Button
+            type="primary"
+            onClick={showModal}
+            className="Add_Person_button_2"
+          >
+            <PlusOutlined />
+          </Button>
+        </Tooltip>
       </Tooltip>
       {personUpdateData ? (
         <NotificationC

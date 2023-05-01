@@ -32,11 +32,9 @@ const client = new ApolloClient({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ApolloProvider client={client}>
-    <React.StrictMode>
+    <ApolloProvider client={client}>
       <App />
-    </React.StrictMode>
-  </ApolloProvider>
+    </ApolloProvider>
 );
 
 reportWebVitals();
