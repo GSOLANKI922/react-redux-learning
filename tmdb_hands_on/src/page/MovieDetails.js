@@ -29,8 +29,6 @@ const MovieDetails = () => {
     };
   }
 
-  const showModal = () => {};
-
   return (
     <div className="movie_details_container">
       <div>
