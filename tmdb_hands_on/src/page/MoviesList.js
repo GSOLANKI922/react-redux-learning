@@ -86,7 +86,6 @@ const MoviesList = () => {
       scrollHeight <= clientHeight + scrollTop + 1 &&
       curData.length !== data?.listMovies?.count
     ) {
-      console.log("refactd");
       setPageNumber((pre) => pre + 1);
       movieListData({
         variables: {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 notification.config({
   placement: "bottomRight",
   bottom: 50,
-  duration: 3,
+  duration: 2,
   rtl: true,
 });
 

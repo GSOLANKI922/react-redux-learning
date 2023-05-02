@@ -6,6 +6,7 @@ import { CREATE_USER } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 import { CONSTATNTS } from "../Constants";
+import NotificationC from "../component/NotificationC";
 
 const RegisterUser = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const RegisterUser = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const auth = localStorage.getItem("token");
+      let auth = localStorage.getItem("token");
       if (auth) {
         navigate("/");
       }
@@ -22,7 +23,10 @@ const RegisterUser = () => {
   }, [navigate]);
 
   if (data) {
-    navigate("/login");
+    console.log(data);
+    setTimeout(() => {
+      navigate("/login");
+    });
   }
 
   const onFinish = async (values) => {
@@ -39,9 +43,15 @@ const RegisterUser = () => {
 
   return (
     <div className="loginForm_container">
+      {data && (
+        <NotificationC
+          message={data.emailPasswordSignUp.message}
+          text="success"
+        />
+      )}
       <div className="loginForm_wrapper" style={{ height: "85%" }}>
-        {error ? <h1>{error.message}</h1> : ""}
-        {loading ? <LoadingOutlined /> : ""}
+        {error && <h1>{error.message}</h1>}
+        {loading && <LoadingOutlined />}
         <h1
           className="login_title"
           style={{ marginTop: "1rem", marginBottom: "1rem" }}

@@ -8,6 +8,7 @@ import PagiNation from "../component/PagiNation";
 import PersonDetailModel from "./PersonDetailModel";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
+import NotificationC from "../component/NotificationC";
 const { Column } = Table;
 
 const PersonList = () => {
@@ -39,10 +40,15 @@ const PersonList = () => {
     // eslint-disable-next-line
   }, [search]);
 
-  const [deletePerson, { loading: deletePersonLoading }] =
-    useMutation(DELETE_PERSON);
+  const [
+    deletePerson,
+    { loading: deletePersonLoading, data: deletePersonData },
+  ] = useMutation(DELETE_PERSON);
 
   if (deletePersonLoading) return <h1>Loading...</h1>;
+  if (deletePersonData) {
+    console.log(deletePersonData, "deletePersonData");
+  }
 
   if (error) return <h1>Err..{error.message}</h1>;
 
@@ -98,6 +104,12 @@ const PersonList = () => {
   return (
     <>
       <div className="person_model_container">
+        {deletePersonData && (
+          <NotificationC
+            message={deletePersonData.deletePerson.message}
+            text="success"
+          />
+        )}
         <Form style={{ width: "30%" }}>
           <Search
             className="person_search"

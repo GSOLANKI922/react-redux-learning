@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
 import { USER_LOGIN } from "../graphql/mutations";
 import { Link, useNavigate } from "react-router-dom";
 import { CONSTATNTS } from "../Constants";
+import NotificationC from "../component/NotificationC";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,8 +21,12 @@ const Login = () => {
     // eslint-disable-next-line
   }, [data]);
 
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>error... {error.message}</h1>;
+  if (error) {
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
+  }
+
   if (data) {
     localStorage.setItem("token", data.emailPasswordLogIn.data.token);
     navigate("/");
@@ -45,8 +50,8 @@ const Login = () => {
 
   return (
     <div className="loginForm_container">
+      {error && <NotificationC message={error.message} text="error" />}
       <div className="loginForm_wrapper">
-        {error ? <h1>{error.message}</h1> : ""}
         <h1 className="login_title">{CONSTATNTS.LOGIN}</h1>
         <Form
           loading={loading}
@@ -100,6 +105,11 @@ const Login = () => {
             </Button>
             {CONSTATNTS.OR} <Link to="/SingUp">{CONSTATNTS.REGISTER_NOW}</Link>
           </Form.Item>
+          {loading && (
+            <h1>
+              <LoadingOutlined />
+            </h1>
+          )}
         </Form>
       </div>
     </div>

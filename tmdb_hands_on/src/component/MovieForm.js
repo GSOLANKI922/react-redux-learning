@@ -15,7 +15,6 @@ const MovieForm = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEditData, setCurrentEditData] = useState();
-  const [form] = Form.useForm();
 
   const { data, loading } = useQuery(MOVIE_LIST_COUNTRIES);
 
@@ -69,7 +68,7 @@ const MovieForm = ({
           },
         });
         refetch();
-        showModal();
+        setIsModalOpen(false);
         setIsEdit(false);
       } catch (error) {
         console.log(error, "editMovie");
@@ -81,10 +80,9 @@ const MovieForm = ({
             data: nValues,
           },
         });
-        form.resetFields();
-        showModal();
-        setIsEdit(false);
         refetch();
+        setIsModalOpen(false);
+        setIsEdit(false);
       } catch (error) {
         console.log(error, "addMovies");
       }
