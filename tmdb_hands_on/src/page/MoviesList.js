@@ -6,6 +6,7 @@ import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import MovieForm from "../component/MovieForm";
 import NotificationC from "../component/NotificationC";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 const MoviesList = () => {
   const [loadings, setLoadings] = useState(true);
@@ -164,7 +165,7 @@ const MoviesList = () => {
           ) : (
             <CardC loading={true} />
           )}
-          <div className="infiniteScroll">{loading && <LoadingOutlined />}</div>
+          <div className="infiniteScroll">{loading &&   <Spin size="large" />}</div>
         </div>
       </div>
     </>

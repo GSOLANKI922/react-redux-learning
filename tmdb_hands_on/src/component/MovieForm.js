@@ -20,6 +20,7 @@ const MovieForm = ({
 
   const { data: languagesData, loading: languagesLoading } =
     useQuery(MOVIE_LIST_LANGUAGES);
+
   useEffect(() => {
     if (isEdit) {
       setCurrentEditData({

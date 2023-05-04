@@ -113,8 +113,9 @@ const PersonList = () => {
         <Form style={{ width: "30%" }}>
           <Search
             className="person_search"
-            placeholder="input search text"
+            placeholder="Search by Name"
             enterButton={false}
+            
             defaultValue={search}
             onChange={changeHandler}
             loading
