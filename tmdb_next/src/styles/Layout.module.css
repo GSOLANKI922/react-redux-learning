@@ -1,0 +1,25 @@
+.site_layout_content {
+  min-height: 280px;
+  padding: 24px;
+}
+
+.logo {
+  float: left;
+  padding: 0rem 2rem;
+  font-weight: 900;
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.site_layout_content {
+  background-color: white;
+  border-radius: 10px;
+  height: 79.8vh;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.site_layout_content::-webkit-scrollbar {
+  display: none;
+}

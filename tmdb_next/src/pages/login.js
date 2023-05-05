@@ -1,0 +1,91 @@
+import LayOut from "@/component/Layout";
+import React from "react";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input } from "antd";
+import styles from "../styles/Login.module.css";
+import { LOGIN } from "@/graphql/mutation";
+import { useMutation } from "@apollo/client";
+
+const Login = () => {
+  const [userLogin, { data, loading, error }] = useMutation(LOGIN);
+
+  if (loading) return <h1>loading...</h1>;
+  if (error) return <h1>err...{error}</h1>;
+//   if (data) {
+//     localStorage.setItem("token", data.emailPasswordLogIn.data.token);
+//   }
+
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+    try {
+      userLogin({
+        variables: {
+          data: values,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <LayOut backgroundColor="#080710">
+      <div className={styles.background}>
+        <div className={styles.shape}></div>
+        <div className={styles.shape}></div>
+      </div>
+      <Form
+        name="normal_login"
+        className={styles.form}
+        autoComplete="off"
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+      >
+        <h3 style={{ color: "white" }}>User LogIn </h3>
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              type: "email",
+              required: true,
+              message: "Please input your Email!",
+            },
+          ]}
+        >
+          <Input
+            className={styles.input}
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Enter User Email"
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Password!",
+              min: 6,
+            },
+          ]}
+        >
+          <Input
+            className={styles.input}
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className={styles.button}>
+            Log in
+          </Button>
+          Or <a href="">register now!</a>
+        </Form.Item>
+      </Form>
+    </LayOut>
+  );
+};
+
+export default Login;
