@@ -11,12 +11,11 @@ const Login = () => {
 
   if (loading) return <h1>loading...</h1>;
   if (error) return <h1>err...{error}</h1>;
-//   if (data) {
-//     localStorage.setItem("token", data.emailPasswordLogIn.data.token);
-//   }
+  if (data) {
+    localStorage.setItem("token", data.emailPasswordLogIn.data.token);
+  }
 
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
     try {
       userLogin({
         variables: {

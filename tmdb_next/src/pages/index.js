@@ -1,9 +1,9 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import LayOut from '@/component/Layout'
+import Head from "next/head";
+import { Inter } from "next/font/google";
+import styles from "@/styles/Home.module.css";
+import LayOut from "@/component/Layout";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
@@ -18,5 +18,5 @@ export default function Home() {
         <h1>Hello</h1>
       </LayOut>
     </>
-  )
+  );
 }

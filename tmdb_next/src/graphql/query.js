@@ -31,3 +31,58 @@ export const MOVIE_LISTS = gql`
     }
   }
 `;
+
+export const GET_MOVIE_BY_ID = gql`
+  query getMovieById($movieId: ID!) {
+    movie(id: $movieId) {
+      data {
+        id
+        adult
+        budget
+        originalTitle
+        originalLanguage
+        overview
+        releaseDate
+        revenue
+        runtime
+        tagline
+        title
+        countries {
+          countryCode
+          id
+          englishName
+        }
+        languages {
+          id
+          languageCode
+          englishName
+        }
+        status
+      }
+    }
+  }
+`;
+
+export const MOVIE_LIST_COUNTRIES = gql`
+  query Countries {
+    countries {
+      data {
+        id
+        countryCode
+        englishName
+      }
+    }
+  }
+`;
+
+export const MOVIE_LIST_LANGUAGES = gql`
+  query Languages {
+    languages {
+      data {
+        englishName
+        languageCode
+        id
+      }
+    }
+  }
+`;

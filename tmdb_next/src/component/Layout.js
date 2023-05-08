@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu } from "antd";
 const { Header, Content, Footer } = Layout;
 import styles from "../styles/Layout.module.css";
 import Link from "next/link";
@@ -24,12 +24,7 @@ const LayOut = ({ children, backgroundColor, infiniteScroll }) => {
     <Layout className="layout">
       <Header>
         <div className={styles.logo}>TMDB</div>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={items}
-        />
+        <Menu theme="dark" mode="horizontal" items={items} />
       </Header>
       <Content
         style={{

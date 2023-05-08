@@ -21,3 +21,37 @@ export const DELETE_MOVIE = gql`
     }
   }
 `;
+
+export const CREATE_MOVIE = gql`
+  mutation CreateMovie($data: MovieInput) {
+    createMovie(data: $data) {
+      message
+      data {
+        movie {
+          id
+          adult
+          budget
+          originalLanguage
+          originalTitle
+          title
+          overview
+          revenue
+          runtime
+          releaseDate
+          status
+          tagline
+          countries {
+            id
+            countryCode
+            englishName
+          }
+          languages {
+            id
+            languageCode
+            englishName
+          }
+        }
+      }
+    }
+  }
+`;

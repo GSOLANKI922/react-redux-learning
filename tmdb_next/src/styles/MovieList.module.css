@@ -21,3 +21,41 @@
 .movieListContainer {
   margin-top: 60px;
 }
+
+.movieFormContainer{
+  margin-top: 60px;
+  text-align: -webkit-center;
+}
+
+.movie_Detail_Container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.ContentStyle {
+  margin: 10px;
+  height: 300px;
+  color: #fff;
+  line-height: 160px;
+  text-align: center;
+  background: #364d79;
+}
+
+.Carousel_Images {
+  text-align: -webkit-center;
+}
+
+.card_meta_data {
+  line-height: 25px;
+}
+
+.card {
+  margin-bottom: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow-y: hidden;
+}
+
+.card::-webkit-scrollbar {
+  display: none;
+}
