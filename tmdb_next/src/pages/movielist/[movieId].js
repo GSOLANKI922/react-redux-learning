@@ -1,18 +1,19 @@
 import LayOut from "@/component/Layout";
-import { GET_MOVIE_BY_ID } from "@/graphql/query";
+import { GET_MOVIE_BY_ID_FOR_DETAILS_PAGE } from "@/graphql/query";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "../../styles/MovieList.module.css";
-import { Card, Carousel, Spin } from "antd";
+import { Button, Card, Carousel, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
+import { RollbackOutlined } from "@ant-design/icons";
 const { Meta } = Card;
 
 const MovieDetailsPage = () => {
   const router = useRouter();
   const { movieId } = router.query;
 
-  const { data, loading } = useQuery(GET_MOVIE_BY_ID, {
+  const { data, loading } = useQuery(GET_MOVIE_BY_ID_FOR_DETAILS_PAGE, {
     variables: {
       movieId: movieId,
     },
@@ -21,6 +22,16 @@ const MovieDetailsPage = () => {
   return (
     <div>
       <LayOut>
+        <div className={styles.titleContainer}>
+          <div>
+            <Button
+              type="primary"
+              icon={<RollbackOutlined />}
+              size="midium"
+              onClick={() => router.back()}
+            />
+          </div>
+        </div>
         <div className={styles.movie_Detail_Container}>
           {!loading ? (
             <MovieCard
@@ -53,22 +64,35 @@ const MovieDetailsPage = () => {
                   }`}
                 />
               }
-              budgetDesc={
+              languageDesc={
                 <Meta
-                  description={`Budget:${
-                    data.movie.data.budget ? data.movie.data.budget : "-"
+                  description={`Language:${
+                    data.movie.data.originalLanguage
+                      ? data.movie.data.originalLanguage
+                      : "-"
                   }`}
                 />
               }
               taglineDesc={
                 <Meta
-                  description={`Tagline
-     : ${data.movie.data.tagline ? data.movie.data.tagline : "-"}`}
+                  description={`Tagline: ${
+                    data.movie.data.tagline ? data.movie.data.tagline : "-"
+                  }`}
+                />
+              }
+              releaseDate={
+                <Meta
+                  description={`ReleaseDate: ${
+                    data.movie.data
+                      ? new Date(data.movie.data.releaseDate)
+                          .toISOString()
+                          .slice(0, 10)
+                      : "-"
+                  }`}
                 />
               }
               display="none"
             />
-            
           ) : (
             <Spin size="large" />
           )}

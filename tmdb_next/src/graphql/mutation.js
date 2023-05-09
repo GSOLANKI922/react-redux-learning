@@ -5,9 +5,6 @@ export const LOGIN = gql`
     emailPasswordLogIn(data: $data) {
       data {
         token
-        user {
-          email
-        }
       }
       message
     }
@@ -26,32 +23,17 @@ export const CREATE_MOVIE = gql`
   mutation CreateMovie($data: MovieInput) {
     createMovie(data: $data) {
       message
-      data {
-        movie {
-          id
-          adult
-          budget
-          originalLanguage
-          originalTitle
-          title
-          overview
-          revenue
-          runtime
-          releaseDate
-          status
-          tagline
-          countries {
-            id
-            countryCode
-            englishName
-          }
-          languages {
-            id
-            languageCode
-            englishName
-          }
-        }
-      }
     }
   }
 `;
+
+export const EDIT_MOVIE = gql`
+  mutation Mutation($updateMovieId: ID!, $data: UpdateMovieInput) {
+    updateMovie(id: $updateMovieId, data: $data) {
+      message
+    }
+  }
+`;
+
+
+

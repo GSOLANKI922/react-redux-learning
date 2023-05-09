@@ -1,20 +1,18 @@
 import LayOut from "@/component/Layout";
 import MovieCard from "@/component/MovieCard";
 import { MOVIE_LISTS } from "@/graphql/query";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { Spin, Col, Row, Button } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/MovieList.module.css";
-import { DELETE_MOVIE } from "@/graphql/mutation";
-import Image from "next/image";
 import { useRouter } from "next/router";
-
+import { VideoCameraAddOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
   const router = useRouter();
-
-  const [movieLists, { data, loading, refetch }] = useLazyQuery(MOVIE_LISTS, {
+  const [movieLists, { loading }] = useLazyQuery(MOVIE_LISTS, {
     onCompleted: (res) => {
       setCurMovieList([...res.listMovies.data]);
     },
@@ -59,10 +57,22 @@ const MovieList = () => {
 
   return (
     <LayOut infiniteScroll={infiniteScroll}>
-      <h2 className={styles.title} onClick={() => router.push("/movieform/addmovie")}>
-        Movies List
-        <Button type="primary">Add Movie</Button>
-      </h2>
+      <div className={styles.titleContainer}>
+        <div>
+        <Link href={"/movieform/addmovie"}>
+          <Button
+            type="primary"
+            icon={<VideoCameraAddOutlined />}
+            size="midium"
+          >
+            Add Movie
+          </Button>
+          </Link>
+        </div>
+        <div className={styles.title}>
+          <h1 style={{ margin: "0" }}>Movies List</h1>
+        </div>
+      </div>
       <div className={styles.movieListContainer}>
         <Row>
           {curMovieList &&
@@ -83,14 +93,12 @@ const MovieList = () => {
                     allData={movie}
                     movieLists={movieLists}
                     cover={
-                      <Image
-                        width={262}
-                        height={159}
+                      <img
+                        style={{ width: "100%" }}
                         alt="example"
                         src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                       />
                     }
-                    width="300px"
                     textAlign="start"
                   />
                 </Col>

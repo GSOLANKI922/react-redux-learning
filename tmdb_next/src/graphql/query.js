@@ -7,32 +7,13 @@ export const MOVIE_LISTS = gql`
         budget
         id
         title
-        releaseDate
-        revenue
-        status
-        adult
-        originalLanguage
-        originalTitle
-        overview
-        runtime
-        tagline
-        languages {
-          englishName
-          languageCode
-          id
-        }
-        countries {
-          englishName
-          countryCode
-          id
-        }
       }
       count
     }
   }
 `;
 
-export const GET_MOVIE_BY_ID = gql`
+export const GET_MOVIE_BY_ID_FOR_EDIT_DATA = gql`
   query getMovieById($movieId: ID!) {
     movie(id: $movieId) {
       data {
@@ -58,6 +39,22 @@ export const GET_MOVIE_BY_ID = gql`
           englishName
         }
         status
+      }
+    }
+  }
+`;
+
+export const GET_MOVIE_BY_ID_FOR_DETAILS_PAGE = gql`
+  query getMovieById($movieId: ID!) {
+    movie(id: $movieId) {
+      data {
+        id
+        budget
+        originalLanguage
+        releaseDate
+        revenue
+        tagline
+        title
       }
     }
   }

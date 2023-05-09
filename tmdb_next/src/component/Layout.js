@@ -23,7 +23,7 @@ const LayOut = ({ children, backgroundColor, infiniteScroll }) => {
   return (
     <Layout className="layout">
       <Header>
-        <div className={styles.logo}>TMDB</div>
+       <Link href={"/"}><div className={styles.logo}>TMDB</div></Link> 
         <Menu theme="dark" mode="horizontal" items={items} />
       </Header>
       <Content

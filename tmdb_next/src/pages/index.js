@@ -2,10 +2,27 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import LayOut from "@/component/Layout";
+import { useQuery } from "@apollo/client";
+import { MOVIE_LISTS } from "@/graphql/query";
+import { Col, Row, Spin } from "antd";
+import MovieCard from "@/component/MovieCard";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const { data, loading, error } = useQuery(MOVIE_LISTS, {
+    variables: {
+      filter: {
+        category: "TOP_RATED",
+        limit: 5,
+      },
+      sort: {
+        field: "createdAt",
+      },
+    },
+  });
+
   return (
     <>
       <Head>
@@ -15,7 +32,44 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LayOut>
-        <h1>Hello</h1>
+        <div className={styles.titleContainer}>
+          <div className={styles.title}>
+            <h1 style={{ margin: "0" }}>TOP 5 MOVIES</h1>
+          </div>
+        </div>
+        <div className={styles.movieListContainer}>
+          <Row>
+            {data &&
+              data.listMovies.data.map((movie) => {
+                return (
+                  <Col
+                    key={movie.id}
+                    xs={{
+                      span: 5,
+                      offset: 1,
+                    }}
+                    lg={{
+                      span: 6,
+                      offset: 2,
+                    }}
+                  >
+                    <MovieCard
+                      allData={movie}
+                      cover={
+                        <img
+                          style={{ width: "100%" }}
+                          alt="example"
+                          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        />
+                      }
+                      textAlign="start"
+                    />
+                  </Col>
+                );
+              })}
+          </Row>
+        </div>
+        <div>{loading && <Spin className={styles.spiner} size="large" />}</div>
       </LayOut>
     </>
   );

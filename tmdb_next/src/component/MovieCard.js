@@ -14,25 +14,22 @@ const { Meta } = Card;
 
 const MovieCard = ({
   allData,
-  movieLists,
   cover,
   width,
   revenueDesc,
-  budgetDesc,
   taglineDesc,
+  releaseDate,
+  languageDesc,
   display,
   textAlign,
   height,
 }) => {
   const router = useRouter();
 
-  const [deleteMovies, { data: deleteMovieData, loading: loadingMovieData }] =
-    useMutation(DELETE_MOVIE);
-
-  if (loadingMovieData) return <h1>loadingMovieData....</h1>;
-  if (deleteMovieData) {
-    console.log(deleteMovieData, "deleteMovieData");
-  }
+  const [
+    deleteMovies,
+    { data: deleteMovieData, loading: loadingDeleteMovieData },
+  ] = useMutation(DELETE_MOVIE);
 
   const confirm = async (DDI) => {
     console.log(DDI, "DDI");
@@ -51,6 +48,7 @@ const MovieCard = ({
   return (
     <>
       <Card
+        loading={loadingDeleteMovieData}
         className={styles.card}
         style={{
           width: { width },
@@ -68,23 +66,27 @@ const MovieCard = ({
           >
             <DeleteOutlined key="delete" />
           </Popconfirm>,
-          <Link href={`movieform/${allData.id}`}>
+          <Link href={`/movieform/${allData.id}`}>
             <EditOutlined key="edit" />
           </Link>,
           <Link
             href={`movielist/${allData ? allData.id : ""}`}
             style={{ display: display }}
           >
-            <EllipsisOutlined key="ellipsis" />
+            <EllipsisOutlined key="ellipsis"/>
           </Link>,
         ]}
       >
         <div style={{ textAlign: textAlign }}>
-          <Meta title={allData.title} description={allData.budget} />
-          <Meta description={allData.budget ? allData.title : ""} />
+          <Meta
+            title={allData.title}
+            description={`Budget : ${allData.budget}`}
+          />
+
           {revenueDesc}
-          {budgetDesc}
           {taglineDesc}
+          {releaseDate}
+          {languageDesc}
         </div>
       </Card>
     </>
