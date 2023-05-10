@@ -6,12 +6,12 @@ import { GET_TITLE_BY_ID } from "../graphql/queries";
 
 const BreadCrumb = () => {
   const { pathname } = useLocation();
-  const { data, loading } = useQuery(GET_TITLE_BY_ID, {
+  const { data } = useQuery(GET_TITLE_BY_ID, {
     variables: {
       movieId: pathname.slice(14),
     },
   });
-  if (loading) return <h1>Loading..</h1>;
+  
   let movieTitle;
   if (data) {
     movieTitle = data?.movie?.data?.title;
@@ -27,7 +27,7 @@ const BreadCrumb = () => {
 
   const BREADCRUMB_HOME_ITEM = [
     {
-      title: "Application",
+      title: "",
     },
     {
       title: (

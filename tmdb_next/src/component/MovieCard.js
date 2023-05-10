@@ -66,14 +66,14 @@ const MovieCard = ({
           >
             <DeleteOutlined key="delete" />
           </Popconfirm>,
-          <Link href={`/movieform/${allData.id}`}>
+          <Link href={`/movie/${allData.id}/edit`}>
             <EditOutlined key="edit" />
           </Link>,
           <Link
             href={`movielist/${allData ? allData.id : ""}`}
             style={{ display: display }}
           >
-            <EllipsisOutlined key="ellipsis"/>
+            <EllipsisOutlined key="ellipsis" />
           </Link>,
         ]}
       >

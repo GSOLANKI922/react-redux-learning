@@ -1,24 +1,24 @@
-import LayOut from "@/component/Layout";
+import { RollbackOutlined } from "@ant-design/icons";
+import { useMutation, useQuery } from "@apollo/client";
+import { Button, DatePicker, Form, Input, Select, Spin } from "antd";
+import React from "react";
+import styles from "../styles/MovieList.module.css";
+import { CREATE_MOVIE, EDIT_MOVIE } from "@/graphql/mutation";
+import { useRouter } from "next/router";
+import dayjs from "dayjs";
 import {
   GET_MOVIE_BY_ID_FOR_EDIT_DATA,
   MOVIE_LIST_COUNTRIES,
   MOVIE_LIST_LANGUAGES,
 } from "@/graphql/query";
-import { RollbackOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@apollo/client";
-import { Button, DatePicker, Form, Input, Select, Spin } from "antd";
-import React from "react";
-import styles from "../../styles/MovieList.module.css";
-import { CREATE_MOVIE, EDIT_MOVIE } from "@/graphql/mutation";
-import { useRouter } from "next/router";
 import { CONSTATNTS } from "@/Constants";
-import dayjs from "dayjs";
+import LayOut from "./Layout";
 const { Option } = Select;
 
 const MovieForm = () => {
   const router = useRouter();
   const { addeditmovie } = router.query;
-  console.log(addeditmovie, "addeditmovie");
+  console.log(router.pathname == "/movie/create", "addeditmovie");
 
   const [editMovie, { data: editMovieData, loading: editMovieLoading }] =
     useMutation(EDIT_MOVIE);
@@ -90,7 +90,8 @@ const MovieForm = () => {
       ...value,
       adult: value.adult === "1",
     };
-    if (addeditmovie === "addmovie") {
+    console.log(nValues);
+    if (router.pathname === "/movie/create") {
       try {
         await createMovie({
           variables: {
@@ -120,11 +121,18 @@ const MovieForm = () => {
     <LayOut>
       <div className={styles.titleContainer}>
         <div>
-          <Button type="primary" icon={<RollbackOutlined />} size="midium" onClick={() => router.back() }/>
+          <Button
+            type="primary"
+            icon={<RollbackOutlined />}
+            size="midium"
+            onClick={() => router.back()}
+          />
         </div>
         <div className={styles.title}>
           <h1 style={{ margin: "0" }}>
-            {addeditmovie === "addmovie" ? "ADD MOVIE FORM" : "EDIT MOVIE FORM"}
+            {router.pathname === "/movie/create"
+              ? "ADD MOVIE FORM"
+              : "EDIT MOVIE FORM"}
           </h1>
         </div>
       </div>
@@ -355,7 +363,9 @@ const MovieForm = () => {
               }}
             >
               <Button type="primary" htmlType="submit">
-                {addeditmovie === "addmovie" ? "ADD MOVIE" : "EDIT MOVIE"}
+                {router.pathname === "/movie/create"
+                  ? "ADD MOVIE"
+                  : "EDIT MOVIE"}
               </Button>
             </Form.Item>
           </Form>

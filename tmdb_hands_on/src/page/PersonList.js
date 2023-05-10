@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { PERSON_LIST } from "../graphql/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Form, Popconfirm, Space, Table, Tooltip } from "antd";
-import FormModel from "../component/FormModel";
+import { Button, Form, Popconfirm, Space, Spin, Table, Tooltip } from "antd";
+// import FormModel from "../component/FormModel";
 import { DELETE_PERSON } from "../graphql/mutations";
 import PagiNation from "../component/PagiNation";
 import PersonDetailModel from "./PersonDetailModel";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import NotificationC from "../component/NotificationC";
+import FormModel from "../component/PersonFormModel";
 const { Column } = Table;
 
 const PersonList = () => {
@@ -44,11 +45,6 @@ const PersonList = () => {
     deletePerson,
     { loading: deletePersonLoading, data: deletePersonData },
   ] = useMutation(DELETE_PERSON);
-
-  if (deletePersonLoading) return <h1>Loading...</h1>;
-  if (deletePersonData) {
-    console.log(deletePersonData, "deletePersonData");
-  }
 
   if (error) return <h1>Err..{error.message}</h1>;
 
@@ -115,7 +111,6 @@ const PersonList = () => {
             className="person_search"
             placeholder="Search by Name"
             enterButton={false}
-            
             defaultValue={search}
             onChange={changeHandler}
             loading
@@ -128,6 +123,7 @@ const PersonList = () => {
           setEdit={setEdit}
         />
       </div>
+      {deletePersonLoading && <Spin size="large" />}
       <div className="table_container">
         <Table
           dataSource={nData}

@@ -83,3 +83,17 @@ export const MOVIE_LIST_LANGUAGES = gql`
     }
   }
 `;
+
+export const PERSON_LISTS = gql`
+  query ListPersons($filter: ListPersonsFilter!, $sort: ListPersonsSort!) {
+    listPersons(filter: $filter, sort: $sort) {
+      data {
+        id
+        name
+        gender
+        adult
+      }
+      count
+    }
+  }
+`;

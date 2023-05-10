@@ -3,6 +3,7 @@ import { Button, DatePicker, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useQuery } from "@apollo/client";
 import { MOVIE_LIST_COUNTRIES, MOVIE_LIST_LANGUAGES } from "../graphql/queries";
 import { CONSTATNTS } from "../Constants";
+import dayjs from "dayjs";
 const { Option } = Select;
 
 const MovieForm = ({
@@ -22,22 +23,42 @@ const MovieForm = ({
     useQuery(MOVIE_LIST_LANGUAGES);
 
   useEffect(() => {
+    const {
+      adult,
+      budget,
+      countries,
+      id,
+      languages,
+      originalLanguage,
+      originalTitle,
+      overview,
+      revenue,
+      runtime,
+      status,
+      tagline,
+      title,
+      releaseDate,
+    } = editableData;
+
     if (isEdit) {
       setCurrentEditData({
-        adult: editableData.adult,
-        budget: editableData.budget,
-        countries: editableData.countries,
-        id: editableData.id,
-        languages: editableData.languages,
-        originalLanguage: editableData.originalLanguage,
-        originalTitle: editableData.originalTitle,
-        overview: editableData.overview,
-        releaseDate: null,
-        revenue: editableData.revenue,
-        runtime: editableData.runtime,
-        status: editableData.status,
-        tagline: editableData.tagline,
-        title: editableData.title,
+        adult: adult === true ? "1" : "0",
+        budget,
+        countries,
+        id,
+        languages,
+        originalLanguage,
+        originalTitle,
+        overview,
+        releaseDate: dayjs(
+          new Date(releaseDate).toISOString().slice(0, 10),
+          "YYYY/MM/DD"
+        ),
+        revenue,
+        runtime,
+        status,
+        tagline,
+        title,
       });
       showModal();
     }
@@ -61,6 +82,7 @@ const MovieForm = ({
       ...values,
       adult: values.adult === "1",
     };
+    console.log(isEdit, "isEdit");
     if (isEdit) {
       try {
         await editMovie({
@@ -68,9 +90,9 @@ const MovieForm = ({
             data: nValues,
           },
         });
+        setIsEdit(false);
         refetch();
         setIsModalOpen(false);
-        setIsEdit(false);
       } catch (error) {
         console.log(error, "editMovie");
       }
@@ -121,7 +143,7 @@ const MovieForm = ({
           style={{
             maxWidth: 600,
           }}
-          initialValues={currentEditData}
+          initialValues={isEdit ? currentEditData : null}
           onFinish={onFinish}
           autoComplete="off"
         >

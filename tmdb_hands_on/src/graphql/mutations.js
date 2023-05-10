@@ -5,9 +5,6 @@ export const USER_LOGIN = gql`
     emailPasswordLogIn(data: $data) {
       data {
         token
-        user {
-          email
-        }
       }
       message
     }
@@ -25,12 +22,6 @@ export const DELETE_PERSON = gql`
 export const Edit_PERSON_DETAILS = gql`
   mutation UpdatePerson($updatePersonId: ID!, $data: UpdatePersonInput!) {
     updatePerson(id: $updatePersonId, data: $data) {
-      data {
-        knownForDepartment
-        name
-        gender
-        id
-      }
       message
     }
   }
@@ -40,12 +31,6 @@ export const CREATE_PERSON = gql`
   mutation Mutation($data: PersonInput!) {
     createPerson(data: $data) {
       message
-      data {
-        id
-        name
-        gender
-        knownForDepartment
-      }
     }
   }
 `;
@@ -61,29 +46,6 @@ export const DELETE_MOVIE = gql`
 export const EDIT_MOVIE = gql`
   mutation Mutation($updateMovieId: ID!, $data: UpdateMovieInput) {
     updateMovie(id: $updateMovieId, data: $data) {
-      data {
-        movie {
-          adult
-          id
-          budget
-          originalLanguage
-          originalTitle
-          title
-          overview
-          releaseDate
-          revenue
-          runtime
-          status
-          tagline
-          countries {
-            countryCode
-          }
-          languages {
-            id
-            languageCode
-          }
-        }
-      }
       message
     }
   }
@@ -93,32 +55,6 @@ export const CREATE_MOVIE = gql`
   mutation CreateMovie($data: MovieInput) {
     createMovie(data: $data) {
       message
-      data {
-        movie {
-          id
-          adult
-          budget
-          originalLanguage
-          originalTitle
-          title
-          overview
-          revenue
-          runtime
-          releaseDate
-          status
-          tagline
-          countries {
-            id
-            countryCode
-            englishName
-          }
-          languages {
-            id
-            languageCode
-            englishName
-          }
-        }
-      }
     }
   }
 `;

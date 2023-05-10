@@ -59,7 +59,7 @@ const MovieList = () => {
     <LayOut infiniteScroll={infiniteScroll}>
       <div className={styles.titleContainer}>
         <div>
-        <Link href={"/movieform/addmovie"}>
+        <Link href={"/movie/create"}>
           <Button
             type="primary"
             icon={<VideoCameraAddOutlined />}

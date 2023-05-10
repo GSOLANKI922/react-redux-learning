@@ -38,3 +38,8 @@ root.render(
 );
 
 reportWebVitals();
+
+
+// Login page  : bredcurm Hide / change err notification
+// home page  : bredcurm changes
+// MOVIEform : true/false = radio button / ADD MOVIE PRIV. DATA NOT CLEAR / ADD MULTIPAL IMAGE UPLOAD / ADD filters and sort
