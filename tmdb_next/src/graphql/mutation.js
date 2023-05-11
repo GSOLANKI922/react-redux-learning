@@ -35,5 +35,18 @@ export const EDIT_MOVIE = gql`
   }
 `;
 
+export const DELETE_PERSON = gql`
+  mutation DeletePerson($deletePersonId: ID!) {
+    deletePerson(id: $deletePersonId) {
+      message
+    }
+  }
+`;
 
-
+export const EDIT_PERSON = gql`
+  mutation UpdatePerson($updatePersonId: ID!, $data: UpdatePersonInput!) {
+    updatePerson(id: $updatePersonId, data: $data) {
+      message
+    }
+  }
+`;

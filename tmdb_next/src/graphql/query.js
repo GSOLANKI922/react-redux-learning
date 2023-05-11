@@ -97,3 +97,18 @@ export const PERSON_LISTS = gql`
     }
   }
 `;
+
+export const PERSON_DETAILS = gql`
+  query PersonDetais($personId: ID!) {
+    person(id: $personId) {
+      data {
+        id
+        knownForDepartment
+        name
+        gender
+        popularity
+        adult
+      }
+    }
+  }
+`;

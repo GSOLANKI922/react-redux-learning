@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { PERSON_LIST } from "../graphql/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Form, Popconfirm, Space, Spin, Table, Tooltip } from "antd";
-// import FormModel from "../component/FormModel";
+import {
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Space,
+  Spin,
+  Table,
+  Tooltip,
+} from "antd";
 import { DELETE_PERSON } from "../graphql/mutations";
 import PagiNation from "../component/PagiNation";
 import PersonDetailModel from "./PersonDetailModel";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import Search from "antd/es/input/Search";
 import NotificationC from "../component/NotificationC";
 import FormModel from "../component/PersonFormModel";
 const { Column } = Table;
@@ -107,13 +114,12 @@ const PersonList = () => {
           />
         )}
         <Form style={{ width: "30%" }}>
-          <Search
+          <Input
             className="person_search"
             placeholder="Search by Name"
             enterButton={false}
             defaultValue={search}
             onChange={changeHandler}
-            loading
           />
         </Form>
         <FormModel
@@ -180,13 +186,12 @@ const PersonList = () => {
           />
         </Table>
       </div>
-      {data?.listPersons && (
-        <PagiNation
-          totalData={data?.listPersons?.count}
-          defaultCurrent={defaultCurrent}
-          changePageNumber={changePageNumber}
-        />
-      )}
+
+      <PagiNation
+        totalData={data ? data?.listPersons?.count : 615}
+        defaultCurrent={defaultCurrent}
+        changePageNumber={changePageNumber}
+      />
     </>
   );
 };

@@ -11,7 +11,7 @@ const BreadCrumb = () => {
       movieId: pathname.slice(14),
     },
   });
-  
+
   let movieTitle;
   if (data) {
     movieTitle = data?.movie?.data?.title;
@@ -49,12 +49,14 @@ const BreadCrumb = () => {
   ];
 
   return (
-    <Breadcrumb
-      style={{
-        margin: "16px 0",
-      }}
-      items={BREADCRUMB_HOME_ITEM}
-    />
+    <>
+      <Breadcrumb
+        style={{
+          margin: "16px 0",
+        }}
+        items={BREADCRUMB_HOME_ITEM}
+      />
+    </>
   );
 };
 

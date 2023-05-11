@@ -18,7 +18,6 @@ const { Option } = Select;
 const MovieForm = () => {
   const router = useRouter();
   const { addeditmovie } = router.query;
-  console.log(router.pathname == "/movie/create", "addeditmovie");
 
   const [editMovie, { data: editMovieData, loading: editMovieLoading }] =
     useMutation(EDIT_MOVIE);

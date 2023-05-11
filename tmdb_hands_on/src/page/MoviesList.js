@@ -6,7 +6,9 @@ import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import MovieForm from "../component/MovieForm";
 import NotificationC from "../component/NotificationC";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { Form, Input, Select, Spin } from "antd";
+import { CONSTATNTS } from "../Constants";
+const { Option } = Select;
 
 const MoviesList = () => {
   const [loadings, setLoadings] = useState(true);
@@ -14,7 +16,8 @@ const MoviesList = () => {
   const [editableData, setEditableData] = useState();
   const [isEdit, setIsEdit] = useState(false);
   const [curData, setCurData] = useState([]);
-
+  const [search, setSearch] = useState("");
+  const [sotdDataByCatagory, setSotdDataByCatagory] = useState(null);
   // Movie List
   const [movieListData, { loading, data, refetch }] = useLazyQuery(MOVIE_LIST, {
     onCompleted: (res) => {
@@ -27,6 +30,7 @@ const MoviesList = () => {
       filter: {
         skip: 0,
         limit: 12,
+        searchTerm: null,
       },
     },
   });
@@ -68,9 +72,7 @@ const MoviesList = () => {
           deleteMovieId: idd,
         },
       });
-      setTimeout(() => {
-        refetch();
-      }, 5000);
+      refetch();
     } catch (error) {
       console.log(error.message);
     }
@@ -105,6 +107,37 @@ const MoviesList = () => {
     }
   };
 
+  const changeHandlerByCatogray = (event) => {
+    setSotdDataByCatagory(event);
+    movieListData({
+      variables: {
+        sort: {
+          field: event,
+        },
+        filter: {
+          skip: 0,
+          limit: 12,
+          searchTerm: null,
+        },
+      },
+    });
+  };
+
+  const changeHandlerBySearch = (e) => {
+    setSearch(e.target.value);
+    movieListData({
+      variables: {
+        sort: {
+          field: "createdAt",
+        },
+        filter: {
+          skip: 0,
+          limit: 12,
+          searchTerm: e.target.value,
+        },
+      },
+    });
+  };
   return (
     <>
       <MovieForm
@@ -144,6 +177,40 @@ const MoviesList = () => {
               </div>
             ))}
 
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div>
+              <Select
+                placeholder="Sort By Catagory"
+                style={{
+                  width: 200,
+                  margin: "0 8px",
+                }}
+                defaultValue={sotdDataByCatagory}
+                onChange={changeHandlerByCatogray}
+              >
+                <Option value="createdAt">CreatedAt</Option>
+                <Option value="updatedAt">UpdatedAt</Option>
+                <Option value="releaseDate">ReleaseDate</Option>
+                <Option value="popularity">Popularity</Option>
+                <Option value="voteAverage">VoteAverage</Option>
+              </Select>
+            </div>
+            <div>
+              <Input
+                name="select"
+                placeholder="Search by Name"
+                enterButton={false}
+                defaultValue={search}
+                onChange={changeHandlerBySearch}
+              />
+            </div>
+          </div>
           {curData?.length > 0 ? (
             curData?.map((movies) => {
               return (
@@ -165,7 +232,9 @@ const MoviesList = () => {
           ) : (
             <CardC loading={true} />
           )}
-          <div className="infiniteScroll">{loading &&   <Spin size="large" />}</div>
+          <div className="infiniteScroll">
+            {loading && <Spin size="large" />}
+          </div>
         </div>
       </div>
     </>

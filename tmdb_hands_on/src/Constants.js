@@ -32,4 +32,6 @@ export const CONSTATNTS = {
   GAUTAM_SOLANKI: "@Gautam Solanki",
   DESIGN_CREATED_BY: "Design ©2023 Created by",
   BACK: "Back",
+  YES: "Yes",
+  NO: "No",
 };

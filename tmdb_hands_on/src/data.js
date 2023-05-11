@@ -20,7 +20,7 @@ export const HEADER_ITEM_LOGIN = [
         to="/login"
         onClick={() => {
           localStorage.removeItem("token");
-          window.location.href = "http://localhost:3000/login";
+          window.location = "/login";
         }}
       >
         Logout

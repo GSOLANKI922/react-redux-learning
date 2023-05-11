@@ -1,57 +1,12 @@
 import LayOut from "@/component/Layout";
 import React, { useEffect, useState } from "react";
-import { Button, Pagination, Space, Table, Tag } from "antd";
-import { useLazyQuery } from "@apollo/client";
+import { Button, Pagination, Popconfirm, Space, Table, Tag } from "antd";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { PERSON_LISTS } from "@/graphql/query";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    align: "center",
-  },
-  {
-    title: "Gender",
-    dataIndex: "gender",
-    key: "gender",
-    align: "center",
-  },
-  {
-    title: "Adult",
-    key: "adult",
-    align: "center",
-    dataIndex: "adult",
-    render: (_, { adult }) => {
-      let color = adult === true ? "green" : "geekblue";
-      let tag = adult === true ? "Yes" : "No";
-      return (
-        <Tag color={color} key={tag}>
-          {tag}
-        </Tag>
-      );
-    },
-  },
-  {
-    title: "Action",
-    align: "center",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <Button>
-          <EditOutlined />
-        </Button>
-        <Button danger>
-          <DeleteOutlined />
-        </Button>
-        <Button>
-          <EyeOutlined />
-        </Button>
-      </Space>
-    ),
-  },
-];
+import { DELETE_PERSON } from "@/graphql/mutation";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 let paginationConf = {
   total: 100,
@@ -61,8 +16,9 @@ let paginationConf = {
 };
 
 const PersonList = () => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
-  const [listPersons, { data, loading }] = useLazyQuery(PERSON_LISTS, {
+  const [listPersons, { data, loading, refetch }] = useLazyQuery(PERSON_LISTS, {
     variables: {
       filter: {
         skip: 0,
@@ -75,6 +31,11 @@ const PersonList = () => {
     },
   });
 
+  const [
+    deletePerson,
+    { data: deletePersonData, loading: deletePersonLoading },
+  ] = useMutation(DELETE_PERSON);
+
   useEffect(() => {
     listPersons();
   }, []);
@@ -84,6 +45,7 @@ const PersonList = () => {
     personCurData = data?.listPersons?.data?.map((persion) => {
       return {
         key: persion.id,
+        id: persion.id,
         name: persion.name,
         gender: persion.gender,
         adult: persion.adult,
@@ -109,11 +71,86 @@ const PersonList = () => {
     });
   };
 
+  const confirm = async (did) => {
+    try {
+      await deletePerson({
+        variables: {
+          deletePersonId: did,
+        },
+      });
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      align: "center",
+      sorter: (a, b) => a.name - b.name,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      align: "center",
+    },
+    {
+      title: "Adult",
+      key: "adult",
+      align: "center",
+      dataIndex: "adult",
+      render: (_, { adult }) => {
+        let color = adult === true ? "green" : "geekblue";
+        let tag = adult === true ? "Yes" : "No";
+        return (
+          <Tag color={color} key={tag}>
+            {tag}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: "Action",
+      align: "center",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <Link href={`person/${record.id}/edit`}>
+            <Button>
+              <EditOutlined />
+            </Button>
+          </Link>
+          <Popconfirm
+            placement="top"
+            title="Are You Sure!"
+            description="Confirm Delete"
+            onConfirm={() => confirm(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>
+              <DeleteOutlined />
+            </Button>
+          </Popconfirm>
+          <Link href={`personlist/${record.id}`}>
+            <Button>
+              <EyeOutlined />
+            </Button>
+          </Link>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <LayOut>
       <div>
         <Table
-          loading={loading}
+          loading={loading || deletePersonLoading}
           columns={columns}
           dataSource={personCurData}
           pagination={paginationConf}
@@ -125,11 +162,3 @@ const PersonList = () => {
 };
 
 export default PersonList;
-
-// <div style={{textAlign:"center", marginTop:"2rem"}}>
-// <Pagination
-//   defaultCurrent={page}
-//   total={data && data.listPersons.count}
-//   onChange={onPageChangehandler}
-// />
-// </div>

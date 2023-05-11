@@ -3,6 +3,8 @@ import { Button, DatePicker, Modal, Form, Input, Select, Tooltip } from "antd";
 import { useQuery } from "@apollo/client";
 import { MOVIE_LIST_COUNTRIES, MOVIE_LIST_LANGUAGES } from "../graphql/queries";
 import { CONSTATNTS } from "../Constants";
+import { Radio } from 'antd';
+
 import dayjs from "dayjs";
 const { Option } = Select;
 
@@ -78,11 +80,12 @@ const MovieForm = ({
   };
 
   const onFinish = async (values) => {
+    console.log(values, "values");
     const nValues = {
       ...values,
       adult: values.adult === "1",
     };
-    console.log(isEdit, "isEdit");
+    console.log(nValues, "nValues");
     if (isEdit) {
       try {
         await editMovie({
@@ -272,26 +275,20 @@ const MovieForm = ({
             <Input type="number" />
           </Form.Item>
           <Form.Item
-            label={CONSTATNTS.ADULT}
-            name="adult"
-            rules={[
-              {
-                required: true,
-                message: `${CONSTATNTS.PLEASE_INPUT_YOUR_MOVIE} ${CONSTATNTS.ADULT}`,
-              },
-            ]}
-          >
-            <Select
-              placeholder={`${CONSTATNTS.SELECT} ${CONSTATNTS.ADULT}`}
-              style={{
-                width: 100,
-                margin: "0 8px",
-              }}
-            >
-              <Option value="1">{CONSTATNTS.TRUE}</Option>
-              <Option value="0">{CONSTATNTS.FALSE}</Option>
-            </Select>
-          </Form.Item>
+          name="adult"
+          label={CONSTATNTS.ADULT}
+          rules={[
+            {
+              required: true,
+              message: 'Please pick an item!',
+            },
+          ]}
+        >
+          <Radio.Group>
+            <Radio.Button value="1">{CONSTATNTS.YES}</Radio.Button>
+            <Radio.Button value="0">{CONSTATNTS.NO}</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
           <Form.Item
             label={CONSTATNTS.COUNTRY_IDS}
             name="countryIds"

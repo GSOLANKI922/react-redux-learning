@@ -33,7 +33,7 @@ const HeaderC = () => {
           </div>
         </Header>
         <Content className="main_Content_container">
-          <BreadCrumb />
+          {auth && <BreadCrumb />}
 
           <div
             className="site-layout-content"
