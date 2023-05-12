@@ -9,7 +9,7 @@ const ErrorPage = () => {
   useEffect(() => {
     setTimeout(() => {
       router.push("/");
-    }, 4000);
+    }, 3000);
   }, []);
   return (
     <LayOut>

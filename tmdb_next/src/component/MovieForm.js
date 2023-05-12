@@ -1,143 +1,33 @@
 import { RollbackOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Button, DatePicker, Form, Input, Select, Spin } from "antd";
 import React from "react";
 import styles from "../styles/MovieList.module.css";
-import { CREATE_MOVIE, EDIT_MOVIE } from "@/graphql/mutation";
 import { useRouter } from "next/router";
-import dayjs from "dayjs";
-import {
-  GET_MOVIE_BY_ID_FOR_EDIT_DATA,
-  MOVIE_LIST_COUNTRIES,
-  MOVIE_LIST_LANGUAGES,
-} from "@/graphql/query";
+import { MOVIE_LIST_COUNTRIES, MOVIE_LIST_LANGUAGES } from "@/graphql/query";
 import { CONSTATNTS } from "@/Constants";
 import LayOut from "./Layout";
+import TitleBar from "./TitleBar";
 const { Option } = Select;
 
-const MovieForm = () => {
+const MovieForm = ({ initialValues, loadings, onFinish, name }) => {
   const router = useRouter();
-  const { addeditmovie } = router.query;
-
-  const [editMovie, { data: editMovieData, loading: editMovieLoading }] =
-    useMutation(EDIT_MOVIE);
 
   const { data, loading } = useQuery(MOVIE_LIST_COUNTRIES);
 
   const { data: languagesData, loading: languagesLoading } =
     useQuery(MOVIE_LIST_LANGUAGES);
 
-  const [createMovie, { data: createMovieData, loading: createMovieLoading }] =
-    useMutation(CREATE_MOVIE);
-
-  const { data: getMovieByIdData, loading: getMovieByIdLoading } = useQuery(
-    GET_MOVIE_BY_ID_FOR_EDIT_DATA,
-    {
-      variables: {
-        movieId: addeditmovie,
-      },
-    }
-  );
-
-  if (editMovieLoading) return <h1>editMovieLoading...</h1>;
-  if (editMovieData) {
-    console.log(editMovieData, "editMovieData");
-  }
-
-  let initialValues;
-  if (getMovieByIdData) {
-    const {
-      adult,
-      budget,
-      countries,
-      id,
-      languages,
-      originalLanguage,
-      originalTitle,
-      overview,
-      releaseDate,
-      revenue,
-      runtime,
-      status,
-      tagline,
-      title,
-    } = getMovieByIdData.movie.data;
-
-    initialValues = {
-      adult: adult == true ? "1" : "0",
-      budget,
-      countries,
-      id,
-      languages,
-      originalLanguage,
-      originalTitle,
-      overview,
-      releaseDate: dayjs(
-        new Date(releaseDate).toISOString().slice(0, 10),
-        "YYYY/MM/DD"
-      ),
-      revenue,
-      runtime,
-      status,
-      tagline,
-      title,
-    };
-  }
-
-  const onFinish = async (value) => {
-    const nValues = {
-      ...value,
-      adult: value.adult === "1",
-    };
-    console.log(nValues);
-    if (router.pathname === "/movie/create") {
-      try {
-        await createMovie({
-          variables: {
-            data: nValues,
-          },
-        });
-        router.push("/movielist");
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        editMovie({
-          variables: {
-            data: nValues,
-            updateMovieId: addeditmovie,
-          },
-        });
-        router.push("/movielist");
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
   return (
     <LayOut>
-      <div className={styles.titleContainer}>
-        <div>
-          <Button
-            type="primary"
-            icon={<RollbackOutlined />}
-            size="midium"
-            onClick={() => router.back()}
-          />
-        </div>
-        <div className={styles.title}>
-          <h1 style={{ margin: "0" }}>
-            {router.pathname === "/movie/create"
-              ? "ADD MOVIE FORM"
-              : "EDIT MOVIE FORM"}
-          </h1>
-        </div>
-      </div>
-      {createMovieLoading && <Spin size="large" />}
+      <TitleBar
+        title={name}
+        icon={<RollbackOutlined />}
+        link="/movielist"
+        btnName=""
+      />
       <div className={styles.movieFormContainer}>
-        {!getMovieByIdLoading ? (
+        {!loadings ? (
           <Form
             name="basic"
             labelCol={{

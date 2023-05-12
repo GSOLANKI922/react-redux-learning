@@ -7,6 +7,7 @@ import styles from "../../styles/MovieList.module.css";
 import { Button, Card, Carousel, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
 import { RollbackOutlined } from "@ant-design/icons";
+import TitleBar from "@/component/TitleBar";
 const { Meta } = Card;
 
 const MovieDetailsPage = () => {
@@ -22,16 +23,11 @@ const MovieDetailsPage = () => {
   return (
     <div>
       <LayOut>
-        <div className={styles.titleContainer}>
-          <div>
-            <Button
-              type="primary"
-              icon={<RollbackOutlined />}
-              size="midium"
-              onClick={() => router.back()}
-            />
-          </div>
-        </div>
+        <TitleBar
+          title="Movie Details"
+          icon={<RollbackOutlined />}
+          link="/movielist"
+        />
         <div className={styles.movie_Detail_Container}>
           {!loading ? (
             <MovieCard

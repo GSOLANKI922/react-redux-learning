@@ -4,6 +4,8 @@ import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { Descriptions, Spin } from "antd";
+import { RollbackOutlined } from "@ant-design/icons";
+import TitleBar from "@/component/TitleBar";
 
 const PersionDetails = () => {
   const router = useRouter();
@@ -21,6 +23,7 @@ const PersionDetails = () => {
 
   return (
     <LayOut>
+    <TitleBar title="Person Detais" icon={<RollbackOutlined />} link="/personlist" btnName=""  />
       {loading && <Spin size="large" />}
       {data && (
         <Descriptions
@@ -29,6 +32,7 @@ const PersionDetails = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginTop:"70px"
           }}
         >
           <Descriptions.Item label="UserName">

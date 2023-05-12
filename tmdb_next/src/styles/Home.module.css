@@ -12,6 +12,8 @@
   margin: 0;
   top: 50;
   padding: 5px;
+  background-color: #100f0f;
+  color: aliceblue;
 }
 
 .title {
@@ -20,4 +22,10 @@
 
 .movieListContainer {
   margin-top: 60px;
+}
+
+.spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

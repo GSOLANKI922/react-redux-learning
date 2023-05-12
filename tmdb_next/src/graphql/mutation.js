@@ -50,3 +50,11 @@ export const EDIT_PERSON = gql`
     }
   }
 `;
+
+export const CREATE_PERSON = gql`
+  mutation CreatePerson($data: PersonInput!) {
+    createPerson(data: $data) {
+      message
+    }
+  }
+`;

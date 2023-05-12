@@ -1,9 +1,11 @@
+import LayOut from "@/component/Layout";
 import PersonForm from "@/component/PersonForm";
 import { EDIT_PERSON } from "@/graphql/mutation";
 import { PERSON_DETAILS } from "@/graphql/query";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+
 
 const edit = () => {
   const router = useRouter();
@@ -16,24 +18,32 @@ const edit = () => {
   });
 
   const [editPerson, { data: editPersonData, loading: editPersonloading }] =
-    useMutation(EDIT_PERSON, {
-      variables: {
-        updatePersonId: "cd1e9235-0dda-4eca-ba81-9498a2e1f411",
-        data: {
-          gender: "OTHER",
-          name: "RamLila",
-          knownForDepartment: "Karan",
-          adult: null,
-          popularity: null,
-        },
-      },
-    });
+    useMutation(EDIT_PERSON);
 
   useEffect(() => {
     getPersonData();
   }, []);
 
-  if (loading) return <h1>loading...</h1>;
+  const onFinish = async (value) => {
+    let nData = {
+      ...value,
+      adult: value.adult == "1",
+      popularity: parseFloat(value.popularity),
+    };
+    console.log(nData, "nData");
+    try {
+      await editPerson({
+        variables: {
+          updatePersonId: initialValues.id,
+          data: nData,
+        },
+      });
+      router.push("/personlist");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   let initialValues;
   if (data) {
     const { adult, gender, id, knownForDepartment, name, popularity } =
@@ -49,9 +59,14 @@ const edit = () => {
   }
 
   return (
-    <div>
-      <PersonForm initialValues={initialValues} />
-    </div>
+    <LayOut>
+      <PersonForm
+        initialValues={initialValues}
+        loading={loading || editPersonloading}
+        onFinish={onFinish}
+        name="Edit"
+      />
+    </LayOut>
   );
 };
 

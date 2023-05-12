@@ -1,14 +1,10 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import LayOut from "@/component/Layout";
 import { useQuery } from "@apollo/client";
 import { MOVIE_LISTS } from "@/graphql/query";
 import { Col, Row, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
-import { useRouter } from "next/router";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { data, loading, error } = useQuery(MOVIE_LISTS, {
@@ -38,38 +34,41 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.movieListContainer}>
-          <Row>
-            {data &&
-              data.listMovies.data.map((movie) => {
-                return (
-                  <Col
-                    key={movie.id}
-                    xs={{
-                      span: 5,
-                      offset: 1,
-                    }}
-                    lg={{
-                      span: 6,
-                      offset: 2,
-                    }}
-                  >
-                    <MovieCard
-                      allData={movie}
-                      cover={
-                        <img
-                          style={{ width: "100%" }}
-                          alt="example"
-                          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                        />
-                      }
-                      textAlign="start"
-                    />
-                  </Col>
-                );
-              })}
-          </Row>
+          {!loading ? (
+            <Row>
+              {data &&
+                data.listMovies.data.map((movie) => {
+                  return (
+                    <Col
+                      key={movie.id}
+                      xs={{
+                        span: 5,
+                        offset: 1,
+                      }}
+                      lg={{
+                        span: 6,
+                        offset: 2,
+                      }}
+                    >
+                      <MovieCard
+                        allData={movie}
+                        cover={
+                          <img
+                            style={{ width: "100%" }}
+                            alt="example"
+                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                          />
+                        }
+                        textAlign="start"
+                      />
+                    </Col>
+                  );
+                })}
+            </Row>
+          ) : (
+            <Spin className={styles.spiner} size="large" />
+          )}
         </div>
-        <div>{loading && <Spin className={styles.spiner} size="large" />}</div>
       </LayOut>
     </>
   );

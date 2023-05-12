@@ -1,12 +1,19 @@
-import LayOut from "@/component/Layout";
 import React, { useEffect, useState } from "react";
-import { Button, Pagination, Popconfirm, Space, Table, Tag } from "antd";
 import { useLazyQuery, useMutation } from "@apollo/client";
+import LayOut from "@/component/Layout";
+import TitleBar from "@/component/TitleBar";
+import { Button, Popconfirm, Space, Table, Tag } from "antd";
 import { PERSON_LISTS } from "@/graphql/query";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { DELETE_PERSON } from "@/graphql/mutation";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "../../styles/Person.module.css";
 
 let paginationConf = {
   total: 100,
@@ -22,7 +29,7 @@ const PersonList = () => {
     variables: {
       filter: {
         skip: 0,
-        limit: 90,
+        limit: 8,
         searchTerm: null,
       },
       sort: {
@@ -64,8 +71,8 @@ const PersonList = () => {
     listPersons({
       variables: {
         filter: {
-          skip: 9 * page.current,
-          limit: 9,
+          skip: 8 * page.current,
+          limit: 8,
         },
       },
     });
@@ -149,13 +156,21 @@ const PersonList = () => {
   return (
     <LayOut>
       <div>
-        <Table
-          loading={loading || deletePersonLoading}
-          columns={columns}
-          dataSource={personCurData}
-          pagination={paginationConf}
-          onChange={onPageChangehandler}
+        <TitleBar
+          title={`Person List`}
+          icon={<UserAddOutlined />}
+          link="/person/create"
+          btnName="Add Person"
         />
+        <div className={styles.personListContainer}>
+          <Table
+            loading={loading || deletePersonLoading}
+            columns={columns}
+            dataSource={personCurData}
+            pagination={paginationConf}
+            onChange={onPageChangehandler}
+          />
+        </div>
       </div>
     </LayOut>
   );

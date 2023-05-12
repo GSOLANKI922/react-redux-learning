@@ -8,6 +8,7 @@ import styles from "@/styles/MovieList.module.css";
 import { useRouter } from "next/router";
 import { VideoCameraAddOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import TitleBar from "@/component/TitleBar";
 
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
@@ -57,22 +58,7 @@ const MovieList = () => {
 
   return (
     <LayOut infiniteScroll={infiniteScroll}>
-      <div className={styles.titleContainer}>
-        <div>
-        <Link href={"/movie/create"}>
-          <Button
-            type="primary"
-            icon={<VideoCameraAddOutlined />}
-            size="midium"
-          >
-            Add Movie
-          </Button>
-          </Link>
-        </div>
-        <div className={styles.title}>
-          <h1 style={{ margin: "0" }}>Movies List</h1>
-        </div>
-      </div>
+      <TitleBar title="Movies List" icon={<VideoCameraAddOutlined />} link="/movie/create" btnName="Add Movie" />
       <div className={styles.movieListContainer}>
         <Row>
           {curMovieList &&
