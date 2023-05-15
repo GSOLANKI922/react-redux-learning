@@ -2,13 +2,15 @@ import MovieForm from "@/component/MovieForm";
 import { GET_MOVIE_BY_ID_FOR_EDIT_DATA } from "@/graphql/query";
 import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import { EDIT_MOVIE } from "@/graphql/mutation";
+import Notification from "@/component/Notification";
 
 const edit = () => {
   const router = useRouter();
   const { addeditmovie } = router.query;
+  const [loading, setLoading] = useState(false);
 
   const { data: getMovieByIdData, loading: getMovieByIdLoading } = useQuery(
     GET_MOVIE_BY_ID_FOR_EDIT_DATA,
@@ -74,7 +76,11 @@ const edit = () => {
           updateMovieId: addeditmovie,
         },
       });
-      router.push("/movielist");
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        router.push("/movielist");
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +88,12 @@ const edit = () => {
 
   return (
     <div>
+      {editMovieData && (
+        <Notification
+          message="Edit Movie"
+          description={editMovieData.updateMovie.message}
+        />
+      )}
       <MovieForm
         initialValues={initialValues}
         loadings={getMovieByIdLoading || editMovieLoading}

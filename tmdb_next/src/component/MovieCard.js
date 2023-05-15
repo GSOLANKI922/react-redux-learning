@@ -7,9 +7,7 @@ import {
 import { Card, Popconfirm } from "antd";
 import Link from "next/link";
 import styles from "../styles/MovieList.module.css";
-import { DELETE_MOVIE } from "@/graphql/mutation";
-import { useMutation } from "@apollo/client";
-import { useRouter } from "next/navigation";
+
 const { Meta } = Card;
 
 const MovieCard = ({
@@ -23,36 +21,18 @@ const MovieCard = ({
   display,
   textAlign,
   height,
+  deleteMovie,
+  cardLoading,
 }) => {
-  const router = useRouter();
-
-  const [
-    deleteMovies,
-    { data: deleteMovieData, loading: loadingDeleteMovieData },
-  ] = useMutation(DELETE_MOVIE);
-
-  const confirm = async (DDI) => {
-    console.log(DDI, "DDI");
-    try {
-      await deleteMovies({
-        variables: {
-          deleteMovieId: DDI,
-        },
-      });
-      router.push("/movielist");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <Card
-        loading={loadingDeleteMovieData}
+        loading={cardLoading}
         className={styles.card}
         style={{
           width: { width },
           height: { height },
+          margin: "3rem",
         }}
         cover={cover}
         actions={[
@@ -60,7 +40,7 @@ const MovieCard = ({
             placement="top"
             title="Are you sure to delete"
             description="Delete the task"
-            onConfirm={() => confirm(allData.id)}
+            onConfirm={() => deleteMovie(allData.id)}
             okText="Yes"
             cancelText="No"
           >

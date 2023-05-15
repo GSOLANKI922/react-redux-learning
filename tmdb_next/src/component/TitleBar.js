@@ -1,15 +1,17 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import Link from "next/link";
 import React from "react";
 
-const TitleBar = ({ title, icon, link, btnName }) => {
+const TitleBar = ({ title, icon, link, btnName, TooLtip }) => {
   return (
     <div className="titleContainer">
       <div>
         <Link href={link}>
-          <Button className="button" type="text" icon={icon} size="midium">
-            {btnName}
-          </Button>
+          <Tooltip title={TooLtip}>
+            <Button className="button" type="text" icon={icon} size="midium">
+              {btnName}
+            </Button>
+          </Tooltip>
         </Link>
       </div>
       <div className="title">

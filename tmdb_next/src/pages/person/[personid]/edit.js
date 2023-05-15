@@ -1,24 +1,28 @@
 import LayOut from "@/component/Layout";
+import Notification from "@/component/Notification";
 import PersonForm from "@/component/PersonForm";
 import { EDIT_PERSON } from "@/graphql/mutation";
 import { PERSON_DETAILS } from "@/graphql/query";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 
 const edit = () => {
   const router = useRouter();
   const { personid } = router.query;
-
-  const [getPersonData, { data, loading }] = useLazyQuery(PERSON_DETAILS, {
-    variables: {
-      personId: personid,
-    },
-  });
+  const [loading, setLoading] = useState(false);
 
   const [editPerson, { data: editPersonData, loading: editPersonloading }] =
     useMutation(EDIT_PERSON);
+
+  const [getPersonData, { data, loading: getPersonLoading }] = useLazyQuery(
+    PERSON_DETAILS,
+    {
+      variables: {
+        personId: personid,
+      },
+    }
+  );
 
   useEffect(() => {
     getPersonData();
@@ -30,7 +34,6 @@ const edit = () => {
       adult: value.adult == "1",
       popularity: parseFloat(value.popularity),
     };
-    console.log(nData, "nData");
     try {
       await editPerson({
         variables: {
@@ -38,7 +41,11 @@ const edit = () => {
           data: nData,
         },
       });
-      router.push("/personlist");
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        router.push("/personlist");
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -62,10 +69,16 @@ const edit = () => {
     <LayOut>
       <PersonForm
         initialValues={initialValues}
-        loading={loading || editPersonloading}
+        loading={editPersonloading || getPersonLoading || loading}
         onFinish={onFinish}
         name="Edit"
       />
+      {editPersonData && (
+        <Notification
+          message="Edit Person"
+          description={editPersonData.updatePerson.message}
+        />
+      )}
     </LayOut>
   );
 };

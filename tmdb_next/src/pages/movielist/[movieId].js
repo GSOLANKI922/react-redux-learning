@@ -27,6 +27,7 @@ const MovieDetailsPage = () => {
           title="Movie Details"
           icon={<RollbackOutlined />}
           link="/movielist"
+          TooLtip="Back"
         />
         <div className={styles.movie_Detail_Container}>
           {!loading ? (

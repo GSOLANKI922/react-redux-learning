@@ -42,12 +42,10 @@ export default function Home() {
                     <Col
                       key={movie.id}
                       xs={{
-                        span: 5,
-                        offset: 1,
+                        span: 4,
                       }}
                       lg={{
                         span: 6,
-                        offset: 2,
                       }}
                     >
                       <MovieCard

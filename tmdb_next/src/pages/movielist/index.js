@@ -1,7 +1,7 @@
 import LayOut from "@/component/Layout";
 import MovieCard from "@/component/MovieCard";
 import { MOVIE_LISTS } from "@/graphql/query";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Spin, Col, Row, Button } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/MovieList.module.css";
@@ -9,24 +9,32 @@ import { useRouter } from "next/router";
 import { VideoCameraAddOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import TitleBar from "@/component/TitleBar";
+import { DELETE_MOVIE } from "@/graphql/mutation";
+import Notification from "@/component/Notification";
 
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
-  const router = useRouter();
-  const [movieLists, { loading }] = useLazyQuery(MOVIE_LISTS, {
-    onCompleted: (res) => {
-      setCurMovieList([...res.listMovies.data]);
-    },
-    variables: {
-      filter: {
-        skip: 0,
-        limit: 9,
+
+  const [movieLists, { loading: movieListsLoading, refetch }] = useLazyQuery(
+    MOVIE_LISTS,
+    {
+      onCompleted: (res) => {
+        setCurMovieList([...res.listMovies.data]);
       },
-      sort: {
-        field: "createdAt",
+      variables: {
+        filter: {
+          skip: 0,
+          limit: 9,
+        },
+        sort: {
+          field: "createdAt",
+        },
       },
-    },
-  });
+    }
+  );
+
+  const [deleteMovies, { data: deleteMovieData, loading: DeleteMovieLoading }] =
+    useMutation(DELETE_MOVIE);
 
   useEffect(() => {
     movieLists();
@@ -56,10 +64,38 @@ const MovieList = () => {
     }
   };
 
+  const deleteMovie = async (DDI) => {
+    try {
+      await deleteMovies({
+        variables: {
+          deleteMovieId: DDI,
+        },
+      });
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <LayOut infiniteScroll={infiniteScroll}>
-      <TitleBar title="Movies List" icon={<VideoCameraAddOutlined />} link="/movie/create" btnName="Add Movie" />
-      <div className={styles.movieListContainer}>
+      <TitleBar
+        title="Movies List"
+        icon={<VideoCameraAddOutlined />}
+        link="/movie/create"
+        btnName="Add Movie"
+        TooLtip="Add Video"
+      />
+      <div
+        className={styles.movieListContainer}
+        style={{ display: DeleteMovieLoading ? "none" : "" }}
+      >
+        {deleteMovieData && (
+          <Notification
+            message="Delete Movie"
+            description={deleteMovieData.deleteMovie.message}
+          />
+        )}
         <Row>
           {curMovieList &&
             curMovieList.map((movie) => {
@@ -67,12 +103,10 @@ const MovieList = () => {
                 <Col
                   key={movie.id}
                   xs={{
-                    span: 5,
-                    offset: 1,
+                    span: 4,
                   }}
                   lg={{
                     span: 6,
-                    offset: 2,
                   }}
                 >
                   <MovieCard
@@ -86,13 +120,19 @@ const MovieList = () => {
                       />
                     }
                     textAlign="start"
+                    deleteMovie={deleteMovie}
+                    cardLoading={DeleteMovieLoading}
                   />
                 </Col>
               );
             })}
         </Row>
       </div>
-      <div>{loading && <Spin className={styles.spiner} size="large" />}</div>
+      <div>
+        {(movieListsLoading || DeleteMovieLoading) && (
+          <Spin className={styles.spiner} size="large" />
+        )}
+      </div>
     </LayOut>
   );
 };

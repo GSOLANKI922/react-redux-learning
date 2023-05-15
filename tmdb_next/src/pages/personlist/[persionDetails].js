@@ -23,7 +23,7 @@ const PersionDetails = () => {
 
   return (
     <LayOut>
-    <TitleBar title="Person Detais" icon={<RollbackOutlined />} link="/personlist" btnName=""  />
+    <TitleBar title="Person Detais" icon={<RollbackOutlined />} link="/personlist" btnName=""  TooLtip="Back"/>
       {loading && <Spin size="large" />}
       {data && (
         <Descriptions

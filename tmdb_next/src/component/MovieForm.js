@@ -1,6 +1,6 @@
 import { RollbackOutlined } from "@ant-design/icons";
 import { useQuery } from "@apollo/client";
-import { Button, DatePicker, Form, Input, Select, Spin } from "antd";
+import { Button, DatePicker, Form, Input, Select, Spin, Tooltip } from "antd";
 import React from "react";
 import styles from "../styles/MovieList.module.css";
 import { useRouter } from "next/router";
@@ -25,6 +25,7 @@ const MovieForm = ({ initialValues, loadings, onFinish, name }) => {
         icon={<RollbackOutlined />}
         link="/movielist"
         btnName=""
+        TooLtip="Back"
       />
       <div className={styles.movieFormContainer}>
         {!loadings ? (
@@ -251,11 +252,19 @@ const MovieForm = ({ initialValues, loadings, onFinish, name }) => {
                 span: 16,
               }}
             >
-              <Button type="primary" htmlType="submit">
-                {router.pathname === "/movie/create"
-                  ? "ADD MOVIE"
-                  : "EDIT MOVIE"}
-              </Button>
+              <Tooltip
+                title={
+                  router.pathname === "/movie/create"
+                    ? "ADD MOVIE"
+                    : "EDIT MOVIE"
+                }
+              >
+                <Button type="primary" htmlType="submit">
+                  {router.pathname === "/movie/create"
+                    ? "ADD MOVIE"
+                    : "EDIT MOVIE"}
+                </Button>
+              </Tooltip>
             </Form.Item>
           </Form>
         ) : (

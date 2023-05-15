@@ -1,12 +1,15 @@
 import MovieForm from "@/component/MovieForm";
+import Notification from "@/component/Notification";
 import { CREATE_MOVIE } from "@/graphql/mutation";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 
 const create = () => {
-  const router = useRouter()
-  const [createMovie, { data, loading }] = useMutation(CREATE_MOVIE);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [createMovie, { data, loading: createMovieLoading }] =
+    useMutation(CREATE_MOVIE);
 
   const onFinish = async (value) => {
     const nValues = {
@@ -19,7 +22,11 @@ const create = () => {
           data: nValues,
         },
       });
-      router.push("/movielist");
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        router.push("/movielist");
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -27,8 +34,14 @@ const create = () => {
 
   return (
     <div>
+      {data && (
+        <Notification
+          message="Add Movie"
+          description={data.createMovie.message}
+        />
+      )}
       <MovieForm
-        loadings={loading}
+        loadings={createMovieLoading || loading}
         onFinish={onFinish}
         name="ADD MOVIE FORM"
       />

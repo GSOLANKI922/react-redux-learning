@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/Person.module.css";
+import Notification from "@/component/Notification";
 
 let paginationConf = {
   total: 100,
@@ -155,23 +156,30 @@ const PersonList = () => {
 
   return (
     <LayOut>
-      <div>
+      <div style={{ marginBottom: "3rem" }}>
         <TitleBar
           title={`Person List`}
           icon={<UserAddOutlined />}
           link="/person/create"
           btnName="Add Person"
+          TooLtip="Add Person"
         />
-        <div className={styles.personListContainer}>
-          <Table
-            loading={loading || deletePersonLoading}
-            columns={columns}
-            dataSource={personCurData}
-            pagination={paginationConf}
-            onChange={onPageChangehandler}
-          />
-        </div>
       </div>
+      <div className={styles.personListContainer}>
+        <Table
+          loading={loading || deletePersonLoading}
+          columns={columns}
+          dataSource={personCurData}
+          pagination={paginationConf}
+          onChange={onPageChangehandler}
+        />
+      </div>
+      {deletePersonData && (
+        <Notification
+          message="Delete Person"
+          description={deletePersonData.deletePerson.message}
+        />
+      )}
     </LayOut>
   );
 };
