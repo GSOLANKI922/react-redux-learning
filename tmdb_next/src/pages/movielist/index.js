@@ -13,11 +13,13 @@ import Notification from "@/component/Notification";
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
   const [like, setLike] = useState(false);
+  const [totalMovies, setTotalMovies] = useState(0);
 
   const [movieLists, { loading: movieListsLoading, refetch, data }] =
     useLazyQuery(MOVIE_LISTS, {
       onCompleted: (res) => {
-        setCurMovieList([...res.movies.data]);
+        setCurMovieList([...curMovieList, ...res.movies.data]);
+        setTotalMovies(res.movies.count);
       },
       variables: {
         filter: {
@@ -44,7 +46,10 @@ const MovieList = () => {
 
   const infiniteScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollHeight <= scrollTop + clientHeight + 1) {
+    if (
+      scrollHeight <= scrollTop + clientHeight + 1 &&
+      totalMovies > curMovieList.length
+    ) {
       try {
         await movieLists({
           variables: {
@@ -56,12 +61,9 @@ const MovieList = () => {
               field: "createdAt",
             },
           },
-          onCompleted: (res) => {
-            setCurMovieList([...curMovieList, ...res.movies.data]);
-          },
         });
       } catch (error) {
-        console.log(error);
+        console.log(error, "hhhhhhh");
       }
     }
   };
@@ -78,8 +80,6 @@ const MovieList = () => {
       console.log(error);
     }
   };
-
-  console.log(curMovieList)
 
   const addFavorite = (idF) => {
     addFavoriteMovie({
@@ -113,16 +113,17 @@ const MovieList = () => {
         btnName="Add Movie"
         TooLtip="Add Video"
       />
-      <div
-        className={styles.movieListContainer}
-        style={{
-          display: DeleteMovieLoading || FavoriteMovieLoading ? "none" : "",
-        }}
-      >
+      <div className={styles.movieListContainer}>
         {deleteMovieData && (
           <Notification
             message="Delete Movie"
             description={deleteMovieData.deleteMovie.message}
+          />
+        )}
+        {FavoriteMovieData && (
+          <Notification
+            message="Add to Favorite Movie"
+            description={FavoriteMovieData.createFavoriteMovie.message}
           />
         )}
         <Row>
@@ -156,7 +157,6 @@ const MovieList = () => {
                     deleteMovie={deleteMovie}
                     cardLoading={DeleteMovieLoading || FavoriteMovieLoading}
                     addFavorite={addFavorite}
-                    like={like}
                   />
                 </Col>
               );

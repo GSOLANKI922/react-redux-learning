@@ -176,8 +176,9 @@ const PersonList = () => {
         />
       </div>
 
-      <div className={styles.personListContainer}>
+      <div className={styles.personListContainer} >
         <Table
+          scroll={{ y: 470 }}
           loading={loading || deletePersonLoading}
           columns={columns}
           dataSource={personCurData}

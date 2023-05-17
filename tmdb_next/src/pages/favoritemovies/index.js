@@ -5,13 +5,20 @@ import TitleBar from "@/component/TitleBar";
 import { GET_FAVOIRITE_MOVIES_LISTS } from "@/graphql/query";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Breadcrumb, Col, Row, Spin } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/styles/MovieList.module.css";
 import { DELETE_FAVORITE_MOVIE } from "@/graphql/mutation";
 
 const FavoriteMovies = () => {
+  const [refetchLoading, setRefetchLoading] = useState(false);
+  const [favMovies, setFavMovies] = useState([]);
   const [GetFavoriteMovies, { data, loading, refetch }] = useLazyQuery(
-    GET_FAVOIRITE_MOVIES_LISTS
+    GET_FAVOIRITE_MOVIES_LISTS,
+    {
+      onCompleted: (res) => {
+        setFavMovies(res);
+      },
+    }
   );
 
   const [
@@ -30,13 +37,19 @@ const FavoriteMovies = () => {
           deleteFavoriteMovieId: idF,
         },
       });
+      setRefetchLoading(true);
+      refetch();
       setTimeout(() => {
-        refetch();
+        setRefetchLoading(false);
       }, 500);
     } catch (error) {
       console.log(error);
     }
   };
+
+  if (favMovies) {
+    console.log(favMovies, "favMoviesfavMovies");
+  }
 
   return (
     <LayOut
@@ -65,15 +78,17 @@ const FavoriteMovies = () => {
       />
       <div
         className={styles.movieListContainer}
-        style={{ display: deleteFavoriteMoviesLoading ? "none" : "" }}
+        style={{
+          opacity:
+            deleteFavoriteMoviesLoading || loading || refetchLoading ? 0.3 : 1,
+        }}
       >
         <Row>
           {data &&
-            data?.getFavoriteMovies?.map(({ movie, id: favId }) => {
-              const { budget, id, title } = movie;
+            favMovies?.getFavoriteMovies?.map(({ movie, id: favId }) => {
               return (
                 <Col
-                  key={movie.id}
+                  key={favId}
                   xs={{
                     span: 4,
                   }}
@@ -82,11 +97,10 @@ const FavoriteMovies = () => {
                   }}
                 >
                   <MovieCard
-                    budget={budget}
-                    id={id}
+                    budget={movie == null ? "-" : movie.budget}
+                    id={movie == null ? "-" : movie.id}
                     favId={favId}
-                    title={title}
-                    allData={movie}
+                    title={movie == null ? "-" : movie.title}
                     cover={
                       <img
                         style={{ width: "100%" }}
@@ -97,18 +111,29 @@ const FavoriteMovies = () => {
                     textAlign="start"
                     cardLoading={loading}
                     deleteMovie={deleteMovie}
+                    like={true}
                   />
                 </Col>
               );
             })}
           {data?.getFavoriteMovies == 0 && (
-            <h1 style={{ textAlign: "center", width: "100%" }}>
+            <h1
+              style={{ textAlign: "center", width: "100%", marginTop: "5rem" }}
+            >
               No Data Found
             </h1>
           )}
         </Row>
       </div>
-      <div>{loading && <Spin className={styles.spiner} size="large" />}</div>
+      <div>
+        {(loading || refetchLoading) && (
+          <Spin
+            className={styles.spiner}
+            size="large"
+            style={{ marginTop: "2rem" }}
+          />
+        )}
+      </div>
     </LayOut>
   );
 };

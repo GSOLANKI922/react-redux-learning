@@ -4,9 +4,9 @@ import {
   EllipsisOutlined,
   DeleteOutlined,
   HeartOutlined,
-  HeartFilled
+  HeartFilled,
 } from "@ant-design/icons";
-import { Card, Popconfirm } from "antd";
+import { Button, Card, Popconfirm } from "antd";
 import Link from "next/link";
 import styles from "../styles/MovieList.module.css";
 import { useRouter } from "next/router";
@@ -20,23 +20,20 @@ const MovieCard = ({
   taglineDesc,
   releaseDate,
   languageDesc,
-  display,
   textAlign,
   deleteMovie,
   cardLoading,
   addFavorite,
-  like,
   budget,
   id,
   title,
   favId,
+  like,
 }) => {
   const router = useRouter();
-  const [idxx, setIdxx] = useState("");
   return (
     <>
       <Card
-        loading={cardLoading}
         className={styles.card}
         style={{
           width: width,
@@ -54,17 +51,26 @@ const MovieCard = ({
             okText="Yes"
             cancelText="No"
           >
-            <DeleteOutlined key="delete" />
+            <Button type="text">
+              <DeleteOutlined key="delete" />
+            </Button>
           </Popconfirm>,
           <Link href={`/movie/${id}/edit`}>
-            <EditOutlined key="edit" />
+            <Button type="text">
+              <EditOutlined key="edit" />
+            </Button>
           </Link>,
-          <HeartFilled
-            key="heart"
+          <Button
+            type="text"
+            disabled={cardLoading || like}
             onClick={() => addFavorite(id)}
-          />,
-          <Link href={`movielist/${id ? id : ""}`} style={{ display: display }}>
-            <EllipsisOutlined key="ellipsis" />
+          >
+            <HeartFilled key="heart" />
+          </Button>,
+          <Link href={`movielist/${id ? id : ""}`}>
+            <Button type="text">
+              <EllipsisOutlined key="ellipsis" />
+            </Button>
           </Link>,
         ]}
       >
@@ -81,5 +87,3 @@ const MovieCard = ({
 };
 
 export default MovieCard;
-
-<HeartOutlined />;

@@ -9,16 +9,17 @@ const TitleBar = ({ title, icon, link, btnName, TooLtip, display }) => {
     <div className="titleContainer">
       <div>
         <Tooltip title={TooLtip}>
-          <Button
-            className="button"
-            type="text"
-            icon={icon}
-            size="midium"
-            onClick={() => router.back()}
-            style={{ display: display }}
-          >
-            {btnName}
-          </Button>
+          <Link href={link}>
+            <Button
+              className="button"
+              type="text"
+              icon={icon}
+              size="midium"
+              style={{ display: display }}
+            >
+              {btnName}
+            </Button>
+          </Link>
         </Tooltip>
       </div>
       <div className="title">
