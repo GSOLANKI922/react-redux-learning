@@ -12,25 +12,28 @@ import Notification from "@/component/Notification";
 
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
-  const [like, setLike] = useState(false);
   const [totalMovies, setTotalMovies] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
-  const [movieLists, { loading: movieListsLoading, refetch, data }] =
-    useLazyQuery(MOVIE_LISTS, {
+  const [movieLists, { loading: movieListsLoading, refetch }] = useLazyQuery(
+    MOVIE_LISTS,
+    {
       onCompleted: (res) => {
-        setCurMovieList([...curMovieList, ...res.movies.data]);
+        setCurMovieList(res.movies.data);
         setTotalMovies(res.movies.count);
       },
       variables: {
         filter: {
           skip: 0,
           limit: 9,
+          searchTerm: searchText,
         },
         sort: {
           field: "createdAt",
         },
       },
-    });
+    }
+  );
 
   const [deleteMovies, { data: deleteMovieData, loading: DeleteMovieLoading }] =
     useMutation(DELETE_MOVIE);
@@ -42,7 +45,7 @@ const MovieList = () => {
 
   useEffect(() => {
     movieLists();
-  }, []);
+  }, [searchText]);
 
   const infiniteScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -61,9 +64,12 @@ const MovieList = () => {
               field: "createdAt",
             },
           },
+          onCompleted: (res) => {
+            setCurMovieList([...curMovieList, ...res.movies.data]);
+          },
         });
       } catch (error) {
-        console.log(error, "hhhhhhh");
+        console.log(error);
       }
     }
   };
@@ -90,7 +96,6 @@ const MovieList = () => {
         },
       },
     });
-    setLike(!like);
   };
 
   return (
@@ -112,6 +117,8 @@ const MovieList = () => {
         link="/movie/create"
         btnName="Add Movie"
         TooLtip="Add Video"
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <div className={styles.movieListContainer}>
         {deleteMovieData && (

@@ -5,9 +5,11 @@ import { useQuery } from "@apollo/client";
 import { TOP_MOVIE_LISTS } from "@/graphql/query";
 import { Breadcrumb, Col, Row, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
+import TitleBar from "@/component/TitleBar";
 
 export default function Home() {
-  const { data, loading, error } = useQuery(TOP_MOVIE_LISTS, {
+  
+  const { data, loading } = useQuery(TOP_MOVIE_LISTS, {
     variables: {
       filter: {
         category: "TOP_RATED",
@@ -38,11 +40,14 @@ export default function Home() {
           </Breadcrumb>
         }
       >
-        <div className={styles.titleContainer}>
-          <div className={styles.title}>
-            <h1 style={{ margin: "0" }}>TOP 5 MOVIES</h1>
-          </div>
-        </div>
+        <TitleBar
+          title={`TOP 5 MOVIES`}
+          icon=""
+          link=""
+          TooLtip=""
+          display="none"
+          input="none"
+        />
         <div className={styles.movieListContainer}>
           {!loading ? (
             <Row>
@@ -71,6 +76,7 @@ export default function Home() {
                           />
                         }
                         textAlign="start"
+                        pushLink="/"
                       />
                     </Col>
                   );

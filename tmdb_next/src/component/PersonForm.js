@@ -12,6 +12,7 @@ const PersonForm = ({ initialValues, loading, onFinish, name }) => {
         icon={<RollbackOutlined />}
         link="/personlist"
         TooLtip="Back"
+        input="none"
       />
       <div style={{ marginTop: "60px", textAlign: "-webkit-center" }}>
         {!loading ? (

@@ -75,6 +75,7 @@ const FavoriteMovies = () => {
         link=""
         TooLtip=""
         display="none"
+        input="none"
       />
       <div
         className={styles.movieListContainer}

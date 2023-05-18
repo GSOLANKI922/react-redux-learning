@@ -26,6 +26,7 @@ const MovieForm = ({ initialValues, loadings, onFinish, name, breadCrumb }) => {
         link="/movielist"
         btnName=""
         TooLtip="Back"
+        input="none"
       />
       <div className={styles.movieFormContainer}>
         {!loadings ? (

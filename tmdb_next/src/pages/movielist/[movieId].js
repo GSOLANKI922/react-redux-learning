@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "../../styles/MovieList.module.css";
-import { Button, Card, Carousel, Spin } from "antd";
+import { Breadcrumb, Button, Card, Carousel, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
 import { RollbackOutlined } from "@ant-design/icons";
 import TitleBar from "@/component/TitleBar";
@@ -22,7 +22,20 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
-      <LayOut>
+      <LayOut
+        breadCrumb={
+          <Breadcrumb
+            style={{
+              margin: "16px 0",
+            }}
+          >
+            <Breadcrumb.Item> / MovieList</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {data ? data.movie.data.title : ""}
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        }
+      >
         <TitleBar
           title="Movie Details"
           icon={<RollbackOutlined />}
@@ -54,7 +67,6 @@ const MovieDetailsPage = () => {
               }
               allData={data.movie.data}
               width={1000}
-              // height={500}
               textAlign="center"
               revenueDesc={
                 <Meta

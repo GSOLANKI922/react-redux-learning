@@ -24,17 +24,19 @@ let paginationConf = {
 };
 
 const PersonList = () => {
-  const router = useRouter();
+  const [ascending, setAscending] = useState(true);
+  const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const [listPersons, { data, loading, refetch }] = useLazyQuery(PERSON_LISTS, {
     variables: {
       filter: {
         skip: 0,
         limit: 8,
-        searchTerm: null,
+        searchTerm: searchText || null,
       },
       sort: {
         field: "createdAt",
+        order: ascending ? "ASC" : "DESC",
       },
     },
   });
@@ -46,7 +48,7 @@ const PersonList = () => {
 
   useEffect(() => {
     listPersons();
-  }, []);
+  }, [ascending, searchText]);
 
   let personCurData;
   if (data) {
@@ -92,13 +94,16 @@ const PersonList = () => {
     }
   };
 
+  const personSorted = async () => {
+    setAscending(!ascending);
+  };
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       align: "center",
-      sorter: (a, b) => a.name - b.name,
+      sorter: () => personSorted(),
     },
     {
       title: "Gender",
@@ -153,7 +158,7 @@ const PersonList = () => {
       ),
     },
   ];
-
+  console.log(searchText, "searchText");
   return (
     <LayOut
       breadCrumb={
@@ -173,10 +178,12 @@ const PersonList = () => {
           link="/person/create"
           btnName="Add Person"
           TooLtip="Add Person"
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
       </div>
 
-      <div className={styles.personListContainer} >
+      <div className={styles.personListContainer}>
         <Table
           scroll={{ y: 470 }}
           loading={loading || deletePersonLoading}

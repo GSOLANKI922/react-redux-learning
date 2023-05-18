@@ -16,7 +16,6 @@ const LayOut = ({
   const router = useRouter();
   const [auth, setAuth] = useState("");
 
-  // let auth;
   const getToken = async () => {
     await setAuth(localStorage.getItem("token"));
   };
@@ -34,7 +33,6 @@ const LayOut = ({
       key: 2,
       label: <Link href="/movielist">MovieList</Link>,
     },
-
     {
       key: 3,
       label: <Link href="/favoritemovies">FavoriteMovies</Link>,

@@ -11,7 +11,7 @@ const Auth = () => {
         router.push("/login");
       }
     })();
-  },[]);
+  }, []);
 };
 
 export default Auth;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -10,6 +10,7 @@ import { Button, Card, Popconfirm } from "antd";
 import Link from "next/link";
 import styles from "../styles/MovieList.module.css";
 import { useRouter } from "next/router";
+import { DataContext } from "./Context";
 
 const { Meta } = Card;
 
@@ -29,6 +30,7 @@ const MovieCard = ({
   title,
   favId,
   like,
+  pushLink,
 }) => {
   const router = useRouter();
   return (

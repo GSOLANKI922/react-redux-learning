@@ -1,4 +1,4 @@
-import LayOut from "@/component/Layout";
+import DataProvider from "@/component/Context";
 import "@/styles/globals.css";
 import {
   ApolloClient,
@@ -23,7 +23,6 @@ export default function App({ Component, pageProps }) {
     };
   });
 
-
   const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
@@ -31,7 +30,9 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <DataProvider>
+          <Component {...pageProps} />
+        </DataProvider>
       </ApolloProvider>
     </>
   );
