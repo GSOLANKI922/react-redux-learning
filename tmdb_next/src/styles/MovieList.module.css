@@ -28,6 +28,7 @@
 
 .movieListContainer {
   margin-top: 20px;
+  overflow-y: scroll;
 }
 
 .movieFormContainer {
@@ -61,4 +62,8 @@
 
 .card::-webkit-scrollbar {
   display: none;
+}
+
+.card{
+  margin: 30px !important;
 }

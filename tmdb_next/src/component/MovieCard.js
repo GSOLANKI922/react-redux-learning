@@ -1,16 +1,14 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   EditOutlined,
   EllipsisOutlined,
   DeleteOutlined,
-  HeartOutlined,
   HeartFilled,
 } from "@ant-design/icons";
 import { Button, Card, Popconfirm } from "antd";
 import Link from "next/link";
 import styles from "../styles/MovieList.module.css";
 import { useRouter } from "next/router";
-import { DataContext } from "./Context";
 
 const { Meta } = Card;
 
@@ -30,16 +28,18 @@ const MovieCard = ({
   title,
   favId,
   like,
-  pushLink,
+  AddFav_Like,
+  AddFavioritIconHide,
 }) => {
   const router = useRouter();
+
   return (
     <>
       <Card
         className={styles.card}
         style={{
           width: width,
-          margin: "3rem",
+          margin: "1rem",
         }}
         cover={cover}
         actions={[
@@ -47,9 +47,7 @@ const MovieCard = ({
             placement="top"
             title="Are you sure to delete"
             description="Delete the task"
-            onConfirm={() =>
-              deleteMovie(router.asPath === "/favoritemovies" ? favId : id)
-            }
+            onConfirm={() => deleteMovie(id)}
             okText="Yes"
             cancelText="No"
           >
@@ -63,13 +61,19 @@ const MovieCard = ({
             </Button>
           </Link>,
           <Button
+            style={{ display: AddFav_Like || AddFavioritIconHide }}
             type="text"
             disabled={cardLoading || like}
-            onClick={() => addFavorite(id)}
+            onClick={() =>
+              addFavorite(router.asPath === "/favoritemovies" ? favId : id)
+            }
           >
             <HeartFilled key="heart" />
           </Button>,
-          <Link href={`movielist/${id ? id : ""}`}>
+          <Link
+            href={`movielist/${id ? id : ""}`}
+            style={{ display: AddFav_Like || AddFavioritIconHide }}
+          >
             <Button type="text">
               <EllipsisOutlined key="ellipsis" />
             </Button>

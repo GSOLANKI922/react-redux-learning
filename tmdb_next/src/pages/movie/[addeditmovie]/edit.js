@@ -105,7 +105,7 @@ const edit = () => {
               }}
             >
               <Breadcrumb.Item>
-                <Link href={`/personlist`}>/ PersonList</Link>
+                <Link href={`/movielist`}>/ MovieList</Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item> Edit</Breadcrumb.Item>
               <Breadcrumb.Item> {initialValues.title}</Breadcrumb.Item>

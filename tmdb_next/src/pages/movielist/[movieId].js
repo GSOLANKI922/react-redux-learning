@@ -8,6 +8,7 @@ import { Breadcrumb, Button, Card, Carousel, Spin } from "antd";
 import MovieCard from "@/component/MovieCard";
 import { RollbackOutlined } from "@ant-design/icons";
 import TitleBar from "@/component/TitleBar";
+import Link from "next/link";
 const { Meta } = Card;
 
 const MovieDetailsPage = () => {
@@ -29,7 +30,9 @@ const MovieDetailsPage = () => {
               margin: "16px 0",
             }}
           >
-            <Breadcrumb.Item> / MovieList</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link href={"/movielist"}> / MovieList</Link>
+            </Breadcrumb.Item>
             <Breadcrumb.Item>
               {data ? data.movie.data.title : ""}
             </Breadcrumb.Item>
@@ -41,6 +44,7 @@ const MovieDetailsPage = () => {
           icon={<RollbackOutlined />}
           link="/movielist"
           TooLtip="Back"
+          input="none"
         />
         <div className={styles.movie_Detail_Container}>
           {!loading ? (
@@ -65,6 +69,7 @@ const MovieDetailsPage = () => {
                   </div>
                 </Carousel>
               }
+              AddFav_Like="none"
               allData={data.movie.data}
               width={1000}
               textAlign="center"

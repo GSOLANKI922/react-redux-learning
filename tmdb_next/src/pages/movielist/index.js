@@ -41,7 +41,16 @@ const MovieList = () => {
   const [
     addFavoriteMovie,
     { data: FavoriteMovieData, loading: FavoriteMovieLoading },
-  ] = useMutation(CREATE_FAVORITE_MOVIE);
+  ] = useMutation(CREATE_FAVORITE_MOVIE, {
+    onCompleted: (res) => {
+      return (
+        <Notification
+          message="Add to Favorite Movie"
+          description={res.createFavoriteMovie.message}
+        />
+      );
+    },
+  });
 
   useEffect(() => {
     movieLists();
@@ -127,13 +136,12 @@ const MovieList = () => {
             description={deleteMovieData.deleteMovie.message}
           />
         )}
-        {FavoriteMovieData && (
-          <Notification
-            message="Add to Favorite Movie"
-            description={FavoriteMovieData.createFavoriteMovie.message}
-          />
-        )}
-        <Row>
+
+        <Row
+          style={{
+            opacity: DeleteMovieLoading ? 0.3 : 1,
+          }}
+        >
           {curMovieList &&
             curMovieList.map((movie) => {
               const { budget, id, title } = movie;

@@ -8,7 +8,6 @@ import MovieCard from "@/component/MovieCard";
 import TitleBar from "@/component/TitleBar";
 
 export default function Home() {
-  
   const { data, loading } = useQuery(TOP_MOVIE_LISTS, {
     variables: {
       filter: {
@@ -77,6 +76,7 @@ export default function Home() {
                         }
                         textAlign="start"
                         pushLink="/"
+                        AddFavioritIconHide="none"
                       />
                     </Col>
                   );

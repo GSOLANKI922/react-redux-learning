@@ -50,7 +50,7 @@ const create = () => {
             }}
           >
             <Breadcrumb.Item>
-              <Link href={`/personlist`}>/ PersonList</Link>
+              <Link href={`/movielist`}>/ MovieList</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item> Create</Breadcrumb.Item>
           </Breadcrumb>

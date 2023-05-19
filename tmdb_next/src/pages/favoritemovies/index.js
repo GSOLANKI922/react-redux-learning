@@ -30,7 +30,7 @@ const FavoriteMovies = () => {
     GetFavoriteMovies();
   }, []);
 
-  const deleteMovie = async (idF) => {
+  const RemoveFavorite = async (idF) => {
     try {
       await deleteFavoriteMovies({
         variables: {
@@ -47,10 +47,6 @@ const FavoriteMovies = () => {
     }
   };
 
-  if (favMovies) {
-    console.log(favMovies, "favMoviesfavMovies");
-  }
-
   return (
     <LayOut
       breadCrumb={
@@ -65,7 +61,7 @@ const FavoriteMovies = () => {
     >
       {deleteFavoriteMoviesData && (
         <Notification
-          message="Delete Movie"
+          message="Remove Favorite Movie"
           description={deleteFavoriteMoviesData.deleteFavoriteMovie.message}
         />
       )}
@@ -111,8 +107,7 @@ const FavoriteMovies = () => {
                     }
                     textAlign="start"
                     cardLoading={loading}
-                    deleteMovie={deleteMovie}
-                    like={true}
+                    addFavorite={RemoveFavorite}
                   />
                 </Col>
               );

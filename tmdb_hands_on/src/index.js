@@ -43,3 +43,14 @@ reportWebVitals();
 // Login page  : bredcurm Hide / change err notification
 // home page  : bredcurm changes
 // MOVIEform : true/false = radio button / ADD MOVIE PRIV. DATA NOT CLEAR / ADD MULTIPAL IMAGE UPLOAD / ADD filters and sort
+
+
+// outer scroll stop
+// Bredcrum
+// place Holder
+// Edit form button Name change
+// width increse for menu
+// filter loading set
+// No data Senario in movie List.
+// stop refetch form wtihout form save
+// validate msg and Input Placeholder
