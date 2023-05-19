@@ -106,7 +106,7 @@ const MovieList = () => {
       },
     });
   };
-
+  console.log(curMovieList.length === 0, "curMovieList");
   return (
     <LayOut
       infiniteScroll={infiniteScroll}
@@ -120,15 +120,17 @@ const MovieList = () => {
         </Breadcrumb>
       }
     >
-      <TitleBar
-        title="Movies List"
-        icon={<VideoCameraAddOutlined />}
-        link="/movie/create"
-        btnName="Add Movie"
-        TooLtip="Add Video"
-        searchText={searchText}
-        setSearchText={setSearchText}
-      />
+      <div style={{ width: "100%" }}>
+        <TitleBar
+          title="Movies List"
+          icon={<VideoCameraAddOutlined />}
+          link="/movie/create"
+          btnName="Add Movie"
+          TooLtip="Add Video"
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+      </div>
       <div className={styles.movieListContainer}>
         {deleteMovieData && (
           <Notification
@@ -138,23 +140,16 @@ const MovieList = () => {
         )}
 
         <Row
+          className={styles.movieList_wrapper}
           style={{
             opacity: DeleteMovieLoading ? 0.3 : 1,
           }}
         >
-          {curMovieList &&
+          {curMovieList.length !== 0 ? (
             curMovieList.map((movie) => {
               const { budget, id, title } = movie;
               return (
-                <Col
-                  key={movie.id}
-                  xs={{
-                    span: 4,
-                  }}
-                  lg={{
-                    span: 6,
-                  }}
-                >
+                <Col key={movie.id} xs={24} md={8} sm={12} lg={6} xl={6}>
                   <MovieCard
                     budget={budget}
                     id={id}
@@ -175,7 +170,10 @@ const MovieList = () => {
                   />
                 </Col>
               );
-            })}
+            })
+          ) : (
+            <h2 style={{ textAlign: "center", width: "100%" }}>NoData Found</h2>
+          )}
         </Row>
       </div>
       <div>

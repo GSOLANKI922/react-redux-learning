@@ -32,7 +32,6 @@ const MovieCard = ({
   AddFavioritIconHide,
 }) => {
   const router = useRouter();
-
   return (
     <>
       <Card

@@ -17,7 +17,6 @@
   border-radius: 10px;
   height: 77.7vh;
   align-items: center;
-  overflow-y: scroll;
 }
 
 .site_layout_content::-webkit-scrollbar {

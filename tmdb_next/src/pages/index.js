@@ -49,20 +49,12 @@ export default function Home() {
         />
         <div className={styles.movieListContainer}>
           {!loading ? (
-            <Row>
+            <Row className={styles.movieList_wrapper}>
               {data &&
                 data.listMovies.data.map((movie) => {
                   const { budget, id, title } = movie;
                   return (
-                    <Col
-                      key={movie.id}
-                      xs={{
-                        span: 4,
-                      }}
-                      lg={{
-                        span: 6,
-                      }}
-                    >
+                    <Col key={movie.id} xs={24} md={8} sm={12} lg={6} xl={6}>
                       <MovieCard
                         budget={budget}
                         id={id}

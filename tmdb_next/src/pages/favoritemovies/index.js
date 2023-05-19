@@ -80,19 +80,11 @@ const FavoriteMovies = () => {
             deleteFavoriteMoviesLoading || loading || refetchLoading ? 0.3 : 1,
         }}
       >
-        <Row>
+        <Row className={styles.movieList_wrapper}>
           {data &&
             favMovies?.getFavoriteMovies?.map(({ movie, id: favId }) => {
               return (
-                <Col
-                  key={favId}
-                  xs={{
-                    span: 4,
-                  }}
-                  lg={{
-                    span: 6,
-                  }}
-                >
+                <Col key={favId} xs={24} md={8} sm={12} lg={6} xl={6}>
                   <MovieCard
                     budget={movie == null ? "-" : movie.budget}
                     id={movie == null ? "-" : movie.id}
