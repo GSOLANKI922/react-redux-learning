@@ -1,6 +1,5 @@
-import { Button, Input, Tooltip } from "antd";
+import { Button, Input, Select, Tooltip } from "antd";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 
 const TitleBar = ({
@@ -13,8 +12,10 @@ const TitleBar = ({
   searchText,
   setSearchText,
   input,
+  sorted,
+  selectByCategory,
+  setSelectByCategory,
 }) => {
-  const router = useRouter();
   return (
     <div className="titleContainer">
       <div>
@@ -35,12 +36,25 @@ const TitleBar = ({
       <div className="title">
         <h1 style={{ margin: "0" }}>{title}</h1>
       </div>
-      <Input
-        placeholder="Search Text"
-        style={{ width: "25%", display: input }}
-        onChange={(e) => setSearchText(e.target.value)}
-        value={searchText}
-      />
+      <div className="inputSelectContainer">
+        <Select
+          placeholder="Sort By Category"
+          onChange={(e) => setSelectByCategory(e)}
+          defaultValue="createdAt"
+          options={sorted}
+          value={selectByCategory}
+          style={{
+            width: "20rem",
+            display: input,
+          }}
+        />
+        <Input
+          placeholder="Search Text"
+          style={{ display: input }}
+          onChange={(e) => setSearchText(e.target.value)}
+          value={searchText}
+        />
+      </div>
     </div>
   );
 };

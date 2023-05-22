@@ -17,7 +17,7 @@ export const CONSTATNTS = {
   TRUE: "TRUE",
   FALSE: "FALSE",
   NO_DATA: "No Data",
-  PLEASE_INPUT_YOUR_MOVIE: "Please input your movie",
+  PLEASE_ENTER_MOVIE: "Please Enter movie",
   ORIGINALTITLE: "OriginalTitle",
   ORIGINALLANGUAGE: "OriginalLanguage",
   OVERVIEW: "Overview",
@@ -34,4 +34,7 @@ export const CONSTATNTS = {
   BACK: "Back",
   YES: "Yes",
   NO: "No",
+  PLEASE_SELECT: "Please select",
+  LANGUAGE: "Language",
+  COUNTRY: "Country",
 };

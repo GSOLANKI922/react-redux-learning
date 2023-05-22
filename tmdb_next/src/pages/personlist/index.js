@@ -12,9 +12,9 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styles from "../../styles/Person.module.css";
 import Notification from "@/component/Notification";
+import { PERSON_CATAGORY } from "@/Constants";
 
 let paginationConf = {
   total: 100,
@@ -27,6 +27,7 @@ const PersonList = () => {
   const [ascending, setAscending] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
+  const [selectByCategory, setSelectByCategory] = useState("createdAt");
   const [listPersons, { data, loading, refetch }] = useLazyQuery(PERSON_LISTS, {
     variables: {
       filter: {
@@ -35,7 +36,7 @@ const PersonList = () => {
         searchTerm: searchText || null,
       },
       sort: {
-        field: "createdAt",
+        field: selectByCategory,
         order: ascending ? "ASC" : "DESC",
       },
     },
@@ -48,7 +49,7 @@ const PersonList = () => {
 
   useEffect(() => {
     listPersons();
-  }, [ascending, searchText]);
+  }, [ascending, searchText, selectByCategory]);
 
   let personCurData;
   if (data) {
@@ -180,6 +181,9 @@ const PersonList = () => {
           TooLtip="Add Person"
           searchText={searchText}
           setSearchText={setSearchText}
+          sorted={PERSON_CATAGORY}
+          selectByCategory={selectByCategory}
+          setSelectByCategory={setSelectByCategory}
         />
       </div>
 
@@ -204,3 +208,6 @@ const PersonList = () => {
 };
 
 export default PersonList;
+
+Ac: 7645766056;
+IFSC: KKBK0000883;

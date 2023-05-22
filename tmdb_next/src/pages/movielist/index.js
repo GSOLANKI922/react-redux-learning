@@ -9,31 +9,38 @@ import { VideoCameraAddOutlined } from "@ant-design/icons";
 import TitleBar from "@/component/TitleBar";
 import { CREATE_FAVORITE_MOVIE, DELETE_MOVIE } from "@/graphql/mutation";
 import Notification from "@/component/Notification";
+import { MOVIE_CATAGORY } from "@/Constants";
 
 const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
   const [totalMovies, setTotalMovies] = useState(0);
   const [searchText, setSearchText] = useState("");
-
-  const [movieLists, { loading: movieListsLoading, refetch }] = useLazyQuery(
-    MOVIE_LISTS,
-    {
-      onCompleted: (res) => {
-        setCurMovieList(res.movies.data);
+  const [selectByCategory, setSelectByCategory] = useState("createdAt");
+  console.log("curMovieList", curMovieList);
+  const [movieLists, { loading: movieListsLoading, refetch, fetchMore , networkStatus}] =
+    useLazyQuery(MOVIE_LISTS, {
+      fetchPolicy: 'network-only',
+      onCompleted: async (res) => {
+        console.log("complete");
+        setCurMovieList([...res.movies.data]);
         setTotalMovies(res.movies.count);
       },
+      notifyOnNetworkStatusChange: true,
       variables: {
         filter: {
           skip: 0,
           limit: 9,
-          searchTerm: searchText,
+          searchTerm: searchText ? searchText : null,
         },
         sort: {
-          field: "createdAt",
+          field: selectByCategory,
         },
       },
-    }
-  );
+    });
+
+    const isLoading = networkStatus === 1;
+    const isFetchingMore = networkStatus === 3;
+
 
   const [deleteMovies, { data: deleteMovieData, loading: DeleteMovieLoading }] =
     useMutation(DELETE_MOVIE);
@@ -54,34 +61,45 @@ const MovieList = () => {
 
   useEffect(() => {
     movieLists();
-  }, [searchText]);
+  }, [searchText, selectByCategory]);
 
   const infiniteScroll = async (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
+
     if (
-      scrollHeight <= scrollTop + clientHeight + 1 &&
-      totalMovies > curMovieList.length
+      scrollHeight <= scrollTop + clientHeight + 5 &&
+      totalMovies !== curMovieList.length
+      && !isLoading
+      && !isFetchingMore
     ) {
       try {
-        await movieLists({
+          console.log( totalMovies , curMovieList.length)
+        const { data } = await fetchMore({
           variables: {
             filter: {
               skip: curMovieList.length,
               limit: 9,
+              searchTerm: searchText ? searchText : null,
             },
             sort: {
-              field: "createdAt",
+              field: selectByCategory,
             },
+            
           },
-          onCompleted: (res) => {
-            setCurMovieList([...curMovieList, ...res.movies.data]);
-          },
+          updateQuery: () => null
+        });
+       
+        setCurMovieList((pre) => {
+          console.log("dd", [...pre, ...data.movies.data])
+          return [...pre, ...data.movies.data];
         });
       } catch (error) {
         console.log(error);
       }
     }
   };
+
+  console.log(totalMovies, "totalMovies");
 
   const deleteMovie = async (DDI) => {
     try {
@@ -106,10 +124,9 @@ const MovieList = () => {
       },
     });
   };
-  console.log(curMovieList.length === 0, "curMovieList");
+
   return (
     <LayOut
-      infiniteScroll={infiniteScroll}
       breadCrumb={
         <Breadcrumb
           style={{
@@ -129,6 +146,9 @@ const MovieList = () => {
           TooLtip="Add Video"
           searchText={searchText}
           setSearchText={setSearchText}
+          sorted={MOVIE_CATAGORY}
+          selectByCategory={selectByCategory}
+          setSelectByCategory={setSelectByCategory}
         />
       </div>
       <div className={styles.movieListContainer}>
@@ -138,12 +158,12 @@ const MovieList = () => {
             description={deleteMovieData.deleteMovie.message}
           />
         )}
-
         <Row
           className={styles.movieList_wrapper}
           style={{
             opacity: DeleteMovieLoading ? 0.3 : 1,
           }}
+          onScroll={infiniteScroll}
         >
           {curMovieList.length !== 0 ? (
             curMovieList.map((movie) => {

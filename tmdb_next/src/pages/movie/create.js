@@ -6,6 +6,7 @@ import { Breadcrumb } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import styles from "../../styles/MovieList.module.css";
 
 const create = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const create = () => {
     useMutation(CREATE_MOVIE);
 
   const onFinish = async (value) => {
+    console.log(value, "val");
     const nValues = {
       ...value,
       adult: value.adult === "1",

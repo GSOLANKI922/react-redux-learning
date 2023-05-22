@@ -19,8 +19,9 @@
 }
 
 .movieFormContainer {
-  margin-top: 60px;
-  text-align: -webkit-center;
+  height: 65vh;
+  overflow-y: scroll;
+  margin-top: 2rem;
 }
 
 .movie_Detail_Container {
@@ -47,6 +48,7 @@
   line-height: 25px;
 }
 
+.movieFormContainer::-webkit-scrollbar,
 .movieList_wrapper::-webkit-scrollbar,
 .movieListContainer::-webkit-scrollbar,
 .card::-webkit-scrollbar {

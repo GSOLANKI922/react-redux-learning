@@ -8,11 +8,7 @@ import NotificationC from "./NotificationC";
 
 const FormModel = ({ refetch, personData, setEdit, edit }) => {
   const [open, setOpen] = useState(false);
-  const [inputData, setInputData] = useState({
-    name: "",
-    knownForDepartment: "",
-    gender: "",
-  });
+  const [inputData, setInputData] = useState({});
 
   useEffect(() => {
     if (edit) {
@@ -41,9 +37,13 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
     setOpen(true);
   };
 
-  const handleCancel = () => {
-    window.location.reload();
-    setOpen(false);
+  const handleCancel = async () => {
+    try {
+      await setInputData({});
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onFinish = async (values) => {
@@ -114,97 +114,99 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
       ) : (
         ""
       )}
-      <Modal
-        title="Person Form"
-        open={open}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={inputData}
-          onFinish={onFinish}
-          autoComplete="off"
+      {open && (
+        <Modal
+          title="Person Form"
+          open={open}
+          onCancel={handleCancel}
+          footer={null}
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your name!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Gender"
-            name="gender"
-            rules={[
-              {
-                required: true,
-                message: "Please input your gender in capital!",
-              },
-            ]}
-          >
-            <Select
-              labelInValue
-              style={{
-                width: 120,
-              }}
-              options={[
-                {
-                  value: "MALE",
-                  label: "MALE",
-                },
-                {
-                  value: "FEMALE",
-                  label: "FEMALE",
-                },
-                {
-                  value: "OTHER",
-                  label: "OTHER",
-                },
-              ]}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Profession"
-            name="knownForDepartment"
-            rules={[
-              {
-                required: true,
-                message: "Please input your profession!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
+          <Form
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
             wrapperCol={{
-              offset: 8,
               span: 16,
             }}
+            style={{
+              maxWidth: 600,
+            }}
+            initialValues={inputData}
+            onFinish={onFinish}
+            autoComplete="off"
           >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your name!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Gender"
+              name="gender"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your gender in capital!",
+                },
+              ]}
+            >
+              <Select
+                labelInValue
+                style={{
+                  width: 120,
+                }}
+                options={[
+                  {
+                    value: "MALE",
+                    label: "MALE",
+                  },
+                  {
+                    value: "FEMALE",
+                    label: "FEMALE",
+                  },
+                  {
+                    value: "OTHER",
+                    label: "OTHER",
+                  },
+                ]}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Profession"
+              name="knownForDepartment"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your profession!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 8,
+                span: 16,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      )}
     </div>
   );
 };

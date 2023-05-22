@@ -24,20 +24,20 @@ tr td {
 
 .movie_list_container,
 .loadings {
-  height: 76vh !important;
-  padding: 2rem 20rem;
-  display: flex;
-  justify-content: center;
+  height: 74vh !important;
+  padding: 2rem;
 }
 
 .movie_list_container_1 {
-  height: 70.5vh !important;
+  height: 74.5vh !important;
+  overflow-y: scroll;
 }
 
 .table_container {
-  height: 70vh !important;
+  height: 67vh !important;
 }
 
+.movie_list_container_1::-webkit-scrollbar,
 .error_container::-webkit-scrollbar,
 .movie_details_container::-webkit-scrollbar,
 .movie_list_container::-webkit-scrollbar,
@@ -47,11 +47,6 @@ tr td {
 
 .movie_list_wrapper {
   margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 2rem;
-  column-gap: 2rem;
-  justify-content: space-evenly;
 }
 
 .loginForm_container {

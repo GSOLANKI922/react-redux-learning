@@ -3,17 +3,15 @@ import React, { useEffect, useState } from "react";
 import { GET_TOP_MOVIE } from "../graphql/queries";
 import CardC from "../component/CardC";
 import { useNavigate } from "react-router-dom";
-import MovieForm from "../component/MovieForm";
-import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
+import { DELETE_MOVIE } from "../graphql/mutations";
 import NotificationC from "../component/NotificationC";
 import { LoadingOutlined } from "@ant-design/icons";
 import { CONSTATNTS } from "../Constants";
+import { Col, Row } from "antd";
 
 const Home = () => {
   const navigate = useNavigate();
   const [loadings, setLoadings] = useState(true);
-  const [editableData, setEditableData] = useState();
-  const [isEdit, setIsEdit] = useState(false);
   const { data, loading, refetch } = useQuery(GET_TOP_MOVIE, {
     variables: {
       filter: {
@@ -27,18 +25,6 @@ const Home = () => {
 
   const [deleteMovie, { data: deleteData, loading: deleteLoading }] =
     useMutation(DELETE_MOVIE);
-
-  const [addMovies, { loading: createMoviesLoading, data: createMovieData }] =
-    useMutation(CREATE_MOVIE);
-
-  const [editMovie, { data: editData, loading: editLoading }] = useMutation(
-    EDIT_MOVIE,
-    {
-      variables: {
-        updateMovieId: editableData ? editableData.id : "",
-      },
-    }
-  );
 
   useEffect(() => {
     let auth = localStorage.getItem("token");
@@ -66,28 +52,12 @@ const Home = () => {
     }
   };
 
-  const editMovieHandler = (curEditData) => {
-    setIsEdit(true);
-    setEditableData(curEditData);
-    console.log(curEditData);
-  };
-
-  if (deleteLoading || loading || editLoading || createMoviesLoading) {
+  if (deleteLoading || loading) {
     return <LoadingOutlined />;
   }
 
   return (
     <>
-      <>
-        <MovieForm
-          editMovie={editMovie}
-          addMovies={addMovies}
-          refetch={refetch}
-          editableData={isEdit && editableData}
-          setIsEdit={setIsEdit}
-          isEdit={isEdit}
-        />
-      </>
       <div className="top_5_movie_container">
         <h2 className="top_5_movie"> {CONSTATNTS.TOP_5_MOVIES}</h2>
       </div>
@@ -99,42 +69,32 @@ const Home = () => {
       ) : (
         ""
       )}
-      {editData ? (
-        <NotificationC message={editData.updateMovie.message} text="success" />
-      ) : (
-        ""
-      )}
-      {createMovieData ? (
-        <NotificationC
-          message={createMovieData.createMovie.message}
-          text="success"
-        />
-      ) : (
-        ""
-      )}
+
       <div className="movie_list_container_1">
         <div className="movie_list_wrapper">
-          {data ? (
-            data.listMovies.data.map((movies) => {
-              return (
-                <CardC
-                  loading={loadings || createMoviesLoading || loading}
-                  allData={movies}
-                  budget={movies.budget}
-                  releaseDate={movies.releaseDate}
-                  revenue={movies.revenue}
-                  status={movies.status}
-                  title={movies.title}
-                  id={movies.id}
-                  key={movies.id}
-                  deleteHandler={deleteHandler}
-                  editMovieHandler={editMovieHandler}
-                />
-              );
-            })
-          ) : (
-            <CardC loading={true} />
-          )}
+          <Row>
+            {data ? (
+              data.listMovies.data.map((movies) => {
+                return (
+                  <Col key={movies.id} xs={24} md={8} sm={12} lg={6} xl={6}>
+                    <CardC
+                      loading={loadings || loading}
+                      allData={movies}
+                      budget={movies.budget}
+                      releaseDate={movies.releaseDate}
+                      revenue={movies.revenue}
+                      status={movies.status}
+                      title={movies.title}
+                      id={movies.id}
+                      deleteHandler={deleteHandler}
+                    />
+                  </Col>
+                );
+              })
+            ) : (
+              <CardC loading={true} />
+            )}
+          </Row>
         </div>
       </div>
     </>

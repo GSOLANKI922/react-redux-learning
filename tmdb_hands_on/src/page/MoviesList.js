@@ -6,8 +6,7 @@ import { CREATE_MOVIE, DELETE_MOVIE, EDIT_MOVIE } from "../graphql/mutations";
 import MovieForm from "../component/MovieForm";
 import NotificationC from "../component/NotificationC";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Form, Input, Select, Spin } from "antd";
-import { CONSTATNTS } from "../Constants";
+import { Col, Input, Row, Select, Spin } from "antd";
 const { Option } = Select;
 
 const MoviesList = () => {
@@ -17,20 +16,21 @@ const MoviesList = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [curData, setCurData] = useState([]);
   const [search, setSearch] = useState("");
-  const [sotdDataByCatagory, setSotdDataByCatagory] = useState(null);
+  const [sortdDataByCatagory, setSortdDataByCatagory] = useState("createdAt");
+
   // Movie List
   const [movieListData, { loading, data, refetch }] = useLazyQuery(MOVIE_LIST, {
     onCompleted: (res) => {
-      setCurData([...res.listMovies?.data]);
+      setCurData(res.listMovies?.data);
     },
     variables: {
       sort: {
-        field: "createdAt",
+        field: sortdDataByCatagory,
       },
       filter: {
         skip: 0,
         limit: 12,
-        searchTerm: null,
+        searchTerm: search ? search : null,
       },
     },
   });
@@ -56,7 +56,7 @@ const MoviesList = () => {
   useEffect(() => {
     movieListData();
     // eslint-disable-next-line
-  }, []);
+  }, [search, sortdDataByCatagory]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -93,7 +93,7 @@ const MoviesList = () => {
       movieListData({
         variables: {
           sort: {
-            field: "createdAt",
+            field: sortdDataByCatagory,
           },
           filter: {
             skip: curData.length,
@@ -107,37 +107,6 @@ const MoviesList = () => {
     }
   };
 
-  const changeHandlerByCatogray = (event) => {
-    setSotdDataByCatagory(event);
-    movieListData({
-      variables: {
-        sort: {
-          field: event,
-        },
-        filter: {
-          skip: 0,
-          limit: 12,
-          searchTerm: null,
-        },
-      },
-    });
-  };
-
-  const changeHandlerBySearch = (e) => {
-    setSearch(e.target.value);
-    movieListData({
-      variables: {
-        sort: {
-          field: "createdAt",
-        },
-        filter: {
-          skip: 0,
-          limit: 12,
-          searchTerm: e.target.value,
-        },
-      },
-    });
-  };
   return (
     <>
       <MovieForm
@@ -191,8 +160,8 @@ const MoviesList = () => {
                   width: 200,
                   margin: "0 8px",
                 }}
-                defaultValue={sotdDataByCatagory}
-                onChange={changeHandlerByCatogray}
+                defaultValue={sortdDataByCatagory}
+                onChange={(event) => setSortdDataByCatagory(event)}
               >
                 <Option value="createdAt">CreatedAt</Option>
                 <Option value="updatedAt">UpdatedAt</Option>
@@ -207,31 +176,36 @@ const MoviesList = () => {
                 placeholder="Search by Name"
                 enterButton={false}
                 defaultValue={search}
-                onChange={changeHandlerBySearch}
+                onChange={(e) => setSearch(e.target.value.trim())}
               />
             </div>
           </div>
-          {curData?.length > 0 ? (
-            curData?.map((movies) => {
-              return (
-                <CardC
-                  loading={loadings}
-                  allData={movies}
-                  budget={movies.budget}
-                  releaseDate={movies.releaseDate}
-                  revenue={movies.revenue}
-                  status={movies.status}
-                  title={movies.title}
-                  id={movies.id}
-                  key={movies.id}
-                  deleteHandler={deleteHandler}
-                  editMovieHandler={editMovieHandler}
-                />
-              );
-            })
-          ) : (
-            <CardC loading={true} />
-          )}
+          <Row>
+            {curData &&
+              curData?.map((movies) => {
+                return (
+                  <Col key={movies.id} xs={24} md={8} sm={12} lg={6} xl={6}>
+                    <CardC
+                      loading={loadings}
+                      allData={movies}
+                      budget={movies.budget}
+                      releaseDate={movies.releaseDate}
+                      revenue={movies.revenue}
+                      status={movies.status}
+                      title={movies.title}
+                      id={movies.id}
+                      deleteHandler={deleteHandler}
+                      editMovieHandler={editMovieHandler}
+                    />
+                  </Col>
+                );
+              })}
+            {curData.length === 0 && (
+              <div style={{ width: "100%", textAlign: "center" }}>
+                <h1>No Data Found</h1>
+              </div>
+            )}
+          </Row>
           <div className="infiniteScroll">
             {loading && <Spin size="large" />}
           </div>

@@ -24,7 +24,7 @@ const HeaderC = () => {
               <div className="logo">{CONSTATNTS.TMDB}</div>
             </Link>
             <Menu
-              style={{ width: "19%" }}
+              style={{ width: "23%" }}
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={["2"]}

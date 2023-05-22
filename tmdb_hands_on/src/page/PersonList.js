@@ -24,9 +24,13 @@ const PersonList = () => {
   const [edit, setEdit] = useState(false);
   const [defaultCurrent, setDefaultCurrent] = useState(1);
   const [search, setSeatch] = useState("");
+  const [totalPage, setTotalPage] = useState(1);
   const [userList, { data, loading, error, refetch }] = useLazyQuery(
     PERSON_LIST,
     {
+      onCompleted: (res) => {
+        setTotalPage(res.listPersons.count);
+      },
       variables: {
         sort: {
           field: "updatedAt",
@@ -100,10 +104,6 @@ const PersonList = () => {
     });
   };
 
-  const changeHandler = (e) => {
-    setSeatch(e.target.value.trim());
-  };
-
   return (
     <>
       <div className="person_model_container">
@@ -119,7 +119,7 @@ const PersonList = () => {
             placeholder="Search by Name"
             enterButton={false}
             defaultValue={search}
-            onChange={changeHandler}
+            onChange={(e) => setSeatch(e.target.value.trim())}
           />
         </Form>
         <FormModel
@@ -188,7 +188,7 @@ const PersonList = () => {
       </div>
 
       <PagiNation
-        totalData={data ? data?.listPersons?.count : 615}
+        totalData={totalPage}
         defaultCurrent={defaultCurrent}
         changePageNumber={changePageNumber}
       />

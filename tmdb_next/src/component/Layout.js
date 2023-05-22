@@ -9,7 +9,6 @@ import Auth from "./Auth";
 const LayOut = ({
   children,
   backgroundColor,
-  infiniteScroll,
   breadCrumb,
   display,
 }) => {
@@ -76,7 +75,6 @@ const LayOut = ({
       >
         <div style={{ visibility: display }}>{breadCrumb}</div>
         <div
-          onScroll={infiniteScroll}
           className={styles.site_layout_content}
           style={(backgroundColor = { backgroundColor })}
         >

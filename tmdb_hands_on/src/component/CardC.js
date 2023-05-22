@@ -20,21 +20,21 @@ const CardC = ({
       loading={loading}
       hoverable
       style={{
-        width: 240,
-        height: 320,
+       margin:"1rem",
+       padding:"1rem",
+       overflow:"hidden"
       }}
       className="card_container"
       cover={
         <Link to={`/movieDetails/${id}`}>
           <img
-            style={{ maxWidth: "240px" }}
             alt="random Img"
             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
           />
         </Link>
       }
     >
-      <Link to={`/movieDetails/${id}`} style={{ lineHeight: "30px" }}>
+      <Link to={`/movieDetails/${id}`} style={{ lineHeight: "30px", objectFit:"cover" }}>
         <Meta title={`Title : ${title}`} />
         <Meta description={`Budget : ${budget}`} />
         <Meta description={`Revenue : ${revenue}`} />

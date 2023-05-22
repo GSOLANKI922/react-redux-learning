@@ -1,7 +1,7 @@
 import LayOut from "@/component/Layout";
 import React, { useEffect } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Checkbox, Form, Input, Spin } from "antd";
+import { Breadcrumb, Button, Form, Input, Spin } from "antd";
 import styles from "../styles/Login.module.css";
 import { LOGIN } from "@/graphql/mutation";
 import { useMutation } from "@apollo/client";
