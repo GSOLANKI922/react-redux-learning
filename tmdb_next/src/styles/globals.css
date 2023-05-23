@@ -35,6 +35,7 @@
 }
 
 .inputSelectContainer{
+  width: 50%;
   display: flex;
   gap: 1rem;
 }

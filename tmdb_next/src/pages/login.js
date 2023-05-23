@@ -1,15 +1,24 @@
-import LayOut from "@/component/Layout";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Form, Input, Spin } from "antd";
 import styles from "../styles/Login.module.css";
 import { LOGIN } from "@/graphql/mutation";
 import { useMutation } from "@apollo/client";
+import LayOut from "@/component/Layout";
 import { useRouter } from "next/router";
 
 const Login = () => {
   const router = useRouter();
-  const [userLogin, { data, loading, error }] = useMutation(LOGIN);
+  const [loginData, setLoginData] = useState({});
+  const [userLogin, { data, loading, error }] = useMutation(LOGIN, {
+    variables: {
+      data: loginData ? loginData : null,
+    },
+    onCompleted: (res) => {
+      localStorage.setItem("token", res.emailPasswordLogIn.data.token);
+      router.push("/");
+    },
+  });
 
   useEffect(() => {
     let auth = localStorage.getItem("token");
@@ -18,22 +27,9 @@ const Login = () => {
     }
   }, []);
 
-  if (error) return <h1>err...{error}</h1>;
-  if (data) {
-    localStorage.setItem("token", data.emailPasswordLogIn.data.token);
-    router.push("/");
-  }
-
-  const onFinish = (values) => {
-    try {
-      userLogin({
-        variables: {
-          data: values,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const onFinish = async (values) => {
+    await setLoginData(values);
+    userLogin();
   };
 
   return (

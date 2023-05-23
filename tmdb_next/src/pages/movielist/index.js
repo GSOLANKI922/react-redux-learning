@@ -15,32 +15,33 @@ const MovieList = () => {
   const [curMovieList, setCurMovieList] = useState([]);
   const [totalMovies, setTotalMovies] = useState(0);
   const [searchText, setSearchText] = useState("");
+  const [isLoadings, setIsLoadings] = useState(true);
   const [selectByCategory, setSelectByCategory] = useState("createdAt");
-  console.log("curMovieList", curMovieList);
-  const [movieLists, { loading: movieListsLoading, refetch, fetchMore , networkStatus}] =
-    useLazyQuery(MOVIE_LISTS, {
-      fetchPolicy: 'network-only',
-      onCompleted: async (res) => {
-        console.log("complete");
-        setCurMovieList([...res.movies.data]);
-        setTotalMovies(res.movies.count);
+  const [
+    movieLists,
+    { loading: movieListsLoading, refetch, fetchMore, networkStatus },
+  ] = useLazyQuery(MOVIE_LISTS, {
+    fetchPolicy: "network-only",
+    onCompleted: async (res) => {
+      setCurMovieList([...res.movies.data]);
+      setTotalMovies(res.movies.count);
+      setIsLoadings(false);
+    },
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      filter: {
+        skip: 0,
+        limit: 9,
+        searchTerm: searchText ? searchText : null,
       },
-      notifyOnNetworkStatusChange: true,
-      variables: {
-        filter: {
-          skip: 0,
-          limit: 9,
-          searchTerm: searchText ? searchText : null,
-        },
-        sort: {
-          field: selectByCategory,
-        },
+      sort: {
+        field: selectByCategory,
       },
-    });
+    },
+  });
 
-    const isLoading = networkStatus === 1;
-    const isFetchingMore = networkStatus === 3;
-
+  const isLoading = networkStatus === 1;
+  const isFetchingMore = networkStatus === 3;
 
   const [deleteMovies, { data: deleteMovieData, loading: DeleteMovieLoading }] =
     useMutation(DELETE_MOVIE);
@@ -68,12 +69,11 @@ const MovieList = () => {
 
     if (
       scrollHeight <= scrollTop + clientHeight + 5 &&
-      totalMovies !== curMovieList.length
-      && !isLoading
-      && !isFetchingMore
+      totalMovies !== curMovieList.length &&
+      !isLoading &&
+      !isFetchingMore
     ) {
       try {
-          console.log( totalMovies , curMovieList.length)
         const { data } = await fetchMore({
           variables: {
             filter: {
@@ -84,13 +84,11 @@ const MovieList = () => {
             sort: {
               field: selectByCategory,
             },
-            
           },
-          updateQuery: () => null
+          updateQuery: () => null,
         });
-       
+
         setCurMovieList((pre) => {
-          console.log("dd", [...pre, ...data.movies.data])
           return [...pre, ...data.movies.data];
         });
       } catch (error) {
@@ -98,8 +96,6 @@ const MovieList = () => {
       }
     }
   };
-
-  console.log(totalMovies, "totalMovies");
 
   const deleteMovie = async (DDI) => {
     try {
@@ -191,8 +187,10 @@ const MovieList = () => {
                 </Col>
               );
             })
-          ) : (
+          ) : !isLoadings ? (
             <h2 style={{ textAlign: "center", width: "100%" }}>NoData Found</h2>
+          ) : (
+            ""
           )}
         </Row>
       </div>

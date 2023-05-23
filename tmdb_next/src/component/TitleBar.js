@@ -1,6 +1,7 @@
 import { Button, Input, Select, Tooltip } from "antd";
 import Link from "next/link";
 import React from "react";
+import { SearchOutlined } from "@ant-design/icons";
 
 const TitleBar = ({
   title,
@@ -44,15 +45,17 @@ const TitleBar = ({
           options={sorted}
           value={selectByCategory}
           style={{
-            width: "20rem",
+            width: "40%",
             display: input,
           }}
         />
         <Input
           placeholder="Search Text"
-          style={{ display: input }}
+          style={{ display: input, width: "40%" }}
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
+          allowClear
+          suffix={<SearchOutlined />}
         />
       </div>
     </div>
