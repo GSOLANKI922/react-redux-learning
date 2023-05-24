@@ -9,8 +9,8 @@ const Parent = () => {
     setData([...data, { count: "count" }]);
   }, [data]);
   return (
-    <div style={{border:"2px solid black", width:"25%", padding:"1rem"}}>
-    <h1>UseCallBack</h1>
+    <div style={{ border: "2px solid black", width: "25%", padding: "1rem" }}>
+      <h1>UseCallBack</h1>
       <Chiled addMoreData={addMoreData} data={data} />
       <div>
         count : {count}
