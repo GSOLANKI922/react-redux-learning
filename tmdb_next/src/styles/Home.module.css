@@ -1,0 +1,22 @@
+.title {
+  width: 100%;
+}
+
+.movieListContainer {
+  margin-top: 10px;
+}
+
+.spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movieList_wrapper {
+  height: 67vh;
+  overflow-y: scroll;
+}
+
+.movieList_wrapper::-webkit-scrollbar {
+  display: none;
+}

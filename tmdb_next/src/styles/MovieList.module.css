@@ -1,0 +1,60 @@
+.spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  width: 100%;
+}
+
+.movieListContainer {
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+.movieList_wrapper {
+  height: 67vh;
+  overflow-y: scroll;
+}
+
+.movieFormContainer {
+  height: 65vh;
+  overflow-y: scroll;
+  margin-top: 2rem;
+}
+
+.movie_Detail_Container {
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+  height: 94%;
+}
+
+.ContentStyle {
+  margin: 10px;
+  height: 300px;
+  color: #fff;
+  line-height: 160px;
+  text-align: center;
+  background: #364d79;
+}
+
+.Carousel_Images {
+  text-align: -webkit-center;
+}
+
+.card_meta_data {
+  line-height: 25px;
+}
+
+.movieFormContainer::-webkit-scrollbar,
+.movieList_wrapper::-webkit-scrollbar,
+.movieListContainer::-webkit-scrollbar,
+.card::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  margin: 30px !important;
+}
