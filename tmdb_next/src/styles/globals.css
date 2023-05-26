@@ -13,8 +13,7 @@
   border: 1px solid white;
 }
 
-
-.titleContainer{
+.titleContainer {
   display: flex;
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
@@ -30,16 +29,21 @@
   color: aliceblue;
 }
 
-.title {
-  width: 100%;
-}
-
-.inputSelectContainer{
-  width: 50%;
+.inputSelectContainer {
+  width: 48%;
   display: flex;
   gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-:where(.css-dev-only-do-not-override-yp8pcc).ant-table-wrapper .ant-table{
+.button_title_Container {
+  display: flex;
+  width: 52%;
+  justify-content: space-between;
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-table-wrapper .ant-table {
   min-height: 59vh;
 }
+ 

@@ -4,8 +4,10 @@
   gap: 1rem;
   flex-wrap: wrap;
   margin: 1rem;
+  box-sizing: border-box;
+  height: 100%;
 }
 
-button{
+button {
   cursor: pointer;
 }

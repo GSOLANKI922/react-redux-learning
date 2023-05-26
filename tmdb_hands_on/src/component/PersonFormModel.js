@@ -39,7 +39,7 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
 
   const handleCancel = async () => {
     try {
-      await setInputData({});
+      setInputData({});
       setOpen(false);
     } catch (error) {
       console.log(error);
@@ -142,7 +142,7 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your name!",
+                  message: "Please Enter your name!",
                 },
               ]}
             >
@@ -155,7 +155,7 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your gender in capital!",
+                  message: "Please Select your gender!",
                 },
               ]}
             >
@@ -187,7 +187,7 @@ const FormModel = ({ refetch, personData, setEdit, edit }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your profession!",
+                  message: "Please Enter your profession!",
                 },
               ]}
             >

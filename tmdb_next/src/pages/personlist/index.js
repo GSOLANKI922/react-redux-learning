@@ -33,7 +33,7 @@ const PersonList = () => {
       filter: {
         skip: 0,
         limit: 8,
-        searchTerm: searchText || null,
+        searchTerm: searchText.trim() || null,
       },
       sort: {
         field: selectByCategory,
@@ -41,6 +41,7 @@ const PersonList = () => {
       },
     },
   });
+
 
   const [
     deletePerson,
@@ -208,6 +209,3 @@ const PersonList = () => {
 };
 
 export default PersonList;
-
-Ac: 7645766056;
-IFSC: KKBK0000883;

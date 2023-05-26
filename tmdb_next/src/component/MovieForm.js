@@ -179,7 +179,7 @@ const MovieForm = ({ initialValues, loadings, onFinish, name, breadCrumb }) => {
                 rules={[
                   {
                     required: true,
-                    message: `${CONSTATNTS.PLEASE_ENTER_MOVIE} ${CONSTATNTS.ADULT}`,
+                    message: "Please pick an item!",
                   },
                 ]}
               >
@@ -199,7 +199,7 @@ const MovieForm = ({ initialValues, loadings, onFinish, name, breadCrumb }) => {
                 rules={[
                   {
                     required: true,
-                    message: `${CONSTATNTS.PLEASE_ENTER_MOVIE} ${CONSTATNTS.COUNTRY_IDS}`,
+                    message: `Please Select Movie CountryIDS`,
                   },
                 ]}
               >
@@ -228,7 +228,7 @@ const MovieForm = ({ initialValues, loadings, onFinish, name, breadCrumb }) => {
                 rules={[
                   {
                     required: true,
-                    message: `${CONSTATNTS.PLEASE_ENTER_MOVIE} ${CONSTATNTS.LANGUAGE_IDS}`,
+                    message: `Please Select Movie LanguageIDS`,
                   },
                 ]}
               >

@@ -32,7 +32,7 @@ const MovieList = () => {
       filter: {
         skip: 0,
         limit: 9,
-        searchTerm: searchText ? searchText : null,
+        searchTerm: searchText ? searchText.trim() : null,
       },
       sort: {
         field: selectByCategory,

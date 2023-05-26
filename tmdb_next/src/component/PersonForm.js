@@ -38,7 +38,7 @@ const PersonForm = ({ initialValues, loading, onFinish, name }) => {
                 rules={[
                   {
                     required: true,
-                    message: "PLEASE_INPUT_YOUR_NAME",
+                    message: "Please Enter Your Name",
                   },
                 ]}
               >
@@ -51,7 +51,7 @@ const PersonForm = ({ initialValues, loading, onFinish, name }) => {
                 rules={[
                   {
                     required: true,
-                    message: "PLEASE_INPUT_YOUR_MOVIE_popularity",
+                    message: "please enter movie Popularity" ,
                   },
                 ]}
               >
@@ -64,7 +64,7 @@ const PersonForm = ({ initialValues, loading, onFinish, name }) => {
                 rules={[
                   {
                     required: true,
-                    message: "PLEASE_INPUT_YOUR_MOVIE_Department",
+                    message: "Please Enter Your Department",
                   },
                 ]}
               >
@@ -77,7 +77,7 @@ const PersonForm = ({ initialValues, loading, onFinish, name }) => {
                 rules={[
                   {
                     required: true,
-                    message: "PLEASE_INPUT_YOUR_MOVIE_Gender",
+                    message: "Please Select Gender",
                   },
                 ]}
               >

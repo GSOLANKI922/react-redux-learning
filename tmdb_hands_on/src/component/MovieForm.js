@@ -76,7 +76,7 @@ const MovieForm = ({
   const handleCancel = async () => {
     try {
       setIsEdit(false);
-      await setCurrentEditData({});
+      setCurrentEditData({});
       form.resetFields();
       setIsModalOpen(false);
     } catch (error) {
