@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.auth-page {
+  height: calc(100vh - 64px);
+}
+
+.main-contain-container {
+  height: calc(100vh - 64px - 54px - 54px - 15px);
+}
+
+.movie-list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-list-container .movie-card {
+  margin: 16px;
+  width: calc(25% - 16px - 16px);
+}
+
+.movie-list-container {
+  height: calc(100vh - 64px - 64px - 24px - 24px - 69px - 69px);
+}
+
+.ant-card-meta-avatar {
+  width: 100%;
+}
+
+.person-list header.ant-layout-header.css-dev-only-do-not-override-1rqnfsa {
+  background: none;
+}
+
+.person-list .ant-layout.css-dev-only-do-not-override-1rqnfsa {
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.action-header
+  ul.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-light.w-\[20\%\].css-dev-only-do-not-override-1rqnfsa {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  font-size: large;
+}
+
+.action-header
+  ul.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-light.w-\[20\%\].css-dev-only-do-not-override-1rqnfsa
+  li {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  font-size: large;
+}
