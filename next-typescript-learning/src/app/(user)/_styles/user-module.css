@@ -1,0 +1,32 @@
+.user-route-container,
+.layout-wrapper {
+  height: 100%;
+}
+
+.app-logo {
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: rgba(196, 190, 190, 0.35) 0px 5px 15px;
+  padding-inline: 10px;
+}
+
+.movie-card-wrapper {
+  /* margin: -20px; */
+  /* display: flex;
+  flex-wrap: wrap; */
+
+  overflow: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 64px - 22px - 24px - 32px - 40px);
+}
+
+.movie-card-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-card-wrapper .movie-card {
+  margin: 20px;
+  /* width: calc(25% - 20px - 20px); */
+}
