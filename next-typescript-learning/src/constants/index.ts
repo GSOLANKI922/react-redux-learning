@@ -28,3 +28,14 @@ export const MODULES = {
 };
 
 export const LIMIT = 9;
+
+export const MOVIE_IMAGE =
+  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
+
+export const AVATAR_IMAGE = "https://api.dicebear.com/7.x/miniavs/svg?seed=8";
+
+export const MOVIE_FILTERS = {
+  Category: "category",
+  Order: "order",
+  Field: "field",
+};

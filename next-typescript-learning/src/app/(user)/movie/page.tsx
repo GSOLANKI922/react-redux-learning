@@ -16,17 +16,12 @@ import {
 import { Avatar, Card, Col, Row, Select, Space, Spin, Tooltip } from "antd";
 import Image from "next/image";
 import { InView } from "react-intersection-observer";
-import { LIMIT } from "@/constants";
+import { AVATAR_IMAGE, LIMIT, MOVIE_FILTERS, MOVIE_IMAGE } from "@/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const { Meta } = Card;
 
 const MovieList = () => {
-  // const [filters, setFilters] = useState({
-  //   field: ListMoviesSortFields.CreatedAt,
-  //   order: SortOrder.Asc,
-  //   category: null,
-  // });
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -34,13 +29,17 @@ const MovieList = () => {
   const { data, fetchMore, networkStatus } = useQuery(GET_MOVIE, {
     variables: {
       filter: {
-        // category: filters.category,
+        category:
+          (searchParams.get(MOVIE_FILTERS.Category) as MoviesCategory) || null,
         limit: LIMIT,
         skip: 0,
       },
       sort: {
-        field: ListMoviesSortFields.CreatedAt,
-        order: SortOrder.Asc,
+        field:
+          (searchParams.get(MOVIE_FILTERS.Field) as ListMoviesSortFields) ||
+          ListMoviesSortFields.CreatedAt,
+        order:
+          (searchParams.get(MOVIE_FILTERS.Order) as SortOrder) || SortOrder.Asc,
       },
     },
     fetchPolicy: "network-only",
@@ -58,13 +57,15 @@ const MovieList = () => {
         fetchMore({
           variables: {
             filter: {
-              category: searchParams.get("category") || null,
+              category: searchParams.get(MOVIE_FILTERS.Category) || null,
               limit: LIMIT,
               skip: data?.movies?.data?.length,
             },
             sort: {
-              field: searchParams.get("field") || null,
-              order: searchParams.get("order") || null,
+              field:
+                searchParams.get(MOVIE_FILTERS.Field) ||
+                ListMoviesSortFields.CreatedAt,
+              order: searchParams.get(MOVIE_FILTERS.Order) || SortOrder.Asc,
             },
           },
           updateQuery(previousQueryResult, { fetchMoreResult }) {
@@ -88,26 +89,20 @@ const MovieList = () => {
     }
   };
 
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
   return (
     <>
       <Space wrap>
         <Select
-          defaultValue={searchParams.get("field")}
+          defaultValue={searchParams.get(MOVIE_FILTERS.Field)}
           style={{ width: 120 }}
           placeholder="Select field"
           onChange={(value) => {
-            console.log(value, "value");
-
             const params = new URLSearchParams(searchParams);
             if (value) {
               params.set("field", value);
             } else {
               params.delete("field");
             }
-
             router.replace(`${pathname}?${params.toString()}`);
           }}
           allowClear
@@ -122,6 +117,7 @@ const MovieList = () => {
         <Select
           defaultValue={searchParams.get("order")}
           style={{ width: 120 }}
+          allowClear
           onChange={(value) => {
             const params = new URLSearchParams(searchParams);
             if (value) {
@@ -132,7 +128,6 @@ const MovieList = () => {
             router.replace(`${pathname}?${params.toString()}`);
           }}
           placeholder="Select order"
-          allowClear
           options={[
             { value: SortOrder.Asc, label: "Asc" },
             { value: SortOrder.Desc, label: "Desc" },
@@ -141,7 +136,6 @@ const MovieList = () => {
         <Select
           defaultValue={searchParams.get("category")}
           style={{ width: 120 }}
-          loading
           placeholder="Select category"
           allowClear
           onChange={(value) => {
@@ -171,14 +165,22 @@ const MovieList = () => {
           {!loading &&
             data?.movies?.data?.map((item) => {
               return (
-                <Col span={8} key={item?.id}>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  lg={12}
+                  xl={8}
+                  xxl={8}
+                  key={item?.id}
+                >
                   <Card
                     loading={loading}
                     className="movie-card"
                     cover={
                       <Image
                         alt="example"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        src={MOVIE_IMAGE}
                         width={100}
                         height={150}
                       />
@@ -196,9 +198,7 @@ const MovieList = () => {
                     ]}
                   >
                     <Meta
-                      avatar={
-                        <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
-                      }
+                      avatar={<Avatar src={AVATAR_IMAGE} />}
                       title={item?.title}
                       description={item?.originalTitle}
                     />
