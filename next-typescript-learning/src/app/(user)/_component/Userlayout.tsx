@@ -1,11 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   DashboardOutlined,
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import { MODULES, ROUTES } from "@/constants";
 import Link from "next/link";
 
@@ -37,20 +41,38 @@ const UserLayout = ({
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout className="layout-wrapper">
       <Header style={{ display: "flex", alignItems: "center" }}>
         <div className="app-logo">TMDB</div>
       </Header>
       <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
+        <Sider
+          width={200}
+          style={{ background: colorBgContainer }}
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
             items={routes}
+          />
+          <Button
+            type="text"
+            icon={!collapsed ? <DoubleLeftOutlined /> : <DoubleRightOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: "16px",
+              width: 64,
+              height: 64,
+              position: "absolute",
+              bottom: "0",
+            }}
           />
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>

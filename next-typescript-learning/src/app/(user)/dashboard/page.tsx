@@ -12,7 +12,7 @@ import {
   EditOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Tooltip } from "antd";
+import { Avatar, Card, Col, Row, Tooltip } from "antd";
 import Image from "next/image";
 
 const { Meta } = Card;
@@ -35,42 +35,45 @@ const Dashboard = () => {
   });
   return (
     <div className="movie-card-wrapper">
-      {data?.movies?.data?.map((item) => {
-        return (
-          <Card
-            loading={loading}
-            key={item?.id}
-            className="movie-card"
-            cover={
-              <Image
-                alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                width={100}
-                height={150}
-              />
-            }
-            actions={[
-              <Tooltip title="Delete" key="delete">
-                <DeleteOutlined />
-              </Tooltip>,
-              <Tooltip title="Edit" key="edit">
-                <EditOutlined />
-              </Tooltip>,
-              <Tooltip title="Details" key="ellipsis">
-                <EllipsisOutlined />
-              </Tooltip>,
-            ]}
-          >
-            <Meta
-              avatar={
-                <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
-              }
-              title={item?.title}
-              description={item?.originalTitle}
-            />
-          </Card>
-        );
-      })}
+      <Row gutter={[16, 16]}>
+        {data?.movies?.data?.map((item) => {
+          return (
+            <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8} key={item?.id}>
+              <Card
+                loading={loading}
+                className="movie-card"
+                cover={
+                  <Image
+                    alt="example"
+                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                    width={100}
+                    height={150}
+                  />
+                }
+                actions={[
+                  <Tooltip title="Delete" key="delete">
+                    <DeleteOutlined />
+                  </Tooltip>,
+                  <Tooltip title="Edit" key="edit">
+                    <EditOutlined />
+                  </Tooltip>,
+                  <Tooltip title="Details" key="ellipsis">
+                    <EllipsisOutlined />
+                  </Tooltip>,
+                ]}
+              >
+                <Meta
+                  avatar={
+                    <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                  }
+                  title={item?.title}
+                  description={item?.originalTitle}
+                />
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
     </div>
   );
 };

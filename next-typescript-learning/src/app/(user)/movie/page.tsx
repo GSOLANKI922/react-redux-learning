@@ -92,73 +92,87 @@ const MovieList = () => {
   return (
     <>
       <Space wrap>
-        <Select
-          defaultValue={searchParams.get(MOVIE_FILTERS.Field)}
-          style={{ width: 120 }}
-          placeholder="Select field"
-          onChange={(value) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-              params.set("field", value);
-            } else {
-              params.delete("field");
-            }
-            router.replace(`${pathname}?${params.toString()}`);
-          }}
-          allowClear
-          options={[
-            { value: ListMoviesSortFields.CreatedAt, label: "Created At" },
-            { value: ListMoviesSortFields.UpdatedAt, label: "Updated At" },
-            { value: ListMoviesSortFields.ReleaseDate, label: "Release Date" },
-            { value: ListMoviesSortFields.Popularity, label: "Popularity" },
-            { value: ListMoviesSortFields.VoteAverage, label: "Vote Average" },
-          ]}
-        />
-        <Select
-          defaultValue={searchParams.get("order")}
-          style={{ width: 120 }}
-          allowClear
-          onChange={(value) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-              params.set("order", value);
-            } else {
-              params.delete("order");
-            }
-            router.replace(`${pathname}?${params.toString()}`);
-          }}
-          placeholder="Select order"
-          options={[
-            { value: SortOrder.Asc, label: "Asc" },
-            { value: SortOrder.Desc, label: "Desc" },
-          ]}
-        />
-        <Select
-          defaultValue={searchParams.get("category")}
-          style={{ width: 120 }}
-          placeholder="Select category"
-          allowClear
-          onChange={(value) => {
-            const params = new URLSearchParams(searchParams);
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+            <Select
+              defaultValue={searchParams.get(MOVIE_FILTERS.Field)}
+              style={{ width: "100%" }}
+              placeholder="Select field"
+              onChange={(value) => {
+                const params = new URLSearchParams(searchParams);
+                if (value) {
+                  params.set("field", value);
+                } else {
+                  params.delete("field");
+                }
+                router.replace(`${pathname}?${params.toString()}`);
+              }}
+              allowClear
+              options={[
+                { value: ListMoviesSortFields.CreatedAt, label: "Created At" },
+                { value: ListMoviesSortFields.UpdatedAt, label: "Updated At" },
+                {
+                  value: ListMoviesSortFields.ReleaseDate,
+                  label: "Release Date",
+                },
+                { value: ListMoviesSortFields.Popularity, label: "Popularity" },
+                {
+                  value: ListMoviesSortFields.VoteAverage,
+                  label: "Vote Average",
+                },
+              ]}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+            <Select
+              defaultValue={searchParams.get("order")}
+              style={{ width: "100%" }}
+              allowClear
+              onChange={(value) => {
+                const params = new URLSearchParams(searchParams);
+                if (value) {
+                  params.set("order", value);
+                } else {
+                  params.delete("order");
+                }
+                router.replace(`${pathname}?${params.toString()}`);
+              }}
+              placeholder="Select order"
+              options={[
+                { value: SortOrder.Asc, label: "Asc" },
+                { value: SortOrder.Desc, label: "Desc" },
+              ]}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+            <Select
+              defaultValue={searchParams.get("category")}
+              style={{ width: "100%" }}
+              placeholder="Select category"
+              allowClear
+              onChange={(value) => {
+                const params = new URLSearchParams(searchParams);
 
-            if (value) {
-              params.set("category", value);
-            } else {
-              params.delete("category");
-            }
-            router.replace(`${pathname}?${params.toString()}`);
-          }}
-          options={[
-            { value: MoviesCategory.Latest, label: "Latest" },
-            {
-              value: MoviesCategory.PlayingInTheaters,
-              label: "Playing In Theaters",
-            },
-            { value: MoviesCategory.Popular, label: "Popular" },
-            { value: MoviesCategory.TopRated, label: "Top Rated" },
-            { value: MoviesCategory.Upcoming, label: "Upcoming" },
-          ]}
-        />
+                if (value) {
+                  params.set("category", value);
+                } else {
+                  params.delete("category");
+                }
+                router.replace(`${pathname}?${params.toString()}`);
+              }}
+              options={[
+                { value: MoviesCategory.Latest, label: "Latest" },
+                {
+                  value: MoviesCategory.PlayingInTheaters,
+                  label: "Playing In Theaters",
+                },
+                { value: MoviesCategory.Popular, label: "Popular" },
+                { value: MoviesCategory.TopRated, label: "Top Rated" },
+                { value: MoviesCategory.Upcoming, label: "Upcoming" },
+              ]}
+            />
+          </Col>
+        </Row>
       </Space>
       <div className="movie-card-wrapper">
         <Row gutter={[16, 16]}>
@@ -216,6 +230,7 @@ const MovieList = () => {
               if (inView) getMoreData(inView);
             }}
             triggerOnce
+            rootMargin="10px"
           />
         )}
       </div>

@@ -18,8 +18,8 @@
   flex-wrap: wrap; */
 
   overflow: hidden;
-  overflow-y: scroll;
-  height: calc(100vh - 64px - 22px - 24px - 32px - 40px);
+  overflow-y: auto;
+  height: calc(100vh - 64px - 22px - 24px - 32px - 60px);
 }
 
 .movie-card-wrapper::-webkit-scrollbar {

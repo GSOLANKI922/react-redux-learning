@@ -69,3 +69,26 @@ export const GET_MOVIE = gql(`
     }
   }
 `);
+
+export const GET_PERSONS = gql(`
+query ListPersons($filter: ListPersonsFilter!, $sort: ListPersonsSort!) {
+  listPersons(filter: $filter, sort: $sort) {
+    count
+    data {
+      id
+      tmdbId
+      birthday
+      knownForDepartment
+      deathday
+      name
+      alsoKnownAs
+      gender
+      biography
+      popularity
+      placeOfBirth
+      profilePath
+      homePage
+      adult
+    }
+  }
+}`);

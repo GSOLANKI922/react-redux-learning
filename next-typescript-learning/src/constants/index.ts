@@ -39,3 +39,11 @@ export const MOVIE_FILTERS = {
   Order: "order",
   Field: "field",
 };
+
+export const USER_FILTERS = {
+  Category: "category",
+  Order: "order",
+  Field: "field",
+  Search: "search",
+  Page: "page",
+};
