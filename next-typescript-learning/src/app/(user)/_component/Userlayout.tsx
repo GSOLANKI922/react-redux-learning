@@ -18,7 +18,7 @@ const { Header, Content, Sider } = Layout;
 const routes = [
   {
     key: 1,
-    label: <Link href={ROUTES.DASHBOARD}>{MODULES.DASHBOARD}</Link>,
+    label: <Link href={ROUTES.MAIN}>{MODULES.DASHBOARD}</Link>,
     icon: <DashboardOutlined />,
   },
   {

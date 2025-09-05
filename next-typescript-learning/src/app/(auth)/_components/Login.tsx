@@ -13,13 +13,12 @@ interface LoginFormData {
 const LoginForm = () => {
   const router = useRouter();
   const onFinish = async (values: LoginFormData) => {
-    console.log("Received values of form: ", values);
     const res = await signIn("credentials", {
       redirect: false,
       ...values,
     });
     if (res?.status === 200) {
-      router.push(ROUTES.DASHBOARD);
+      router.push(ROUTES.MAIN);
     }
   };
 

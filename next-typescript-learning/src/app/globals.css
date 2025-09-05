@@ -67,11 +67,11 @@ html {
   margin-top: 16px;
 }
 
-label.ant-form-item-required {
+.form label.ant-form-item-required {
   color: white !important;
 }
 
-span.ant-input-affix-wrapper.ant-input-outlined {
+.form span.ant-input-affix-wrapper.ant-input-outlined {
   background-color: black;
 }
 
@@ -138,4 +138,19 @@ button.ant-btn.css-dev-only-do-not-override-mzwlov.ant-btn-default.login-form-bu
 
 span.ant-input-affix-wrapper.ant-input-outlined.search-component {
   background-color: white;
+}
+
+tbody .ant-table-tbody {
+  overflow-y: scroll;
+  overflow-x: scroll;
+  height: 500px;
+}
+
+tbody .ant-table-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.ant-spin-container .actions {
+  display: flex;
+  justify-content: space-between;
 }

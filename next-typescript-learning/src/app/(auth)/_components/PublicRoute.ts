@@ -6,8 +6,6 @@ const PublicRoute = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const session = useSession();
-  console.log(session?.data, "session");
   return children;
 };
 

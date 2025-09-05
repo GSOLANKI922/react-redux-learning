@@ -60,9 +60,9 @@ const contextLink = setContext((_, defaultContext) => {
 
   return {
     headers: {
+      ...headers,
       authorization: accessToken ? `Bearer ${accessToken}` : "",
       // TODO: remove this
-      ...headers,
     },
   };
 });
@@ -82,7 +82,6 @@ const responseLink = new ApolloLink((operation, forward) => {
           toast.success(message);
         }
       }
-
       return response;
     });
   }
@@ -103,8 +102,6 @@ const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
       for (const error of graphQLErrors) {
-        console.log(error, "error");
-
         if (error.extensions.code) {
           switch (error.extensions.code) {
             case GRAPHQL_ERROR_CODES.SESSION_EXPIRED: {

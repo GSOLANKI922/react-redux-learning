@@ -130,14 +130,12 @@ export const {
     },
     session({ session, token }) {
       const sessionToken = token as unknown as SessionUser;
-
       if (session.user) {
         return {
           ...session,
           ...sessionToken.user,
         };
       }
-
       return session;
     },
   },

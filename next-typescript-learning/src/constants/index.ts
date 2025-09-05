@@ -17,6 +17,10 @@ export const ROUTES = {
   DASHBOARD: "/dashboard",
   MOVIE: "/movie",
   USER: "/user",
+  DETAILS: "/details",
+  MAIN: "/",
+  EDIT: "/edit",
+  ADD: "/add",
 };
 
 export const MODULES = {
@@ -47,3 +51,9 @@ export const USER_FILTERS = {
   Search: "search",
   Page: "page",
 };
+
+export const GENDER = [
+  { value: "MALE", label: "Male" },
+  { value: "FEMALE", label: "Female" },
+  { value: "OTHER", label: "Other" },
+];

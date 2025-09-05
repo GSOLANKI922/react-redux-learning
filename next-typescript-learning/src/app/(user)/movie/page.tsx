@@ -1,7 +1,7 @@
 "use client";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { GET_MOVIE } from "../graphql/queries";
+import { GET_MOVIES } from "../graphql/queries";
 import {
   ListMoviesSortFields,
   Movie,
@@ -13,11 +13,31 @@ import {
   EditOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Col, Row, Select, Space, Spin, Tooltip } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Popconfirm,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Tooltip,
+} from "antd";
 import Image from "next/image";
 import { InView } from "react-intersection-observer";
-import { AVATAR_IMAGE, LIMIT, MOVIE_FILTERS, MOVIE_IMAGE } from "@/constants";
+import {
+  AVATAR_IMAGE,
+  LIMIT,
+  MOVIE_FILTERS,
+  MOVIE_IMAGE,
+  ROUTES,
+} from "@/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { DELETE_MOVIE } from "../graphql/mutations";
+import { createAuthClient } from "@/lib/apollo/client";
 
 const { Meta } = Card;
 
@@ -26,7 +46,9 @@ const MovieList = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data, fetchMore, networkStatus } = useQuery(GET_MOVIE, {
+  const [deleteMovie] = useMutation(DELETE_MOVIE);
+
+  const { data, fetchMore, networkStatus, refetch } = useQuery(GET_MOVIES, {
     variables: {
       filter: {
         category:
@@ -91,9 +113,9 @@ const MovieList = () => {
 
   return (
     <>
-      <Space wrap>
+      <Space wrap className="filters-wrraper">
         <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+          <Col xs={24} sm={24} md={4} lg={4} xl={4} xxl={4}>
             <Select
               defaultValue={searchParams.get(MOVIE_FILTERS.Field)}
               style={{ width: "100%" }}
@@ -123,7 +145,7 @@ const MovieList = () => {
               ]}
             />
           </Col>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+          <Col xs={24} sm={24} md={4} lg={4} xl={4} xxl={4}>
             <Select
               defaultValue={searchParams.get("order")}
               style={{ width: "100%" }}
@@ -144,7 +166,7 @@ const MovieList = () => {
               ]}
             />
           </Col>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+          <Col xs={24} sm={24} md={4} lg={4} xl={4} xxl={4}>
             <Select
               defaultValue={searchParams.get("category")}
               style={{ width: "100%" }}
@@ -171,6 +193,14 @@ const MovieList = () => {
                 { value: MoviesCategory.Upcoming, label: "Upcoming" },
               ]}
             />
+          </Col>
+          <Col xs={24} sm={24} md={4} lg={4} xl={4} xxl={4}>
+            <Button
+              type="primary"
+              onClick={() => router.push(`${ROUTES.MOVIE}${ROUTES.ADD}`)}
+            >
+              Add Movie
+            </Button>
           </Col>
         </Row>
       </Space>
@@ -201,14 +231,42 @@ const MovieList = () => {
                     }
                     actions={[
                       <Tooltip title="Delete" key="delete">
-                        <DeleteOutlined />
+                        <Popconfirm
+                          title="Delete the task"
+                          description="Are you sure to delete this task?"
+                          onConfirm={async () => {
+                            const { data } = await deleteMovie({
+                              variables: {
+                                deleteMovieId: item?.id,
+                              },
+                            });
+                            if (data) {
+                              await refetch();
+                            }
+                          }}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <DeleteOutlined />
+                        </Popconfirm>
                       </Tooltip>,
                       <Tooltip title="Edit" key="edit">
-                        <EditOutlined />
+                        <EditOutlined
+                          onClick={() => {
+                            router.push(
+                              `${ROUTES.MOVIE}/${item?.id}${ROUTES.EDIT}`
+                            );
+                          }}
+                        />
                       </Tooltip>,
-                      <Tooltip title="Details" key="ellipsis">
-                        <EllipsisOutlined />
-                      </Tooltip>,
+                      <Link
+                        href={`${ROUTES.MOVIE}/${item?.id}${ROUTES.DETAILS}`}
+                        key="ellipsis"
+                      >
+                        <Tooltip title="Details">
+                          <EllipsisOutlined />
+                        </Tooltip>
+                      </Link>,
                     ]}
                   >
                     <Meta
@@ -226,7 +284,6 @@ const MovieList = () => {
             as="div"
             style={{ height: "5px", backgroundColor: "red" }}
             onChange={(inView) => {
-              console.log(inView, "inView");
               if (inView) getMoreData(inView);
             }}
             triggerOnce

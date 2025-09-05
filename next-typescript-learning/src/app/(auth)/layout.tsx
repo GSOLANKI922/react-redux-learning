@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { ROUTES } from "@/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export default async function Layout({
 }>) {
   const sesion = await auth();
   if (sesion) {
-    redirect("/");
+    redirect(ROUTES.DASHBOARD);
   }
   return <div className="container">{children}</div>;
 }
