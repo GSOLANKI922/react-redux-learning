@@ -1,41 +1,31 @@
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
-import ProductList from "./components/productList";
-import { useEffect } from "react";
-import { getProduct } from "./app/slice/productSlice";
 import "../src/components/ProductCard.css"; // Import the external CSS
 import Header from "./components/Header";
-import Pagination from "./components/Pagination";
-import { LIMIT } from "./constatnt";
-import withLoader from "./components/withLoader";
-
-const ProductListWithLoader = withLoader(ProductList);
+import { BrowserRouter, Route, Routes } from "react-router";
+import ProductListWrapper from "./components/productList";
+import ProductDetailsWrapper from "./page/ProductDetails";
+import NotFound from "./components/NotFound";
+import CartWrapper from "./page/Cart";
+import WishlistWrapper from "./page/Wishlist";
+import Login from "./components/Login";
+import AuthLayout from "./components/AuthLayout";
 
 function App() {
-  const dispatch = useDispatch();
-  const { items, loading, error, total, page, limit } = useSelector(
-    (state) => state.product
-  );
-
-  useEffect(() => {
-    dispatch(getProduct({ limit: LIMIT, page: 1 }));
-  }, [dispatch]);
-
-  const totalPages = Math.ceil(total / limit);
-
   return (
     <>
-      <Header />
-      <ProductListWithLoader items={items} loading={loading} error={error} />
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={(newPage) => {
-            dispatch(getProduct({ page: newPage, limit }));
-          }}
-        />
-      )}
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route path="/" element={<ProductListWrapper />} />
+          <Route path={"/products/:id"} element={<ProductDetailsWrapper />} />
+          <Route path={"/cart"} element={<CartWrapper />} />
+          <Route path={"/wishlist"} element={<WishlistWrapper />} />
+          <Route path={"*"} element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

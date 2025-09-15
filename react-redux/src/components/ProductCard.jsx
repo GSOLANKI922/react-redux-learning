@@ -1,7 +1,14 @@
 import React from "react";
+import { FaTrash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { addToCart } from "../app/slice/cartSlice";
+import { addToWishlist } from "../app/slice/wishlistSlice";
 
-export default function ProductCard({ product }) {
-  const { title, price, rating, images, brand, stock, tags, description } =
+export default function ProductCard({ product, deleteProduct }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { title, price, rating, images, brand, stock, tags, description, id } =
     product;
 
   // Convert numeric rating (0-5) to full/half/empty stars
@@ -26,8 +33,18 @@ export default function ProductCard({ product }) {
     ));
   };
 
+  const handleDelete = (e) => {
+    e.stopPropagation(); // ✅ prevents triggering card navigation
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      deleteProduct(id);
+    }
+  };
+
   return (
-    <div className="pv-card">
+    <div className="pv-card" onClick={() => navigate(`/products/${id}`)}>
+      <button className="delete-btn" onClick={handleDelete}>
+        <FaTrash />
+      </button>
       <div className="pv-media">
         <img src={images?.[0]} alt={title} />
       </div>
@@ -63,8 +80,24 @@ export default function ProductCard({ product }) {
         </div>
 
         <div className="pv-actions">
-          <button className="btn primary">Add to cart</button>
-          <button className="btn outline">Wishlist</button>
+          <button
+            className="btn primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(addToCart({ id, title, price, image: images?.[0] }));
+            }}
+          >
+            Add to cart
+          </button>
+          <button
+            className="btn outline"
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(addToWishlist({ id, title, price, image: images?.[0] }));
+            }}
+          >
+            Wishlist
+          </button>
         </div>
       </div>
     </div>

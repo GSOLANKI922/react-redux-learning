@@ -1,0 +1,149 @@
+.details-container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.back-btn {
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.details-wrapper {
+  display: flex;
+  gap: 24px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.details-media {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.thumbs img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.thumbs .active {
+  border-color: #111;
+}
+
+.details-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.details-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.details-brand {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.details-rating {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.stars {
+  color: #f6c945;
+  font-size: 1.2rem;
+}
+
+.details-desc {
+  font-size: 1rem;
+  color: #333;
+}
+
+.details-meta {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.details-price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #111;
+}
+
+.details-stock.in {
+  color: green;
+  font-size: 0.95rem;
+}
+
+.details-stock.out {
+  color: red;
+  font-size: 0.95rem;
+}
+
+.details-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.btn.primary {
+  background: #111;
+  color: #fff;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #ddd;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .details-wrapper {
+    flex-direction: column;
+  }
+
+  .thumbs img {
+    width: 60px;
+    height: 60px;
+  }
+}

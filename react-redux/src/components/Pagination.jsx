@@ -28,6 +28,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages > 1) {
       pages.push(totalPages);
     }
+    console.log(pages, "pages");
 
     return [...new Set(pages)];
   };

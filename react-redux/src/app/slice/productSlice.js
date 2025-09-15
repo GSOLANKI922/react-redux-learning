@@ -11,7 +11,8 @@ export const getProduct = createAsyncThunk(
         import.meta.env.VITE_API_KEY
       }/search?q=${search}&limit=${limit}&skip=${skip}`;
     }
-
+    const err = new Error();
+    console.log(err.stack);
     const res = await fetch(url);
     const data = await res.json();
     return { ...data, page, limit, search };
@@ -37,7 +38,7 @@ const productReducer = createSlice({
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.loading = false;
       state.items = action.payload;
-      console.log(action.payload);
+      console.log(action.payload, "asdada");
       state.total = +action.payload.total;
       state.page = +action.payload.page;
       state.limit = +action.payload.limit;

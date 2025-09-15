@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useDebounce from "../utils/useDebounce";
 
-export default function DebouncedSearch({ onSearch }) {
-  const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 500); // delay 500ms
+const DebounceInput = ({
+  onSearch,
+  delay = 500,
+  placeholder = "Search...",
+}) => {
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, delay);
+  const prevValue = useRef(""); // keep track of last search
 
   useEffect(() => {
-    if (debouncedQuery.trim() !== "") {
-      onSearch(debouncedQuery);
+    if (debouncedValue.trim() !== "" && debouncedValue !== prevValue.current) {
+      prevValue.current = debouncedValue;
+      onSearch(debouncedValue);
     }
-  }, [debouncedQuery, onSearch]);
+  }, [debouncedValue, onSearch]);
 
   return (
     <input
       type="text"
-      placeholder="Search..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
+      value={inputValue}
+      placeholder={placeholder}
+      onChange={(e) => setInputValue(e.target.value)}
     />
   );
-}
+};
+
+export default DebounceInput;

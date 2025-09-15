@@ -27,6 +27,7 @@ const withLoader = (WrappedComponent) => {
         </div>
       );
     }
+    console.log(props, "props", loading, error);
 
     // ✅ Always use WrappedComponent here
     return <WrappedComponent {...props} />;
